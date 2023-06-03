@@ -79,7 +79,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${jfx.maven.version}</version>
                 <configuration>
-                    <mainClass>drop.main/com.almasb.fxglgames.drop.DropApp</mainClass>
+                    <mainClass>drop.main/com.almasb.fxglgames.drop.SGApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
