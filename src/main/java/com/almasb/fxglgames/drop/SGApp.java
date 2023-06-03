@@ -9,11 +9,15 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.Map;
@@ -24,6 +28,12 @@ public class SGApp extends GameApplication {
     private Entity yukine;
     private double jumpVelocity = -600;
     private boolean isJumping = false;
+    private double elapsedTime = 0.0;
+    private ProgressBar cooldownBar;
+    private Rectangle cooldownBackground;
+    private Text cooldownText;
+    private static final double COOLDOWN_DURATION = 0.5;
+    private static final double SHOT_PAUSE_DURATION = 0.5; // Adjust the value as needed
 
     public enum Type {
         NOISE, YUKINE, BULLET
@@ -35,6 +45,11 @@ public class SGApp extends GameApplication {
         settings.setVersion("0.0.1");
         settings.setWidth(1280);
         settings.setHeight(720);
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("Health", 1000);
     }
 
     @Override
@@ -76,7 +91,12 @@ public class SGApp extends GameApplication {
         getInput().addAction(new UserAction("Shoot") {
             @Override
             protected void onActionBegin() {
-                shoot();
+                if (elapsedTime >= SHOT_PAUSE_DURATION) {
+                    shoot();
+                } else {
+                    // The player has to wait for the pause duration to elapse
+                    // You can display a message or disable the shot action during this time
+                }
             }
         }, MouseButton.SECONDARY);
     }
@@ -86,7 +106,7 @@ public class SGApp extends GameApplication {
         getPhysicsWorld().setGravity(0, 1000);
 
         onCollisionBegin(Type.YUKINE, Type.NOISE, (yukine, noise) -> {
-            inc("Health", -5);
+            inc("Health", -50);
             noise.removeFromWorld();
             play("hit.wav");
         });
@@ -99,12 +119,11 @@ public class SGApp extends GameApplication {
     }
 
     @Override
-    protected void initGameVars(Map<String, Object> vars) {
-        vars.put("Health", 100);
-    }
-
-    @Override
     protected void onUpdate(double tpf) {
+        updateHealth();
+        elapsedTime += tpf;
+        updateCooldownBar();
+
         //move noise down when noise not on ground
         getGameWorld().getEntitiesByType(Type.NOISE).forEach(noise -> {
             if (noise.getY() < getAppHeight() - 64) {
@@ -151,7 +170,7 @@ public class SGApp extends GameApplication {
         });
 
         getGameWorld().getEntitiesByType(Type.BULLET).forEach(bullet -> {
-            if (bullet.getX() < 0|| bullet.getX() > getAppWidth()
+            if (bullet.getX() < 0 || bullet.getX() > getAppWidth()
                 || bullet.getY() < 0 || bullet.getY() > getAppHeight()) {
                 bullet.removeFromWorld();
                 return;
@@ -169,19 +188,60 @@ public class SGApp extends GameApplication {
         }
     }
 
+    private static void updateHealth() {
+        //gradualy increase health over time, up to 100 every 5 seconds
+        if (geti("Health") < 1000) {
+            inc("Health", 1);
+        }
+    }
+
     @Override
     protected void initUI() {
         Label healthLabel = new Label();
         healthLabel.setTextFill(Color.LIGHTGRAY);
         healthLabel.setFont(Font.font(20.0));
-        healthLabel.textProperty().bind(FXGL.getip("Health").asString("Health: %d"));
+        healthLabel.textProperty().bind(getip("Health").asString("Health: %d"));
         addUINode(healthLabel, 20, 10);
+
+        cooldownBar = new ProgressBar();
+        cooldownBar.setMinValue(0);
+        cooldownBar.setMaxValue(1);
+        cooldownBar.prefWidth(200);
+        cooldownBar.setCurrentValue(0);
+
+        cooldownBackground = new Rectangle(200, 20);
+        cooldownBackground.setFill(Color.RED);
+
+        cooldownText = new Text();
+        cooldownText.setText("COOLDOWN");
+        cooldownText.setFill(Color.WHITE);
+        cooldownText.setFont(Font.font(14));
+
+        StackPane cooldownPane = new StackPane(cooldownBackground, cooldownBar, cooldownText);
+        cooldownPane.setLayoutX(20);
+        cooldownPane.setLayoutY(50);
+
+        getGameScene().addUINodes(cooldownPane);
+    }
+
+    private void updateCooldownBar() {
+        if (elapsedTime >= COOLDOWN_DURATION) {
+            cooldownBar.setCurrentValue(1.0);
+            cooldownText.setText("");
+        } else {
+            double progress = elapsedTime / COOLDOWN_DURATION;
+            cooldownBar.setCurrentValue(progress);
+
+            double remainingTime = COOLDOWN_DURATION - elapsedTime;
+            int remainingSeconds = (int) Math.ceil(remainingTime);
+            cooldownText.setText("Cooldown: " + remainingSeconds + "s");
+        }
     }
 
     private void spawnYukine() {
         yukine = entityBuilder()
             .type(Type.YUKINE)
-            .at((double) getAppWidth() / 2, getAppHeight() - (double)64)
+            .at((double) getAppWidth() / 2, getAppHeight() - (double) 64)
             .viewWithBBox("Yukine.png")
             .collidable()
             .buildAndAttach();
@@ -219,6 +279,7 @@ public class SGApp extends GameApplication {
     }
 
     private void shoot() {
+        elapsedTime = 0.0;
         double mouseX = getInput().getMouseXWorld();
         double mouseY = getInput().getMouseYWorld();
 
