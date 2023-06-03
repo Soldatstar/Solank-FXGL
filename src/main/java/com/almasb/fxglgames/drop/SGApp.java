@@ -6,6 +6,8 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -19,10 +21,9 @@ import java.util.Map;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class SGApp extends GameApplication {
+    private Entity yukine;
     private double jumpVelocity = -600;
     private boolean isJumping = false;
-
-    private Entity yukine;
 
     public enum Type {
         NOISE, YUKINE, BULLET
@@ -44,7 +45,7 @@ public class SGApp extends GameApplication {
         spawnYukine();
         run(this::spawnNoise, Duration.seconds(1));
         loopBGM("bgm.mp3");
-        getAudioPlayer().pauseAllMusic();
+        //getAudioPlayer().pauseAllMusic();
     }
 
     @Override
@@ -70,8 +71,8 @@ public class SGApp extends GameApplication {
             protected void onActionBegin() {
                 jump();
             }
-        }, KeyCode.SPACE); // Adjust the key binding as desired$.
-        //run shoot when mouse is clicked
+        }, KeyCode.SPACE);
+
         getInput().addAction(new UserAction("Shoot") {
             @Override
             protected void onActionBegin() {
@@ -82,9 +83,17 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        onCollisionBegin(Type.YUKINE, Type.NOISE, (bucket, droplet) -> {
-            FXGL.inc("Health", -5);
-            droplet.removeFromWorld();
+        getPhysicsWorld().setGravity(0, 1000);
+
+        onCollisionBegin(Type.YUKINE, Type.NOISE, (yukine, noise) -> {
+            inc("Health", -5);
+            noise.removeFromWorld();
+            play("hit.wav");
+        });
+
+        onCollisionBegin(Type.BULLET, Type.NOISE, (bullet, noise) -> {
+            noise.removeFromWorld();
+            bullet.removeFromWorld();
             play("hit.wav");
         });
     }
@@ -96,20 +105,25 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        getGameWorld().getEntitiesByType(Type.NOISE).forEach(droplet -> droplet.translateY(150 * tpf));
+        //move noise down when noise not on ground
+        getGameWorld().getEntitiesByType(Type.NOISE).forEach(noise -> {
+            if (noise.getY() < getAppHeight() - 64) {
+                noise.translateY(5);
+            }
+        });
+        getPhysicsWorld().onUpdate(tpf);
 
         if (isJumping) {
             double jumpDistance = jumpVelocity * tpf;
             double newY = yukine.getY() + jumpDistance;
             yukine.setY(newY);
 
-            jumpVelocity += 1000 * tpf; // Adjust the value as needed to control the gravity effect
+            jumpVelocity += 1000 * tpf;
 
-            // Check if character has reached the ground
-            if (newY >= getAppHeight() - 64) { // Adjust the value as needed based on character's size
+            if (newY >= getAppHeight() - 64) {
                 yukine.setY(getAppHeight() - 64);
                 isJumping = false;
-                jumpVelocity = -600; // Reset the jump velocity
+                jumpVelocity = -600;
             }
         }
 
@@ -130,12 +144,25 @@ public class SGApp extends GameApplication {
                 directionY /= length;
             }
 
-            double speed = 150;
+            double speed = 15;
 
             noise.translateX(directionX * speed * tpf);
             noise.translateY(directionY * speed * tpf);
         });
 
+        getGameWorld().getEntitiesByType(Type.BULLET).forEach(bullet -> {
+            if (bullet.getX() < 0|| bullet.getX() > getAppWidth()
+                || bullet.getY() < 0 || bullet.getY() > getAppHeight()) {
+                bullet.removeFromWorld();
+                return;
+            }
+
+            double velocityX = bullet.getDouble("velocityX");
+            double velocityY = bullet.getDouble("velocityY");
+
+            bullet.translateX(velocityX * tpf);
+            bullet.translateY(velocityY * tpf);
+        });
 
         if (geti("Health") <= 0) {
             getGameController().startNewGame();
@@ -148,7 +175,7 @@ public class SGApp extends GameApplication {
         healthLabel.setTextFill(Color.LIGHTGRAY);
         healthLabel.setFont(Font.font(20.0));
         healthLabel.textProperty().bind(FXGL.getip("Health").asString("Health: %d"));
-        FXGL.addUINode(healthLabel, 20, 10);
+        addUINode(healthLabel, 20, 10);
     }
 
     private void spawnYukine() {
@@ -161,13 +188,30 @@ public class SGApp extends GameApplication {
     }
 
     private void spawnNoise() {
-        entityBuilder()
+        //randomly spawn noise at top of screen or from left/right side
+        int side = random(0, 2);
+        int x = 0;
+        int y = 0;
+
+        if (side == 0) {
+            x = random(0, getAppWidth() - 64);
+            y = -64;
+        } else if (side == 1) {
+            x = -64;
+            y = random(0, getAppHeight() - 64);
+        } else if (side == 2) {
+            x = getAppWidth() + 64;
+            y = random(0, getAppHeight() - 64);
+        }
+
+        Entity noise = entityBuilder()
             .type(Type.NOISE)
-            .at(FXGLMath.random(0, getAppWidth() - 64), 0)
+            .at(x, y)
             .viewWithBBox("noise.png")
             .collidable()
             .buildAndAttach();
     }
+
     private void jump() {
         if (!isJumping) {
             isJumping = true;
@@ -175,12 +219,31 @@ public class SGApp extends GameApplication {
     }
 
     private void shoot() {
-        entityBuilder()
+        double mouseX = getInput().getMouseXWorld();
+        double mouseY = getInput().getMouseYWorld();
+
+        double directionX = mouseX - yukine.getX();
+        double directionY = mouseY - yukine.getY();
+
+        double length = Math.sqrt(directionX * directionX + directionY * directionY);
+        directionX /= length;
+        directionY /= length;
+
+        double bulletSpeed = 1000;
+        double bulletVelocityX = directionX * bulletSpeed;
+        double bulletVelocityY = directionY * bulletSpeed;
+
+        Entity bullet = entityBuilder()
             .type(Type.BULLET)
             .at(yukine.getX(), yukine.getY())
             .viewWithBBox("bullet.png")
             .collidable()
             .buildAndAttach();
+
+
+        bullet.setProperty("damage", 10);
+        bullet.setProperty("velocityX", bulletVelocityX);
+        bullet.setProperty("velocityY", bulletVelocityY);
     }
 
     public static void main(String[] args) {
