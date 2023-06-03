@@ -9,6 +9,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.Texture;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -52,7 +53,7 @@ public class SGApp extends GameApplication {
             @Override
             protected void onAction() {
                 if (yukine.getX() < getAppWidth() - 64)
-                    yukine.translateX(25);
+                    yukine.translateX(15);
             }
         }, KeyCode.D);
 
@@ -60,7 +61,7 @@ public class SGApp extends GameApplication {
             @Override
             protected void onAction() {
                 if (yukine.getX() > 0)
-                    yukine.translateX(-25);
+                    yukine.translateX(-15);
             }
         }, KeyCode.A);
 
@@ -69,21 +70,28 @@ public class SGApp extends GameApplication {
             protected void onActionBegin() {
                 jump();
             }
-        }, KeyCode.SPACE); // Adjust the key binding as desired
+        }, KeyCode.SPACE); // Adjust the key binding as desired$.
+        //run shoot when mouse is clicked
+        getInput().addAction(new UserAction("Shoot") {
+            @Override
+            protected void onActionBegin() {
+                shoot();
+            }
+        }, MouseButton.SECONDARY);
     }
 
     @Override
     protected void initPhysics() {
         onCollisionBegin(Type.YUKINE, Type.NOISE, (bucket, droplet) -> {
-            FXGL.inc("score", 10);
+            FXGL.inc("Health", -5);
             droplet.removeFromWorld();
-            play("drop.wav");
+            play("hit.wav");
         });
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("score", 0);
+        vars.put("Health", 100);
     }
 
     @Override
@@ -127,15 +135,20 @@ public class SGApp extends GameApplication {
             noise.translateX(directionX * speed * tpf);
             noise.translateY(directionY * speed * tpf);
         });
+
+
+        if (geti("Health") <= 0) {
+            getGameController().startNewGame();
+        }
     }
 
     @Override
     protected void initUI() {
-        Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.LIGHTGRAY);
-        scoreLabel.setFont(Font.font(20.0));
-        scoreLabel.textProperty().bind(FXGL.getip("score").asString("Score: %d"));
-        FXGL.addUINode(scoreLabel, 20, 10);
+        Label healthLabel = new Label();
+        healthLabel.setTextFill(Color.LIGHTGRAY);
+        healthLabel.setFont(Font.font(20.0));
+        healthLabel.textProperty().bind(FXGL.getip("Health").asString("Health: %d"));
+        FXGL.addUINode(healthLabel, 20, 10);
     }
 
     private void spawnYukine() {
