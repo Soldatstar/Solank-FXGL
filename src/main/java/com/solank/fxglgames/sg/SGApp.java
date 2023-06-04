@@ -2,12 +2,9 @@ package com.solank.fxglgames.sg;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.control.Label;
@@ -22,7 +19,23 @@ import javafx.util.Duration;
 
 import java.util.Map;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGL.addUINode;
+import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
+import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGL.getGameScene;
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.getInput;
+import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
+import static com.almasb.fxgl.dsl.FXGL.geti;
+import static com.almasb.fxgl.dsl.FXGL.getip;
+import static com.almasb.fxgl.dsl.FXGL.inc;
+import static com.almasb.fxgl.dsl.FXGL.loopBGM;
+import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
+import static com.almasb.fxgl.dsl.FXGL.play;
+import static com.almasb.fxgl.dsl.FXGL.random;
+import static com.almasb.fxgl.dsl.FXGL.run;
+import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
     private Entity yukine;
@@ -32,8 +45,10 @@ public class SGApp extends GameApplication {
     private ProgressBar cooldownBar;
     private Rectangle cooldownBackground;
     private Text cooldownText;
-    private static final double COOLDOWN_DURATION = 0.5;
-    private static final double SHOT_PAUSE_DURATION = 0.5; // Adjust the value as needed
+    private static final double COOLDOWN_DURATION = 1.3;
+    private static final double SHOT_PAUSE_DURATION = 0.2; // Adjust the value as needed
+    private double elapsedTime2 = 0.0;
+    private boolean cooldown;
 
     public enum Type {
         NOISE, YUKINE, BULLET
@@ -45,11 +60,12 @@ public class SGApp extends GameApplication {
         settings.setVersion("0.0.1");
         settings.setWidth(1280);
         settings.setHeight(720);
+        settings.setMainMenuEnabled(true);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("Health", 1000);
+        vars.put("Health", 100);
         vars.put("Score", 0);
     }
 
@@ -61,7 +77,6 @@ public class SGApp extends GameApplication {
         spawnYukine();
         run(this::spawnNoise, Duration.seconds(1));
         loopBGM("bgm.mp3");
-        //getAudioPlayer().pauseAllMusic();
     }
 
     @Override
@@ -69,16 +84,18 @@ public class SGApp extends GameApplication {
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                if (yukine.getX() < getAppWidth() - 64)
+                if (yukine.getX() < getAppWidth() - 64) {
                     yukine.translateX(15);
+                }
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                if (yukine.getX() > 0)
+                if (yukine.getX() > 0) {
                     yukine.translateX(-15);
+                }
             }
         }, KeyCode.A);
 
@@ -92,11 +109,11 @@ public class SGApp extends GameApplication {
         getInput().addAction(new UserAction("Shoot") {
             @Override
             protected void onActionBegin() {
+
                 if (elapsedTime >= SHOT_PAUSE_DURATION) {
                     shoot();
                 } else {
-                    // The player has to wait for the pause duration to elapse
-                    // You can display a message or disable the shot action during this time
+                    System.out.println("Shot on cooldown");
                 }
             }
         }, MouseButton.SECONDARY);
@@ -113,6 +130,7 @@ public class SGApp extends GameApplication {
         });
 
         onCollisionBegin(Type.BULLET, Type.NOISE, (bullet, noise) -> {
+            inc("Score", +10);
             noise.removeFromWorld();
             bullet.removeFromWorld();
             play("hit.wav");
@@ -123,6 +141,7 @@ public class SGApp extends GameApplication {
     protected void onUpdate(double tpf) {
         updateHealth();
         elapsedTime += tpf;
+        elapsedTime2 += tpf;
         updateCooldownBar();
 
         //move noise down when noise not on ground
@@ -164,7 +183,7 @@ public class SGApp extends GameApplication {
                 directionY /= length;
             }
 
-            double speed = 15;
+            double speed = 255;
 
             noise.translateX(directionX * speed * tpf);
             noise.translateY(directionY * speed * tpf);
@@ -185,19 +204,19 @@ public class SGApp extends GameApplication {
         });
 
         if (geti("Health") <= 0) {
-            getGameController().startNewGame();
+            gameOver(false);
         }
     }
 
     private static void updateHealth() {
-        //gradualy increase health over time, up to 100 every 5 seconds
-        if (geti("Health") < 1000) {
+        if (geti("Health") < 100) {
             inc("Health", 1);
         }
     }
 
     @Override
     protected void initUI() {
+
         Label healthLabel = new Label();
         healthLabel.setTextFill(Color.LIGHTGRAY);
         healthLabel.setFont(Font.font(20.0));
@@ -212,12 +231,12 @@ public class SGApp extends GameApplication {
 
         cooldownBar = new ProgressBar();
         cooldownBar.setMinValue(0);
-        cooldownBar.setMaxValue(1);
+        cooldownBar.setMaxValue(100);
         cooldownBar.prefWidth(200);
-        cooldownBar.setCurrentValue(0);
+        cooldownBar.setCurrentValue(100);
 
         cooldownBackground = new Rectangle(200, 20);
-        cooldownBackground.setFill(Color.RED);
+        cooldownBackground.setFill(Color.WHITE);
 
         cooldownText = new Text();
         cooldownText.setText("COOLDOWN");
@@ -232,18 +251,12 @@ public class SGApp extends GameApplication {
     }
 
     private void updateCooldownBar() {
-        if (elapsedTime >= COOLDOWN_DURATION) {
-            cooldownBar.setCurrentValue(1.0);
-            cooldownText.setText("");
-        } else {
-            double progress = elapsedTime / COOLDOWN_DURATION;
-            cooldownBar.setCurrentValue(progress);
-
-            double remainingTime = COOLDOWN_DURATION - elapsedTime;
-            int remainingSeconds = (int) Math.ceil(remainingTime);
-            cooldownText.setText("Cooldown: " + remainingSeconds + "s");
+        //regenerate cooldown bar
+        if (cooldownBar.getCurrentValue() < 100) {
+            cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() + 1);
         }
     }
+
 
     private void spawnYukine() {
         yukine = entityBuilder()
@@ -255,7 +268,6 @@ public class SGApp extends GameApplication {
     }
 
     private void spawnNoise() {
-        //randomly spawn noise at top of screen or from left/right side
         int side = random(0, 2);
         int x = 0;
         int y = 0;
@@ -286,6 +298,10 @@ public class SGApp extends GameApplication {
     }
 
     private void shoot() {
+        if (cooldown) {
+            return;
+        }
+
         elapsedTime = 0.0;
         double mouseX = getInput().getMouseXWorld();
         double mouseY = getInput().getMouseYWorld();
@@ -303,7 +319,7 @@ public class SGApp extends GameApplication {
 
         Entity bullet = entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX(), yukine.getY())
+            .at(yukine.getX() + 32, yukine.getY() + 32)
             .viewWithBBox("bullet.png")
             .collidable()
             .buildAndAttach();
@@ -312,7 +328,31 @@ public class SGApp extends GameApplication {
         bullet.setProperty("damage", 10);
         bullet.setProperty("velocityX", bulletVelocityX);
         bullet.setProperty("velocityY", bulletVelocityY);
+
+        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
+
+        // Start the cooldown timer
+        if (cooldownBar.getCurrentValue() < 2) {
+            cooldown = true;
+            runOnce(() -> {
+                cooldown = false;
+            }, Duration.seconds(COOLDOWN_DURATION));
+        }
+
     }
+
+
+    private void gameOver(boolean reachedEndOfGame) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Game Over!\n\n");
+        if (reachedEndOfGame) {
+            builder.append("You have reached the end of the game!\n\n");
+        }
+        builder.append("Final score: ")
+            .append(FXGL.geti("Score"));
+        FXGL.getDialogService().showMessageBox(builder.toString(), () -> FXGL.getGameController().gotoMainMenu());
+    }
+
 
     public static void main(String[] args) {
         launch(args);
