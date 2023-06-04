@@ -1,4 +1,4 @@
-package com.almasb.fxglgames.drop;
+package com.solank.fxglgames.sg;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -50,6 +50,7 @@ public class SGApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("Health", 1000);
+        vars.put("Score", 0);
     }
 
     @Override
@@ -201,7 +202,13 @@ public class SGApp extends GameApplication {
         healthLabel.setTextFill(Color.LIGHTGRAY);
         healthLabel.setFont(Font.font(20.0));
         healthLabel.textProperty().bind(getip("Health").asString("Health: %d"));
-        addUINode(healthLabel, 20, 10);
+        addUINode(healthLabel, 20, 25);
+
+        Label scoreLabel = new Label();
+        scoreLabel.setTextFill(Color.LIGHTGRAY);
+        scoreLabel.setFont(Font.font(20.0));
+        scoreLabel.textProperty().bind(getip("Score").asString("Score: %d"));
+        addUINode(scoreLabel, 20, 5);
 
         cooldownBar = new ProgressBar();
         cooldownBar.setMinValue(0);
@@ -301,7 +308,7 @@ public class SGApp extends GameApplication {
             .collidable()
             .buildAndAttach();
 
-
+        play("shooting.wav");
         bullet.setProperty("damage", 10);
         bullet.setProperty("velocityX", bulletVelocityX);
         bullet.setProperty("velocityY", bulletVelocityY);

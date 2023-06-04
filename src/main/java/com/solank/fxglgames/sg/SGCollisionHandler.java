@@ -1,4 +1,4 @@
-package com.almasb.fxglgames.drop;
+package com.solank.fxglgames.sg;
 
 import com.almasb.fxgl.physics.CollisionHandler;
 
