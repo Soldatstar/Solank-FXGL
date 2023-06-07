@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -27,6 +28,8 @@ import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.getInput;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
+import static com.almasb.fxgl.dsl.FXGL.getd;
+import static com.almasb.fxgl.dsl.FXGL.getdp;
 import static com.almasb.fxgl.dsl.FXGL.geti;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 import static com.almasb.fxgl.dsl.FXGL.inc;
@@ -43,6 +46,7 @@ public class SGApp extends GameApplication {
     private boolean isJumping = false;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
+    private ProgressBar hpBar ;
     private Rectangle cooldownBackground;
     private Text cooldownText;
     private static final double COOLDOWN_DURATION = 1.3;
@@ -65,7 +69,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("Health", 100);
+        vars.put("Health", 100.0);
         vars.put("Score", 0);
     }
 
@@ -124,7 +128,7 @@ public class SGApp extends GameApplication {
         getPhysicsWorld().setGravity(0, 1000);
 
         onCollisionBegin(Type.YUKINE, Type.NOISE, (yukine, noise) -> {
-            inc("Health", -50);
+            inc("Health", -20.0);
             noise.removeFromWorld();
             play("hit.wav");
         });
@@ -203,25 +207,19 @@ public class SGApp extends GameApplication {
             bullet.translateY(velocityY * tpf);
         });
 
-        if (geti("Health") <= 0) {
+        if (getd("Health") <= 0) {
             gameOver(false);
         }
     }
 
-    private static void updateHealth() {
-        if (geti("Health") < 100) {
-            inc("Health", 1);
+    private void updateHealth() {
+        if (getd("Health") <100.0) {
+            inc("Health", +0.1);
         }
     }
 
     @Override
     protected void initUI() {
-
-        Label healthLabel = new Label();
-        healthLabel.setTextFill(Color.LIGHTGRAY);
-        healthLabel.setFont(Font.font(20.0));
-        healthLabel.textProperty().bind(getip("Health").asString("Health: %d"));
-        addUINode(healthLabel, 20, 25);
 
         Label scoreLabel = new Label();
         scoreLabel.setTextFill(Color.LIGHTGRAY);
@@ -246,12 +244,24 @@ public class SGApp extends GameApplication {
         StackPane cooldownPane = new StackPane(cooldownBackground, cooldownBar, cooldownText);
         cooldownPane.setLayoutX(20);
         cooldownPane.setLayoutY(50);
+        hpBar = new ProgressBar();
+        hpBar.setMinValue(0);
+        hpBar.setMaxValue(100);
+        hpBar.setCurrentValue(100);
+        hpBar.currentValueProperty().bind(getdp("Health"));
+        hpBar.setWidth(300);
+        hpBar.setLabelVisible(true);
+        hpBar.setLabelPosition(Position.RIGHT);
+        hpBar.setFill(Color.GREEN);
+        hpBar.setLayoutX(20);
+        hpBar.setLayoutY(80);
+
+        getGameScene().addUINodes(hpBar);
 
         getGameScene().addUINodes(cooldownPane);
     }
 
     private void updateCooldownBar() {
-        //regenerate cooldown bar
         if (cooldownBar.getCurrentValue() < 100) {
             cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() + 1);
         }
