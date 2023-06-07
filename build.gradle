@@ -5,7 +5,8 @@ plugins {
 }
 
 application {
-    mainModule = 'drop.main'
+    mainModule = 'Sg.main'
+    mainClass = 'com.solank.fxglgames.sg.SGApp'
 }
 
 repositories {
@@ -26,4 +27,12 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media' ]
 }
 
-mainClassName = 'com.almasb.fxglgames.drop.DropApp'
+mainClassName = 'com.solank.fxglgames.sg.SGApp'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.solank.fxglgames.sg.SGApp'
+        )
+    }
+}

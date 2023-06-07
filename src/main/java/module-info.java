@@ -1,4 +1,5 @@
-open module drop.main {
+open module Sg.main {
     requires com.almasb.fxgl.all;
     requires java.desktop;
+
 }
