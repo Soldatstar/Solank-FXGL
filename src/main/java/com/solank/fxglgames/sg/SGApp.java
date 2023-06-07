@@ -3,11 +3,20 @@ package com.solank.fxglgames.sg;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.GameWorld;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -42,7 +51,6 @@ import static com.almasb.fxgl.dsl.FXGL.runOnce;
 public class SGApp extends GameApplication {
     private Entity yukine;
     private double jumpVelocity = -600;
-    private boolean isJumping = false;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar ;
@@ -52,6 +60,7 @@ public class SGApp extends GameApplication {
     private static final double SHOT_PAUSE_DURATION = 0.2; // Adjust the value as needed
     private double elapsedTime2 = 0.0;
     private boolean cooldown;
+    private GameWorld gameWorld;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -70,10 +79,13 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        gameWorld = getGameWorld();
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
+       gameWorld.addEntityFactory(new SGFactory());
+       gameWorld.create("Ground", new SpawnData(0,(getAppHeight())/2));
+        yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 624));
 
-        spawnYukine();
         run(this::spawnNoise, Duration.seconds(0.6));
         run(this::spawnNoise, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
@@ -84,25 +96,31 @@ public class SGApp extends GameApplication {
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                if (yukine.getX() < getAppWidth() - 64) {
-                    yukine.translateX(15);
-                }
+                yukine.getComponent(PlayerComponent.class).right();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                yukine.getComponent(PlayerComponent.class).stopMovingX();
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                if (yukine.getX() > 0) {
-                    yukine.translateX(-15);
-                }
+                yukine.getComponent(PlayerComponent.class).left();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                yukine.getComponent(PlayerComponent.class).stopMovingX();
             }
         }, KeyCode.A);
 
         getInput().addAction(new UserAction("Jump") {
             @Override
-            protected void onActionBegin() {
-                jump();
+            protected void onAction() {
+                yukine.getComponent(PlayerComponent.class).jump();
             }
         }, KeyCode.SPACE);
 
@@ -121,7 +139,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 1000);
+        getPhysicsWorld().setGravity(0, 100);
 
         onCollisionBegin(Type.YUKINE, Type.NOISE, (yukine, noise) -> {
             inc("Health", -20.0);
@@ -152,19 +170,6 @@ public class SGApp extends GameApplication {
         });
         getPhysicsWorld().onUpdate(tpf);
 
-        if (isJumping) {
-            double jumpDistance = jumpVelocity * tpf;
-            double newY = yukine.getY() + jumpDistance;
-            yukine.setY(newY);
-
-            jumpVelocity += 1000 * tpf;
-
-            if (newY >= getAppHeight() - 64) {
-                yukine.setY(getAppHeight() - 64);
-                isJumping = false;
-                jumpVelocity = -600;
-            }
-        }
 
         getGameWorld().getEntitiesByType(Type.NOISE).forEach(noise -> {
             double noiseX = noise.getX();
@@ -265,10 +270,15 @@ public class SGApp extends GameApplication {
 
 
     private void spawnYukine() {
+
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
         yukine = entityBuilder()
             .type(Type.YUKINE)
+            .with(physics)
             .at((double) getAppWidth() / 2, getAppHeight() - (double) 64)
-            .viewWithBBox("Yukine.png")
+            .bbox(new HitBox("BODY", new Point2D(0, 0), BoundingShape.box(64, 64)))
+            .with( new PlayerComponent())
             .collidable()
             .buildAndAttach();
     }
@@ -294,14 +304,11 @@ public class SGApp extends GameApplication {
             .at(x, y)
             .viewWithBBox("noise.png")
             .collidable()
+            .with(new KeepOnScreenComponent())
             .buildAndAttach();
     }
 
-    private void jump() {
-        if (!isJumping) {
-            isJumping = true;
-        }
-    }
+
 
     private void shoot() {
         if (cooldown) {
@@ -325,7 +332,7 @@ public class SGApp extends GameApplication {
 
         Entity bullet = entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX() + 32, yukine.getY() + 32)
+            .at(yukine.getX() + 32, yukine.getY() - 32)
             .viewWithBBox("bullet.png")
             .collidable()
             .buildAndAttach();
