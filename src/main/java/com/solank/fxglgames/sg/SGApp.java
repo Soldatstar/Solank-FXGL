@@ -30,7 +30,6 @@ import static com.almasb.fxgl.dsl.FXGL.getInput;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 import static com.almasb.fxgl.dsl.FXGL.getd;
 import static com.almasb.fxgl.dsl.FXGL.getdp;
-import static com.almasb.fxgl.dsl.FXGL.geti;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 import static com.almasb.fxgl.dsl.FXGL.inc;
 import static com.almasb.fxgl.dsl.FXGL.loopBGM;
@@ -54,10 +53,6 @@ public class SGApp extends GameApplication {
     private double elapsedTime2 = 0.0;
     private boolean cooldown;
 
-    public enum Type {
-        NOISE, YUKINE, BULLET
-    }
-
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("SG");
@@ -79,7 +74,8 @@ public class SGApp extends GameApplication {
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
 
         spawnYukine();
-        run(this::spawnNoise, Duration.seconds(1));
+        run(this::spawnNoise, Duration.seconds(0.6));
+        run(this::spawnNoise, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
     }
 
@@ -214,7 +210,7 @@ public class SGApp extends GameApplication {
 
     private void updateHealth() {
         if (getd("Health") <100.0) {
-            inc("Health", +0.1);
+            inc("Health", +0.05);
         }
     }
 
