@@ -13,6 +13,8 @@ public class SmallNoiseComponent extends Component {
     }
 
 
+
+
     @Override
     public void onUpdate(double tpf) {
         double noiseX = getEntity().getX();
@@ -31,9 +33,11 @@ public class SmallNoiseComponent extends Component {
             directionY /= length;
         }
 
-        double speed = 255;
+        double speed = 12000;
 
-        getEntity().translateX(directionX * speed * tpf);
-        getEntity().translateY(directionY * speed * tpf);
+
+
+        getEntity().getComponent(PhysicsComponent.class).setVelocityX((directionX * speed * tpf));
+        getEntity().getComponent(PhysicsComponent.class).setVelocityY((directionY * speed * tpf));
     }
 }

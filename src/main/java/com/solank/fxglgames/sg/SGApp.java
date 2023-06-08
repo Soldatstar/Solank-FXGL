@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
@@ -17,6 +18,7 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -138,7 +140,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 1000);
+        getPhysicsWorld().setGravity(0, 8000);
         getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
 
@@ -161,12 +163,6 @@ public class SGApp extends GameApplication {
                 bullet.removeFromWorld();
                 return;
             }
-
-            double velocityX = bullet.getDouble("velocityX");
-            double velocityY = bullet.getDouble("velocityY");
-
-            bullet.translateX(velocityX * tpf);
-            bullet.translateY(velocityY * tpf);
         });
 
         if (getd("Health") <= 0) {
@@ -247,31 +243,23 @@ public class SGApp extends GameApplication {
         }
 
         elapsedTime = 0.0;
+
         double mouseX = getInput().getMouseXWorld();
         double mouseY = getInput().getMouseYWorld();
 
-        double directionX = mouseX - yukine.getX();
-        double directionY = mouseY - yukine.getY();
-
-        double length = Math.sqrt(directionX * directionX + directionY * directionY);
-        directionX /= length;
-        directionY /= length;
-
-        double bulletSpeed = 1000;
-        double bulletVelocityX = directionX * bulletSpeed;
-        double bulletVelocityY = directionY * bulletSpeed;
+        PhysicsComponent bulletPhysics = new PhysicsComponent();
+        bulletPhysics.setBodyType(BodyType.DYNAMIC);
 
         Entity bullet = entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX() + 32, yukine.getY() - 32)
+            .at(yukine.getPosition())
             .viewWithBBox("bullet.png")
-            .collidable()
+            .with(new CollidableComponent(true))
+            .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
             .buildAndAttach();
 
         play("shooting.wav");
         bullet.setProperty("damage", 10);
-        bullet.setProperty("velocityX", bulletVelocityX);
-        bullet.setProperty("velocityY", bulletVelocityY);
 
         cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 
@@ -282,8 +270,11 @@ public class SGApp extends GameApplication {
                 cooldown = false;
             }, Duration.seconds(COOLDOWN_DURATION));
         }
-
     }
+
+
+
+
 
 
     private void gameOver(boolean reachedEndOfGame) {
