@@ -140,7 +140,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 8000);
+        getPhysicsWorld().setGravity(0, 800);
         getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
 

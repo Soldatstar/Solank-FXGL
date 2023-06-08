@@ -19,7 +19,7 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private double jumpForce = 1000;
+    private double jumpForce = 10000;
     private boolean canJump = true;
 
     public PlayerComponent() {
@@ -38,6 +38,9 @@ public class PlayerComponent extends Component {
             if (texture.getAnimationChannel() != upDown) {
                 texture.loopAnimationChannel(upDown);
             }
+        }
+        if(getEntity().getY() > 650) {
+            canJump = true;
         }
     }
 
@@ -103,12 +106,14 @@ public class PlayerComponent extends Component {
 
     public void jump() {
         if (canJump) {
+            System.out.println("Jumping");
             // Apply an upward force to the entity at its center point
             Point2D force = new Point2D(0, -jumpForce);
             Point2D pointOfApplication = entity.getCenter();
             physics.applyForce(force, pointOfApplication);
             canJump = false;
         }
+
     }
 
     public void setCanJump(boolean canJump) {

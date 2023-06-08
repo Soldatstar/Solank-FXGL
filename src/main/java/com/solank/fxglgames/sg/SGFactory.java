@@ -76,7 +76,5 @@ public class SGFactory implements EntityFactory {
             .with(new CollidableComponent(true))
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
             .buildAndAttach();
-
-
     }
 }
