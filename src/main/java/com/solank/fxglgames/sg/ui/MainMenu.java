@@ -22,12 +22,13 @@ public class MainMenu extends FXGLMenu {
 
 
 
-        Texture selectButton = FXGL.getAssetLoader().loadTexture("red-button-icon-single.png", 68, 68);
+        Texture selectButton = FXGL.getAssetLoader().loadTexture("new-game.png", 500/2, 150/2);
         Button btnPlay = new Button("Spiel starten");
         btnPlay.getStyleClass().add("main_menu_button");
-        VBox selectHBox = new VBox(selectButton, btnPlay);
+        VBox selectHBox = new VBox(selectButton);
         // fireNewGame() clears the Scene and calls initGame(), to spawn all entities.
         btnPlay.setOnAction(e -> fireNewGame());
+        selectButton.setOnMouseClicked(e -> fireNewGame());
         selectHBox.setAlignment(Pos.CENTER);
         selectHBox.setSpacing(0);
         selectHBox.setTranslateX(100);

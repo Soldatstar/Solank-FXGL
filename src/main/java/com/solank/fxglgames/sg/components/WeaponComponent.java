@@ -18,7 +18,6 @@ public class WeaponComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(weaponView);
         transform = entity.getComponent(TransformComponent.class);
-        transform.setZ(-5);
     }
 
     @Override

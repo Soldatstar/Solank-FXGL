@@ -5,15 +5,10 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
@@ -22,8 +17,6 @@ import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.WeaponComponent;
 import com.solank.fxglgames.sg.ui.MainMenu;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -93,9 +86,8 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        //disable cursor
-        //keep cursor in window
-        getGameScene().setCursorInvisible();
+
+        //getGameScene().setCursorInvisible();
         gameWorld = getGameWorld();
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
@@ -107,18 +99,25 @@ public class SGApp extends GameApplication {
         weaponTexture.setScaleX(5);
         weaponTexture.setScaleY(5);
         ImageView weaponView = new ImageView(weaponTexture.getImage());
+        weaponView.setTranslateZ(-200);
         weaponView.setTranslateX(-25); // Adjust the position of the weapon relative to the entity
 
         // Create the weapon component and add it to the entity
         WeaponComponent weaponComponent = new WeaponComponent(weaponView);
         yukine.addComponent(weaponComponent);
-        run(this::spawnNoise, Duration.seconds(0.6));
-        run(this::spawnNoise, Duration.seconds(1.4));
+        run(this::SpawnNoiseSide, Duration.seconds(1.8));
+        run(this::SpawnNoiseTop, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
     }
 
+    public class MathUtils {
+        public static double clamp(double value, double min, double max) {
+            return Math.max(min, Math.min(max, value));
+        }
+    }
     @Override
     protected void initInput() {
+
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
@@ -257,10 +256,20 @@ public class SGApp extends GameApplication {
 
 
 
-    private void spawnNoise() {
-        int side = random(0, 2);
-        int x = 10;
+    private void SpawnNoiseTop() {
+        int side = random(0, getAppWidth());
+        int x = side;
         int y = 10;
+        gameWorld.create("SmallNoise", new SpawnData(x, y).put("Yukine", yukine));
+    }
+
+    private void SpawnNoiseSide() {
+        int side = random(0, 1);
+        int x = getAppWidth()-20;
+        int y = getAppHeight()-50;
+        if (side == 0) {
+            x = 20;
+        }
         gameWorld.create("SmallNoise", new SpawnData(x, y).put("Yukine", yukine));
     }
 

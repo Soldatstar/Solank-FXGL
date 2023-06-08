@@ -33,7 +33,7 @@ public class SmallNoiseComponent extends Component {
             directionY /= length;
         }
 
-        double speed = 12000;
+        double speed = 10000;
 
 
 

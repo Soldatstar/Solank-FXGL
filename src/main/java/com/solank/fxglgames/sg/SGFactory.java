@@ -54,24 +54,24 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .type(Type.NOISE)
+            .view("noise.png")
             .with(physics)
-            .viewWithBBox("noise.png")
+            .bbox(new HitBox(BoundingShape.box(41, 41)))
             .with(new SmallNoiseComponent(data.get("Yukine")))
-            //.bbox(new HitBox(BoundingShape.box(21, 31)))
             .with(new CollidableComponent(true))
             .buildAndAttach();
     }
     @Spawns("Bullet")
     public Entity spawnBullet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setBodyType(BodyType.KINEMATIC);
         Entity yukine = data.get("Yukine");
         double mouseX = data.get("mouseX");
         double mouseY = data.get("mouseY");
         play("shooting.wav");
         return entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getPosition())
+            .at(yukine.getX(), yukine.getY()+5)
             .viewWithBBox("bullet.png")
             .with(new CollidableComponent(true))
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
