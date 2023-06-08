@@ -128,7 +128,6 @@ _<!--For more examples, please refer to the [Documentation](https://example.com)
 - [ ] Intelligent enemy AI
     - [ ] Pathfinding
     - [ ] Enemy types
-- [ ] 
 - [ ] Side-scrolling
     - [ ] building generation
 
@@ -185,7 +184,8 @@ Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Sol
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<!--<h6><em>And it shall be bestowed upon you,
+ the star which you have longed for -</em></h6>-->
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
