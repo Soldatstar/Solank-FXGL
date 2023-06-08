@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg;
 
+import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
@@ -33,7 +34,7 @@ public class SGFactory implements EntityFactory {
             .with(new PlayerComponent())
             .bbox(new HitBox(BoundingShape.box(21, 31)))
             .with(new CollidableComponent(true))
-            //.with(new KeepOnScreenComponent())
+            .with(new KeepOnScreenComponent())
             .buildAndAttach();
     }
 
@@ -44,9 +45,10 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .with(physics)
-            .bbox(new HitBox(new Point2D(0, getAppHeight()-15), BoundingShape.box(getAppWidth(), 12)))
+            .bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+200, 12)))
             .buildAndAttach();
     }
+
     @Spawns("SmallNoise")
     public Entity spawnSmallNoise(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
@@ -61,6 +63,7 @@ public class SGFactory implements EntityFactory {
             .with(new CollidableComponent(true))
             .buildAndAttach();
     }
+
     @Spawns("Bullet")
     public Entity spawnBullet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
@@ -71,7 +74,7 @@ public class SGFactory implements EntityFactory {
         play("shooting.wav");
         return entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX(), yukine.getY()+5)
+            .at(yukine.getX(), yukine.getY() + 5)
             .viewWithBBox("bullet.png")
             .with(new CollidableComponent(true))
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))

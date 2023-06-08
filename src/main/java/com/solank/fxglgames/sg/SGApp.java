@@ -31,7 +31,6 @@ import javafx.util.Duration;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
-import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
 import static com.almasb.fxgl.dsl.FXGL.getGameScene;
@@ -43,7 +42,6 @@ import static com.almasb.fxgl.dsl.FXGL.getdp;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 import static com.almasb.fxgl.dsl.FXGL.inc;
 import static com.almasb.fxgl.dsl.FXGL.loopBGM;
-import static com.almasb.fxgl.dsl.FXGL.play;
 import static com.almasb.fxgl.dsl.FXGL.random;
 import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
@@ -52,7 +50,7 @@ public class SGApp extends GameApplication {
     private Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
-    private ProgressBar hpBar ;
+    private ProgressBar hpBar;
     private Rectangle cooldownBackground;
     private Text cooldownText;
     private static final double COOLDOWN_DURATION = 1.3;
@@ -91,9 +89,10 @@ public class SGApp extends GameApplication {
         gameWorld = getGameWorld();
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
-       gameWorld.addEntityFactory(new SGFactory());
-       gameWorld.create("Ground", new SpawnData());
-        yukine = gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
+        gameWorld.addEntityFactory(new SGFactory());
+        gameWorld.create("Ground", new SpawnData());
+        yukine =
+            gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
         weaponTexture.setScaleX(5);
@@ -146,7 +145,8 @@ public class SGApp extends GameApplication {
 
             @Override
             protected void onActionBegin() {
-                yukine.getComponent(PlayerComponent.class).jump();            }
+                yukine.getComponent(PlayerComponent.class).jump();
+            }
         }, KeyCode.SPACE);
 
         getInput().addAction(new UserAction("Shoot") {
@@ -177,12 +177,10 @@ public class SGApp extends GameApplication {
         getPhysicsWorld().onUpdate(tpf);
 
 
-
         getGameWorld().getEntitiesByType(Type.BULLET).forEach(bullet -> {
             if (bullet.getX() < 0 || bullet.getX() > getAppWidth()
                 || bullet.getY() < 0 || bullet.getY() > getAppHeight()) {
                 bullet.removeFromWorld();
-                return;
             }
         });
 
@@ -192,7 +190,7 @@ public class SGApp extends GameApplication {
     }
 
     private void updateHealth() {
-        if (getd(HEALTH_ENTITY) <100.0) {
+        if (getd(HEALTH_ENTITY) < 100.0) {
             inc(HEALTH_ENTITY, +0.05);
         }
     }
@@ -201,8 +199,8 @@ public class SGApp extends GameApplication {
     protected void initUI() {
 
         Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.LIGHTGRAY);
-        scoreLabel.setFont(Font.font(20.0));
+        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setFont(Font.font(30.0));
         scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("Score: %d"));
         addUINode(scoreLabel, 20, 5);
 
@@ -246,8 +244,6 @@ public class SGApp extends GameApplication {
     }
 
 
-
-
     private void SpawnNoiseTop() {
         int side = random(0, getAppWidth());
         int x = side;
@@ -257,14 +253,13 @@ public class SGApp extends GameApplication {
 
     private void SpawnNoiseSide() {
         int side = random(0, 1);
-        int x = getAppWidth()-20;
-        int y = getAppHeight()-50;
+        int x = getAppWidth() - 20;
+        int y = getAppHeight() - 50;
         if (side == 0) {
             x = 20;
         }
         gameWorld.create("SmallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
-
 
 
     private void shoot() {
@@ -274,7 +269,8 @@ public class SGApp extends GameApplication {
 
         elapsedTime = 0.0;
 
-        gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld()).put("mouseY", getInput().getMouseYWorld()));
+        gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
+            .put("mouseY", getInput().getMouseYWorld()));
 
         cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 
@@ -286,10 +282,6 @@ public class SGApp extends GameApplication {
             }, Duration.seconds(COOLDOWN_DURATION));
         }
     }
-
-
-
-
 
 
     private void gameOver(boolean reachedEndOfGame) {

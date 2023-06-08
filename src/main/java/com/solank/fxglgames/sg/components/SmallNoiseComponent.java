@@ -6,13 +6,11 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 
 public class SmallNoiseComponent extends Component {
     private PhysicsComponent physics;
-    private Entity yukine;
+    private final Entity yukine;
 
     public SmallNoiseComponent(Entity yukine) {
         this.yukine = yukine;
     }
-
-
 
 
     @Override
@@ -34,7 +32,6 @@ public class SmallNoiseComponent extends Component {
         }
 
         double speed = 10000;
-
 
 
         getEntity().getComponent(PhysicsComponent.class).setVelocityX((directionX * speed * tpf));

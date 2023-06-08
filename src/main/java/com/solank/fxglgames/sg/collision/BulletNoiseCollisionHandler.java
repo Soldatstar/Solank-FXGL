@@ -9,13 +9,14 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
 public class BulletNoiseCollisionHandler extends CollisionHandler {
     public BulletNoiseCollisionHandler() {
-        super( Type.BULLET, Type.NOISE);
+        super(Type.BULLET, Type.NOISE);
     }
+
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-            inc("Score", +10);
-            b.removeFromWorld();
-            a.removeFromWorld();
-            play("hit.wav");
+        inc("Score", +10);
+        b.removeFromWorld();
+        a.removeFromWorld();
+        play("hit.wav");
     }
 }

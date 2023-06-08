@@ -10,14 +10,14 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 public class PlayerNoiseCollisionHandler extends CollisionHandler {
     public PlayerNoiseCollisionHandler() {
 
-        super( Type.YUKINE, Type.NOISE);
+        super(Type.YUKINE, Type.NOISE);
     }
 
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-            inc("Health", -20.0);
-            b.removeFromWorld();
-            play("hit.wav");
+        inc("Health", -20.0);
+        b.removeFromWorld();
+        play("hit.wav");
 
         if (a.isType(Type.BULLET) && b.isType(Type.NOISE)) {
             inc("Score", +10);

@@ -6,8 +6,6 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class PlayerComponent extends Component {
@@ -19,7 +17,7 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private double jumpForce = 20000;
+    private final double jumpForce = 20000;
     private boolean canJump = true;
 
     public PlayerComponent() {
@@ -37,7 +35,7 @@ public class PlayerComponent extends Component {
         if (!physics.isMoving() && texture.getAnimationChannel() != upDown) {
             texture.loopAnimationChannel(upDown);
         }
-        if(getEntity().getY() >= 650) {
+        if (getEntity().getY() >= 650) {
             canJump = true;
         }
     }
@@ -65,6 +63,7 @@ public class PlayerComponent extends Component {
             physics.setVelocityX(PLAYER_SPEED);
         }
     }
+
     public void left() {
         if (texture.getAnimationChannel() != left) {
             texture.loopAnimationChannel(left);
@@ -85,10 +84,11 @@ public class PlayerComponent extends Component {
             texture.loopAnimationChannel(upDown);
         }
     }
+
     public void glide() {
         Point2D force = new Point2D(0, -1000);
         physics.applyForceToCenter(force);
-        }
+    }
 
 
     public void down() {
@@ -96,6 +96,7 @@ public class PlayerComponent extends Component {
             texture.loopAnimationChannel(upDown);
         }
     }
+
     public void stopMovingX() {
         if (!isPhysicsReady()) {
             return;

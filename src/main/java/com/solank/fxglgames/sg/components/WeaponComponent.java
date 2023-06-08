@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public class WeaponComponent extends Component {
-    private ImageView weaponView;
+    private final ImageView weaponView;
     private TransformComponent transform;
 
     public WeaponComponent(ImageView weaponView) {

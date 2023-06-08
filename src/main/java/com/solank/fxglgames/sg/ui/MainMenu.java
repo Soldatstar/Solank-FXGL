@@ -6,11 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-
-import static com.almasb.fxgl.dsl.FXGL.getAssetLoader;
 
 public class MainMenu extends FXGLMenu {
     public MainMenu() {
@@ -20,9 +16,7 @@ public class MainMenu extends FXGLMenu {
         bg.setFitHeight(getAppHeight());
 
 
-
-
-        Texture selectButton = FXGL.getAssetLoader().loadTexture("new-game.png", 500/2, 150/2);
+        Texture selectButton = FXGL.getAssetLoader().loadTexture("new-game.png", 500 / 2, 150 / 2);
         Button btnPlay = new Button("Spiel starten");
         btnPlay.getStyleClass().add("main_menu_button");
         VBox selectHBox = new VBox(selectButton);
