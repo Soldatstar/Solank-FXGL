@@ -1,0 +1,8 @@
+.main_menu_button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-padding: 10 20 10 20;
+    -fx-font-family: "Press Start 2P";
+}

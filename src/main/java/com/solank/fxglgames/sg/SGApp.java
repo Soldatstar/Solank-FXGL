@@ -2,6 +2,8 @@ package com.solank.fxglgames.sg;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
@@ -18,8 +20,12 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
+import com.solank.fxglgames.sg.components.WeaponComponent;
+import com.solank.fxglgames.sg.ui.MainMenu;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
@@ -66,10 +72,17 @@ public class SGApp extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("SG");
-        settings.setVersion("0.0.1");
+        settings.setVersion("0.0.2");
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setMainMenuEnabled(true);
+
+        settings.setSceneFactory(new SceneFactory() {
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new MainMenu();
+            }
+        });
     }
 
     @Override
@@ -80,6 +93,9 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        //disable cursor
+        //keep cursor in window
+        getGameScene().setCursorInvisible();
         gameWorld = getGameWorld();
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
@@ -87,6 +103,15 @@ public class SGApp extends GameApplication {
        gameWorld.create("Ground", new SpawnData());
         yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
+        weaponTexture.setScaleX(5);
+        weaponTexture.setScaleY(5);
+        ImageView weaponView = new ImageView(weaponTexture.getImage());
+        weaponView.setTranslateX(-25); // Adjust the position of the weapon relative to the entity
+
+        // Create the weapon component and add it to the entity
+        WeaponComponent weaponComponent = new WeaponComponent(weaponView);
+        yukine.addComponent(weaponComponent);
         run(this::spawnNoise, Duration.seconds(0.6));
         run(this::spawnNoise, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
@@ -200,7 +225,6 @@ public class SGApp extends GameApplication {
         cooldownBackground.setFill(Color.WHITE);
 
         cooldownText = new Text();
-        cooldownText.setText("COOLDOWN");
         cooldownText.setFill(Color.WHITE);
         cooldownText.setFont(Font.font(14));
 
