@@ -19,14 +19,14 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private double jumpForce = 10000;
+    private double jumpForce = 20000;
     private boolean canJump = true;
 
     public PlayerComponent() {
 
-        this.left = new AnimationChannel(FXGL.image("yukine-left.png"), Duration.seconds(1), 3);
-        this.right = new AnimationChannel(FXGL.image("yukine-right.png"), Duration.seconds(1), 3);
-        this.upDown = new AnimationChannel(FXGL.image("yukine-up-down.png"), Duration.seconds(2), 3);
+        this.left = new AnimationChannel(FXGL.image("yukine-left.png"), Duration.seconds(0.5), 3);
+        this.right = new AnimationChannel(FXGL.image("yukine-right.png"), Duration.seconds(0.5), 3);
+        this.upDown = new AnimationChannel(FXGL.image("yukine-up-down.png"), Duration.seconds(0.5), 3);
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
         texture.setScaleY(2);
@@ -39,7 +39,7 @@ public class PlayerComponent extends Component {
                 texture.loopAnimationChannel(upDown);
             }
         }
-        if(getEntity().getY() > 650) {
+        if(getEntity().getY() >= 650) {
             canJump = true;
         }
     }
@@ -87,6 +87,11 @@ public class PlayerComponent extends Component {
             texture.loopAnimationChannel(upDown);
         }
     }
+    public void glide() {
+        Point2D force = new Point2D(0, -1000);
+        physics.applyForceToCenter(force);
+        }
+
 
     public void down() {
         if (texture.getAnimationChannel() != upDown) {
