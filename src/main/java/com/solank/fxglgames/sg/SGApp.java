@@ -50,7 +50,6 @@ import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
     private Entity yukine;
-    private double jumpVelocity = -600;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar ;
@@ -58,9 +57,11 @@ public class SGApp extends GameApplication {
     private Text cooldownText;
     private static final double COOLDOWN_DURATION = 1.3;
     private static final double SHOT_PAUSE_DURATION = 0.2; // Adjust the value as needed
-    private double elapsedTime2 = 0.0;
     private boolean cooldown;
     private GameWorld gameWorld;
+    private static final String YUKINE_ENTITY = "Yukine";
+    private static final String HEALTH_ENTITY = "Health";
+    private static final String SCORE_ENTITY = "Score";
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -80,20 +81,19 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("Health", 100.0);
-        vars.put("Score", 0);
+        vars.put(HEALTH_ENTITY, 100.0);
+        vars.put(SCORE_ENTITY, 0);
     }
 
     @Override
     protected void initGame() {
 
-        //getGameScene().setCursorInvisible();
         gameWorld = getGameWorld();
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
        gameWorld.addEntityFactory(new SGFactory());
        gameWorld.create("Ground", new SpawnData());
-        yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
+        yukine = gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
         weaponTexture.setScaleX(5);
@@ -110,11 +110,6 @@ public class SGApp extends GameApplication {
         loopBGM("bgm.mp3");
     }
 
-    public class MathUtils {
-        public static double clamp(double value, double min, double max) {
-            return Math.max(min, Math.min(max, value));
-        }
-    }
     @Override
     protected void initInput() {
 
@@ -160,8 +155,6 @@ public class SGApp extends GameApplication {
 
                 if (elapsedTime >= SHOT_PAUSE_DURATION) {
                     shoot();
-                } else {
-                    System.out.println("Shot on cooldown");
                 }
             }
         }, MouseButton.SECONDARY);
@@ -179,7 +172,6 @@ public class SGApp extends GameApplication {
     protected void onUpdate(double tpf) {
         updateHealth();
         elapsedTime += tpf;
-        elapsedTime2 += tpf;
         updateCooldownBar();
 
         getPhysicsWorld().onUpdate(tpf);
@@ -194,14 +186,14 @@ public class SGApp extends GameApplication {
             }
         });
 
-        if (getd("Health") <= 0) {
+        if (getd(HEALTH_ENTITY) <= 0) {
             gameOver(false);
         }
     }
 
     private void updateHealth() {
-        if (getd("Health") <100.0) {
-            inc("Health", +0.05);
+        if (getd(HEALTH_ENTITY) <100.0) {
+            inc(HEALTH_ENTITY, +0.05);
         }
     }
 
@@ -211,7 +203,7 @@ public class SGApp extends GameApplication {
         Label scoreLabel = new Label();
         scoreLabel.setTextFill(Color.LIGHTGRAY);
         scoreLabel.setFont(Font.font(20.0));
-        scoreLabel.textProperty().bind(getip("Score").asString("Score: %d"));
+        scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("Score: %d"));
         addUINode(scoreLabel, 20, 5);
 
         cooldownBar = new ProgressBar();
@@ -234,7 +226,7 @@ public class SGApp extends GameApplication {
         hpBar.setMinValue(0);
         hpBar.setMaxValue(100);
         hpBar.setCurrentValue(100);
-        hpBar.currentValueProperty().bind(getdp("Health"));
+        hpBar.currentValueProperty().bind(getdp(HEALTH_ENTITY));
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
         hpBar.setLabelPosition(Position.RIGHT);
@@ -260,7 +252,7 @@ public class SGApp extends GameApplication {
         int side = random(0, getAppWidth());
         int x = side;
         int y = 10;
-        gameWorld.create("SmallNoise", new SpawnData(x, y).put("Yukine", yukine));
+        gameWorld.create("SmallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
     private void SpawnNoiseSide() {
@@ -270,7 +262,7 @@ public class SGApp extends GameApplication {
         if (side == 0) {
             x = 20;
         }
-        gameWorld.create("SmallNoise", new SpawnData(x, y).put("Yukine", yukine));
+        gameWorld.create("SmallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
 
@@ -282,7 +274,7 @@ public class SGApp extends GameApplication {
 
         elapsedTime = 0.0;
 
-        gameWorld.create("Bullet", new SpawnData().put("Yukine", yukine).put("mouseX", getInput().getMouseXWorld()).put("mouseY", getInput().getMouseYWorld()));
+        gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld()).put("mouseY", getInput().getMouseYWorld()));
 
         cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 
@@ -307,7 +299,7 @@ public class SGApp extends GameApplication {
             builder.append("You have reached the end of the game!\n\n");
         }
         builder.append("Final score: ")
-            .append(FXGL.geti("Score"));
+            .append(FXGL.geti(SCORE_ENTITY));
         FXGL.getDialogService().showMessageBox(builder.toString(), () -> FXGL.getGameController().gotoMainMenu());
     }
 

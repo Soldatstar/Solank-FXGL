@@ -34,10 +34,8 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if (!physics.isMoving()) {
-            if (texture.getAnimationChannel() != upDown) {
-                texture.loopAnimationChannel(upDown);
-            }
+        if (!physics.isMoving() && texture.getAnimationChannel() != upDown) {
+            texture.loopAnimationChannel(upDown);
         }
         if(getEntity().getY() >= 650) {
             canJump = true;
@@ -111,7 +109,6 @@ public class PlayerComponent extends Component {
 
     public void jump() {
         if (canJump) {
-            System.out.println("Jumping");
             // Apply an upward force to the entity at its center point
             Point2D force = new Point2D(0, -jumpForce);
             Point2D pointOfApplication = entity.getCenter();
