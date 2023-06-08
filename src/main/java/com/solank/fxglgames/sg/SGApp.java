@@ -244,22 +244,7 @@ public class SGApp extends GameApplication {
 
         elapsedTime = 0.0;
 
-        double mouseX = getInput().getMouseXWorld();
-        double mouseY = getInput().getMouseYWorld();
-
-        PhysicsComponent bulletPhysics = new PhysicsComponent();
-        bulletPhysics.setBodyType(BodyType.DYNAMIC);
-
-        Entity bullet = entityBuilder()
-            .type(Type.BULLET)
-            .at(yukine.getPosition())
-            .viewWithBBox("bullet.png")
-            .with(new CollidableComponent(true))
-            .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
-            .buildAndAttach();
-
-        play("shooting.wav");
-        bullet.setProperty("damage", 10);
+        gameWorld.create("Bullet", new SpawnData().put("Yukine", yukine).put("mouseX", getInput().getMouseXWorld()).put("mouseY", getInput().getMouseYWorld()));
 
         cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 

@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg;
 
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -16,6 +17,7 @@ import javafx.geometry.Point2D;
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGL.play;
 
 public class SGFactory implements EntityFactory {
 
@@ -58,5 +60,23 @@ public class SGFactory implements EntityFactory {
             //.bbox(new HitBox(BoundingShape.box(21, 31)))
             .with(new CollidableComponent(true))
             .buildAndAttach();
+    }
+    @Spawns("Bullet")
+    public Entity spawnBullet(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        Entity yukine = data.get("Yukine");
+        double mouseX = data.get("mouseX");
+        double mouseY = data.get("mouseY");
+        play("shooting.wav");
+        return entityBuilder()
+            .type(Type.BULLET)
+            .at(yukine.getPosition())
+            .viewWithBBox("bullet.png")
+            .with(new CollidableComponent(true))
+            .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
+            .buildAndAttach();
+
+
     }
 }
