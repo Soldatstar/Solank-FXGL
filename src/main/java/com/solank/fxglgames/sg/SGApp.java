@@ -7,12 +7,16 @@ import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
+import com.solank.fxglgames.sg.components.PlayerComponent;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -82,7 +86,7 @@ public class SGApp extends GameApplication {
         yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         run(this::spawnNoise, Duration.seconds(0.6));
-        //run(this::spawnNoise, Duration.seconds(1.4));
+        run(this::spawnNoise, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
     }
 
@@ -134,7 +138,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 100);
+        getPhysicsWorld().setGravity(0, 1000);
         getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
 
@@ -147,37 +151,9 @@ public class SGApp extends GameApplication {
         elapsedTime2 += tpf;
         updateCooldownBar();
 
-        //move noise down when noise not on ground
-        getGameWorld().getEntitiesByType(Type.NOISE).forEach(noise -> {
-            if (noise.getY() < getAppHeight() - 64) {
-                noise.translateY(5);
-            }
-        });
         getPhysicsWorld().onUpdate(tpf);
 
 
-        getGameWorld().getEntitiesByType(Type.NOISE).forEach(noise -> {
-            double noiseX = noise.getX();
-            double noiseY = noise.getY();
-
-            double yukineX = yukine.getX();
-            double yukineY = yukine.getY();
-
-            double directionX = yukineX - noiseX;
-            double directionY = yukineY - noiseY;
-
-            double length = Math.sqrt(directionX * directionX + directionY * directionY);
-
-            if (length > 0) {
-                directionX /= length;
-                directionY /= length;
-            }
-
-            double speed = 255;
-
-            noise.translateX(directionX * speed * tpf);
-            noise.translateY(directionY * speed * tpf);
-        });
 
         getGameWorld().getEntitiesByType(Type.BULLET).forEach(bullet -> {
             if (bullet.getX() < 0 || bullet.getX() > getAppWidth()
@@ -258,27 +234,9 @@ public class SGApp extends GameApplication {
 
     private void spawnNoise() {
         int side = random(0, 2);
-        int x = 0;
-        int y = 0;
-
-        if (side == 0) {
-            x = random(0, getAppWidth() - 64);
-            y = -64;
-        } else if (side == 1) {
-            x = -64;
-            y = random(0, getAppHeight() - 64);
-        } else if (side == 2) {
-            x = getAppWidth() + 64;
-            y = random(0, getAppHeight() - 64);
-        }
-
-        Entity noise = entityBuilder()
-            .type(Type.NOISE)
-            .at(x, y)
-            .viewWithBBox("noise.png")
-            .collidable()
-            .with(new KeepOnScreenComponent())
-            .buildAndAttach();
+        int x = 10;
+        int y = 10;
+        gameWorld.create("SmallNoise", new SpawnData(x, y).put("Yukine", yukine));
     }
 
 

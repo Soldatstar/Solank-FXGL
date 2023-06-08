@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg;
+package com.solank.fxglgames.sg.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -19,7 +19,7 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private double jumpForce = 1000; // Adjust the jump force as needed
+    private double jumpForce = 1000;
     private boolean canJump = true;
 
     public PlayerComponent() {
