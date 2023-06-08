@@ -179,7 +179,7 @@ Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Sol
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [ピッケル for the PixelArt](https://www.pixiv.net/en/users/1584717)
+* [ピッケル(Pikkeru) for the PixelArt](https://www.pixiv.net/en/users/1584717)
 * []()
 * []()
 
