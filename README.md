@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Soldatstar/Solank-FXGL">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="521" height="521">
   </a>
 
 <h3 align="center">Solank-SG</h3>
@@ -85,7 +85,6 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `Soldatstar`, `Solank-FXGL`, `YukineSymp`, `viktorweilenmann`, `gmail`, `viktor.w50`, `Solank-SG`, `SG is a simple side-scrolling action game developed with the FXGL library. The aim of the game is to control the character Yukine and survive waves of noise for as long as possible.`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
