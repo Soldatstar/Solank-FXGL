@@ -93,14 +93,8 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![FXGL][FXGL]][FXGL-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -109,34 +103,12 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/Soldatstar/Solank-FXGL.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+* FXGL
+* Liberica JDK 17
 
 
 
@@ -154,10 +126,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Intelligent enemy AI
+    - [ ] Pathfinding
+    - [ ] Enemy types
+- [ ] 
+- [ ] Side-scrolling
+    - [ ] building generation
 
 See the [open issues](https://github.com/Soldatstar/Solank-FXGL/issues) for a full list of proposed features (and known issues).
 
@@ -195,7 +169,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@YukineSymp](https://twitter.com/YukineSymp) - viktor.w50@gmail.com
+Viktor Weilenmann - [@YukineSymp](https://twitter.com/YukineSymp) - viktor.w50@gmail.com
 
 Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Soldatstar/Solank-FXGL)
 
@@ -206,7 +180,7 @@ Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Sol
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
+* [ピッケル for the PixelArt](https://www.pixiv.net/en/users/1584717)
 * []()
 * []()
 
@@ -244,4 +218,6 @@ Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Sol
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com
+[FXGL]: https://img.shields.io/badge/FXGL-000000?style=for-the-badge&logo=java&logoColor=white
+[FXGL-url]: https://almasb.github.io/FXGL/
