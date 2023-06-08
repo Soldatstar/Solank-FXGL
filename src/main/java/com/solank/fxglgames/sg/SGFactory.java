@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
@@ -10,6 +11,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
@@ -28,9 +30,9 @@ public class SGFactory implements EntityFactory {
             .type(Type.YUKINE)
             .with(physics)
             .with(new PlayerComponent())
-            .bbox(new HitBox(BoundingShape.box(64, 31)))  // Adjusted bounding box position and size
+            .bbox(new HitBox(BoundingShape.box(21, 31)))
             .with(new CollidableComponent(true))
-            .with(new KeepOnScreenComponent())
+            //.with(new KeepOnScreenComponent())
             .buildAndAttach();
     }
 
@@ -40,9 +42,8 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.STATIC);
 
         return entityBuilder(data)
-            .view("city.png")
             .with(physics)
-            .bbox(new HitBox(BoundingShape.box(getAppWidth(), 2)))
-            .build();
+            .bbox(new HitBox(new Point2D(0, getAppHeight()-15), BoundingShape.box(getAppWidth(), 12)))
+            .buildAndAttach();
     }
 }

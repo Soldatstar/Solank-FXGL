@@ -7,16 +7,12 @@ import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
-import javafx.geometry.Point2D;
+import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -42,7 +38,6 @@ import static com.almasb.fxgl.dsl.FXGL.getdp;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 import static com.almasb.fxgl.dsl.FXGL.inc;
 import static com.almasb.fxgl.dsl.FXGL.loopBGM;
-import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
 import static com.almasb.fxgl.dsl.FXGL.play;
 import static com.almasb.fxgl.dsl.FXGL.random;
 import static com.almasb.fxgl.dsl.FXGL.run;
@@ -83,11 +78,11 @@ public class SGApp extends GameApplication {
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
        gameWorld.addEntityFactory(new SGFactory());
-       gameWorld.create("Ground", new SpawnData(0,(getAppHeight())/2));
-        yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 624));
+       gameWorld.create("Ground", new SpawnData());
+        yukine = gameWorld.create("Yukine", new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         run(this::spawnNoise, Duration.seconds(0.6));
-        run(this::spawnNoise, Duration.seconds(1.4));
+        //run(this::spawnNoise, Duration.seconds(1.4));
         loopBGM("bgm.mp3");
     }
 
@@ -140,19 +135,9 @@ public class SGApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 100);
+        getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
 
-        onCollisionBegin(Type.YUKINE, Type.NOISE, (yukine, noise) -> {
-            inc("Health", -20.0);
-            noise.removeFromWorld();
-            play("hit.wav");
-        });
-
-        onCollisionBegin(Type.BULLET, Type.NOISE, (bullet, noise) -> {
-            inc("Score", +10);
-            noise.removeFromWorld();
-            bullet.removeFromWorld();
-            play("hit.wav");
-        });
     }
 
     @Override
@@ -269,19 +254,7 @@ public class SGApp extends GameApplication {
     }
 
 
-    private void spawnYukine() {
 
-        PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.DYNAMIC);
-        yukine = entityBuilder()
-            .type(Type.YUKINE)
-            .with(physics)
-            .at((double) getAppWidth() / 2, getAppHeight() - (double) 64)
-            .bbox(new HitBox("BODY", new Point2D(0, 0), BoundingShape.box(64, 64)))
-            .with( new PlayerComponent())
-            .collidable()
-            .buildAndAttach();
-    }
 
     private void spawnNoise() {
         int side = random(0, 2);
