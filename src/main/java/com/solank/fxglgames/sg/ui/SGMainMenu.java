@@ -9,10 +9,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -32,7 +35,7 @@ public class SGMainMenu extends FXGLMenu {
         sgButton btnQuit = new sgButton("Exit Game", "Exit to desktop",() -> {fireExit();});
         selectedButton = new SimpleObjectProperty<>(btnPlayGame);
 
-        var textDescription = FXGL.getUIFactoryService().newText("", Color.WHITE, 20.0);
+        var textDescription = FXGL.getUIFactoryService().newText("", Color.LIGHTGRAY, 14.0);
         textDescription.textProperty().bind(
             Bindings.createStringBinding(() -> selectedButton.get().description, selectedButton));
 
@@ -43,7 +46,7 @@ public class SGMainMenu extends FXGLMenu {
             new sgButton("placeholder2","",()->{}),
             btnQuit,
             new Text(),
-            new Separator(Orientation.HORIZONTAL),
+            new Lineseperator(),
             textDescription);
 
 
@@ -102,5 +105,20 @@ public class SGMainMenu extends FXGLMenu {
 
         }
 
+    }
+    private static class Lineseperator extends Parent {
+        private Rectangle line = new Rectangle(300, 2, Color.WHITE);
+
+        public Lineseperator() {
+            var gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE
+                , new javafx.scene.paint.Stop(0, Color.WHITE)
+                , new javafx.scene.paint.Stop(0.2, Color.LIGHTGRAY)
+                , new javafx.scene.paint.Stop(1, Color.TRANSPARENT)
+            );
+
+            line.setFill(gradient);
+            getChildren().add(line);
+
+        }
     }
 }
