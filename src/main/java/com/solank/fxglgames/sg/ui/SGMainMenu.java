@@ -5,10 +5,10 @@ import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class SGMainMenu extends FXGLMenu {
+    private ObjectProperty<sgButton> selectedButton;
 
 
 
@@ -26,19 +27,25 @@ public class SGMainMenu extends FXGLMenu {
         bg.setFitWidth(getAppWidth());
         bg.setFitHeight(getAppHeight());
 
-        ChronButton btnPlayGame = new ChronButton("Play Game", () -> {fireNewGame();});
-        ChronButton btnOptions = new ChronButton("Options", () -> {});
-        ChronButton btnQuit = new ChronButton("Exit Game", () -> {fireExit();});
+        sgButton btnPlayGame = new sgButton("Play Game","Start new Game" ,() -> {fireNewGame();});
+        sgButton btnOptions = new sgButton("Options","Adjust in-game options" ,() -> {});
+        sgButton btnQuit = new sgButton("Exit Game", "Exit to desktop",() -> {fireExit();});
+        selectedButton = new SimpleObjectProperty<>(btnPlayGame);
+
+        var textDescription = FXGL.getUIFactoryService().newText("", Color.WHITE, 20.0);
+        textDescription.textProperty().bind(
+            Bindings.createStringBinding(() -> selectedButton.get().description, selectedButton));
 
         var box = new VBox(15,
             btnPlayGame,
             btnOptions,
-            new ChronButton("placeholder1",()->{}),
-            new ChronButton("placeholder2",()->{}),
+            new sgButton("placeholder1","",()->{}),
+            new sgButton("placeholder2","",()->{}),
             btnQuit,
             new Text(),
             new Separator(Orientation.HORIZONTAL),
-            FXGL.getUIFactoryService().newText("PH description", Color.WHITE, 20.0));
+            textDescription);
+
 
         box.setTranslateX(100);
         box.setTranslateY(400);
@@ -48,23 +55,26 @@ public class SGMainMenu extends FXGLMenu {
 
         getContentRoot().getChildren().addAll(bg, box);
     }
+    private static final Color SELECTED_COLOR = Color.WHITE;
+    private static final Color UNSELECTED_COLOR = Color.GRAY;
 
 
-    private static class ChronButton extends StackPane {
-        private static final Color SELECTED_COLOR = Color.WHITE;
-        private static final Color UNSELECTED_COLOR = Color.GRAY;
+    private class sgButton extends StackPane {
+
         private final String name;
+        private final String description;
         private final Runnable action;
 
         private Text text;
         private Rectangle selector;
-        public ChronButton(String name, Runnable action) {
+        public sgButton(String name, String description, Runnable action) {
             this.name = name;
             this.action = action;
+            this.description = description;
             selector = new Rectangle(5, 20, Color.WHITE);
             selector.setTranslateX(-25);
             selector.visibleProperty().bind(focusedProperty());
-            //run action when enter is pressed
+
             setOnKeyPressed(e -> {
                 if (e.getCode().getName().equals("Enter")) {
                     action.run();
@@ -75,9 +85,19 @@ public class SGMainMenu extends FXGLMenu {
 
 
             text= FXGL.getUIFactoryService().newText(name, Color.WHITE, 20.0);
+            text.fillProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
+            text.strokeProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
+
+            text.setStrokeWidth(0.5);
+
+            focusedProperty().addListener((obs, old, isFocused) -> {
+                if (isFocused) {
+                    selectedButton.setValue(this);
+                }
+            });
+
             setAlignment(Pos.CENTER_LEFT);
             setFocusTraversable(true);
-            text.fillProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
             getChildren().addAll(selector, text);
 
         }
