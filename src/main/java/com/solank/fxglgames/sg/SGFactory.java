@@ -56,7 +56,7 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .type(Type.NOISE)
-            .view("noise.png")
+            //.view("noise.png")
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 41)))
             .with(new SmallNoiseComponent(data.get("Yukine")))

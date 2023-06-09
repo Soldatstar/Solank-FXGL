@@ -17,7 +17,7 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private final double jumpForce = 20000;
+    private static final double JUMP_FORCE = 20000;
     private boolean canJump = true;
 
     public PlayerComponent() {
@@ -111,7 +111,7 @@ public class PlayerComponent extends Component {
     public void jump() {
         if (canJump) {
             // Apply an upward force to the entity at its center point
-            Point2D force = new Point2D(0, -jumpForce);
+            Point2D force = new Point2D(0, -JUMP_FORCE);
             Point2D pointOfApplication = entity.getCenter();
             physics.applyForce(force, pointOfApplication);
             canJump = false;
