@@ -75,6 +75,7 @@
             settings.setMainMenuEnabled(true);
             settings.setGameMenuEnabled(false);
 
+
             settings.setSceneFactory(new SceneFactory() {
                 @Override
                 public FXGLMenu newMainMenu() {
@@ -166,6 +167,59 @@
                     }
                 }
             }, MouseButton.SECONDARY);
+
+
+            getInput().addAction(new UserAction("Left") {
+                @Override
+                protected void onActionBegin() {
+                    getInput().mockKeyPress(KeyCode.A);
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    getInput().mockKeyRelease(KeyCode.A);
+                }
+            }, KeyCode.LEFT);
+
+
+
+            getInput().addAction(new UserAction("Right") {
+                @Override
+                protected void onActionBegin() {
+                    getInput().mockKeyPress(KeyCode.D);
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    getInput().mockKeyRelease(KeyCode.D);
+                }
+            }, KeyCode.RIGHT);
+
+
+            getInput().addAction(new UserAction("jumpmock1") {
+                @Override
+                protected void onActionBegin() {
+                    getInput().mockKeyPress(KeyCode.SPACE);
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    getInput().mockKeyRelease(KeyCode.SPACE);
+                }
+            }, KeyCode.W);
+
+
+            getInput().addAction(new UserAction("jumpmock2") {
+                @Override
+                protected void onActionBegin() {
+                    getInput().mockKeyPress(KeyCode.SPACE);
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    getInput().mockKeyRelease(KeyCode.SPACE);
+                }
+            }, KeyCode.UP);
         }
 
         @Override

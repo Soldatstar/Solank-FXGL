@@ -3,14 +3,14 @@ package com.solank.fxglgames.sg.ui;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.Texture;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Separator;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,8 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class SGMainMenu extends FXGLMenu {
-    private ObjectProperty<sgButton> selectedButton;
-
+    private final ObjectProperty<sgButton> selectedButton;
 
 
     public SGMainMenu() {
@@ -30,10 +29,16 @@ public class SGMainMenu extends FXGLMenu {
         bg.setFitWidth(getAppWidth());
         bg.setFitHeight(getAppHeight());
 
-        sgButton btnPlayGame = new sgButton("Play Game","Start new Game" ,() -> {fireNewGame();});
-        sgButton btnOptions = new sgButton("Options","Adjust in-game options" ,() -> {});
-        sgButton btnQuit = new sgButton("Exit Game", "Exit to desktop",() -> {fireExit();});
+        sgButton btnPlayGame = new sgButton("Play Game", "Start new Game", () -> {
+            fireNewGame();
+        });
+        sgButton btnOptions = new sgButton("Options", "Adjust in-game options", () -> {
+        });
+        sgButton btnQuit = new sgButton("Exit Game", "Exit to desktop", () -> {
+            fireExit();
+        });
         selectedButton = new SimpleObjectProperty<>(btnPlayGame);
+
 
         var textDescription = FXGL.getUIFactoryService().newText("", Color.LIGHTGRAY, 14.0);
         textDescription.textProperty().bind(
@@ -42,8 +47,10 @@ public class SGMainMenu extends FXGLMenu {
         var box = new VBox(15,
             btnPlayGame,
             btnOptions,
-            new sgButton("placeholder1","",()->{}),
-            new sgButton("placeholder2","",()->{}),
+            new sgButton("placeholder1", "", () -> {
+            }),
+            new sgButton("placeholder2", "", () -> {
+            }),
             btnQuit,
             new Text(),
             new Lineseperator(),
@@ -54,10 +61,11 @@ public class SGMainMenu extends FXGLMenu {
         box.setTranslateY(400);
 
 
-
-
         getContentRoot().getChildren().addAll(bg, box);
+
     }
+
+
     private static final Color SELECTED_COLOR = Color.WHITE;
     private static final Color UNSELECTED_COLOR = Color.GRAY;
 
@@ -68,8 +76,9 @@ public class SGMainMenu extends FXGLMenu {
         private final String description;
         private final Runnable action;
 
-        private Text text;
-        private Rectangle selector;
+        private final Text text;
+        private final Rectangle selector;
+
         public sgButton(String name, String description, Runnable action) {
             this.name = name;
             this.action = action;
@@ -87,9 +96,10 @@ public class SGMainMenu extends FXGLMenu {
             setOnMouseClicked(e -> action.run());
 
 
-            text= FXGL.getUIFactoryService().newText(name, Color.WHITE, 20.0);
+            text = FXGL.getUIFactoryService().newText(name, Color.WHITE, 20.0);
             text.fillProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
-            text.strokeProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
+            text.strokeProperty()
+                .bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
 
             text.setStrokeWidth(0.5);
 
@@ -106,8 +116,9 @@ public class SGMainMenu extends FXGLMenu {
         }
 
     }
+
     private static class Lineseperator extends Parent {
-        private Rectangle line = new Rectangle(300, 2, Color.WHITE);
+        private final Rectangle line = new Rectangle(300, 2, Color.WHITE);
 
         public Lineseperator() {
             var gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE
