@@ -17,7 +17,13 @@ public class SmallNoiseComponent extends Component {
     private final Entity yukine;
 
     public SmallNoiseComponent(Entity yukine) {
-        this.upDown = new AnimationChannel(FXGL.image("noise-up-down.png"), Duration.seconds(0.5), 3);
+        //random 1 or 2
+        int random = (int) (Math.random() * 2 + 1);
+        if (random == 1) {
+            this.upDown = new AnimationChannel(FXGL.image("noise-up-down1.png"), Duration.seconds(0.5), 3);
+        } else {
+            this.upDown = new AnimationChannel(FXGL.image("noise-up-down2.png"), Duration.seconds(0.5), 3);
+        }
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
         texture.setScaleY(2);
