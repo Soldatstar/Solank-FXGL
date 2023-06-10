@@ -94,7 +94,7 @@ public class SGFactory implements EntityFactory {
         play("shooting.wav");
         return entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX(), yukine.getY() + 5)
+            .at(yukine.getX()+12, yukine.getY() + 5)
             .viewWithBBox("bullet.png")
             .with(new CollidableComponent(true))
             .with(new BulletComponent())

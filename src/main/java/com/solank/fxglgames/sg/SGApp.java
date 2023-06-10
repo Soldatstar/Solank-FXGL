@@ -51,19 +51,22 @@ import static com.almasb.fxgl.dsl.FXGL.runOnce;
 public class SGApp extends GameApplication {
     public static final String VERSION = "0.0.3";
     public static final String TITLE = "SG";
+    public static final double HEALTH_REGENRATE = 0.05;
     public static Random random = new Random();
     private Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
 
-    private static final double COOLDOWN_DURATION = 1.3;
-    private static final double SHOT_PAUSE_DURATION = 0.2;
+    private static final double COOLDOWN_DURATION = 1.0;
+    private static final double SHOT_PAUSE_DURATION = 0.15;
     private boolean cooldown;
     private GameWorld gameWorld;
     private static final String YUKINE_ENTITY = "Yukine";
     private static final String HEALTH_ENTITY = "Health";
     private static final String SCORE_ENTITY = "Score";
+    private static final Double YUKINE_MAX_HEALTH = 150.0;
+
     private Music bgm;
 
     @Override
@@ -85,7 +88,7 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put(HEALTH_ENTITY, 100.0);
+        vars.put(HEALTH_ENTITY, YUKINE_MAX_HEALTH);
         vars.put(SCORE_ENTITY, 0);
         bgm = FXGL.getAssetLoader().loadMusic("bgm.mp3");
     }
@@ -102,8 +105,8 @@ public class SGApp extends GameApplication {
             gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         yukine.addComponent(WeaponComponent.createWeapon());
-        run(this::SpawnNoiseSide, Duration.seconds(1.8));
-        run(this::SpawnNoiseTop, Duration.seconds(1.4));
+        run(this::SpawnNoiseSide, Duration.seconds(2.4));
+        run(this::SpawnNoiseTop, Duration.seconds(2));
     }
 
 
@@ -229,10 +232,10 @@ public class SGApp extends GameApplication {
     }
 
     private void initHPBar() {
-        hpBar = new ProgressBar();
+        hpBar =new ProgressBar(false);
         hpBar.setMinValue(0);
-        hpBar.setMaxValue(100);
-        hpBar.setCurrentValue(100);
+        hpBar.setMaxValue(YUKINE_MAX_HEALTH);
+        hpBar.setCurrentValue(YUKINE_MAX_HEALTH);
         hpBar.currentValueProperty().bind(getdp(HEALTH_ENTITY));
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
@@ -245,7 +248,7 @@ public class SGApp extends GameApplication {
     }
 
     private void initCooldownBar() {
-        cooldownBar = new ProgressBar();
+        cooldownBar = new ProgressBar(false);
         cooldownBar.setMinValue(0);
         cooldownBar.setMaxValue(100);
         cooldownBar.prefWidth(200);
@@ -258,13 +261,13 @@ public class SGApp extends GameApplication {
 
     private void updateCooldownBar() {
         if (cooldownBar.getCurrentValue() < 100) {
-            cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() + 1);
+            cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() + 0.75);
         }
     }
 
     private void updateHealth() {
-        if (getd(HEALTH_ENTITY) < 100.0) {
-            inc(HEALTH_ENTITY, +0.05);
+        if (getd(HEALTH_ENTITY) < YUKINE_MAX_HEALTH) {
+            inc(HEALTH_ENTITY, +HEALTH_REGENRATE);
         }
     }
 
@@ -297,7 +300,7 @@ public class SGApp extends GameApplication {
         gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
             .put("mouseY", getInput().getMouseYWorld()));
 
-        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 30);
+        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 
         if (cooldownBar.getCurrentValue() < 2) {
             cooldown = true;
