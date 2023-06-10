@@ -285,7 +285,7 @@ public class SGApp extends GameApplication {
         if (side == 0) {
             x = 20;
         }
-        gameWorld.create("SmallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
+        gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
 

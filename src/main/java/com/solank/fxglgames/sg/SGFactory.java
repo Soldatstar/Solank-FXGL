@@ -14,6 +14,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.solank.fxglgames.sg.components.BulletComponent;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
+import com.solank.fxglgames.sg.components.TallNoiseComponent;
 import javafx.geometry.Point2D;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
@@ -62,6 +63,23 @@ public class SGFactory implements EntityFactory {
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 41)))
             .with(new SmallNoiseComponent(data.get("Yukine")))
+            .with(new CollidableComponent(true))
+            .buildAndAttach();
+    }
+
+
+
+    @Spawns("TallNoise")
+    public Entity spawnTallNoise(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+
+        return entityBuilder(data)
+            .type(Type.NOISE)
+            //.view("noise.png")
+            .with(physics)
+            .bbox(new HitBox(BoundingShape.box(41, 41)))
+            .with(new TallNoiseComponent(data.get("Yukine")))
             .with(new CollidableComponent(true))
             .buildAndAttach();
     }

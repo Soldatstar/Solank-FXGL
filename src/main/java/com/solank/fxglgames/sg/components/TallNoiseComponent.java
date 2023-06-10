@@ -4,26 +4,27 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.RaycastResult;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.solank.fxglgames.sg.SGApp;
 import javafx.util.Duration;
 
-import java.util.Random;
-
-public class SmallNoiseComponent extends Component {
+public class TallNoiseComponent extends Component {
     private PhysicsComponent physics;
     private final AnimatedTexture texture;
 
     private final AnimationChannel upDown;
 
     private final Entity yukine;
+    private double jumpCoolDown = 2;
+    private boolean canJump = true;
 
-    public SmallNoiseComponent(Entity yukine) {
+
+    public TallNoiseComponent(Entity yukine) {
         //random int between 1 and 4
-        int randomInt = SGApp.random.nextInt(4) + 1;
-        this.upDown = new AnimationChannel(FXGL.image("noise-up-down"+randomInt+".png"), Duration.seconds(0.5), 3);
+        int randomInt = SGApp.random.nextInt(2) + 1;
+
+        this.upDown = new AnimationChannel(FXGL.image("tallNoise-up-down"+randomInt+".png"), Duration.seconds(1), 3);
 
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
@@ -39,6 +40,13 @@ public class SmallNoiseComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        if (!canJump) {
+            jumpCoolDown -= tpf;
+            if (jumpCoolDown < 0) {
+                canJump = true;
+                jumpCoolDown = 1;
+            }
+        }
 
 
         double noiseX = getEntity().getX();
@@ -54,21 +62,23 @@ public class SmallNoiseComponent extends Component {
 
         if (length > 0) {
             directionX /= length;
-            directionY /= length;
         }
 
-
+        //mirror animation channel depending on directionX
         if (directionX < 0) {
             texture.setScaleX(-2);
         } else {
             texture.setScaleX(2);
         }
 
-        double speed = 10000;
-
-
+        double speed = 8000;
         getEntity().getComponent(PhysicsComponent.class).setVelocityX((directionX * speed * tpf));
-        getEntity().getComponent(PhysicsComponent.class).setVelocityY((directionY * speed * tpf));
+
+        //jump if yukine is close and above
+        if (length < 200 && yukineY < noiseY && canJump) {
+            getEntity().getComponent(PhysicsComponent.class).setVelocityY(-speed * tpf*3);
+            canJump = false;
+        }
     }
 
     @Override
