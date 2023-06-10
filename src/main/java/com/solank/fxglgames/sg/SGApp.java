@@ -218,33 +218,6 @@ public class SGApp extends GameApplication {
             }
         }, KeyCode.RIGHT);
 
-
-        getInput().addAction(new UserAction("Jump2") {
-            @Override
-            protected void onAction() {
-                yukine.getComponent(PlayerComponent.class).glide();
-
-            }
-
-            @Override
-            protected void onActionBegin() {
-                yukine.getComponent(PlayerComponent.class).jump();
-            }
-        }, KeyCode.W);
-
-
-        getInput().addAction(new UserAction("Jump3") {
-            @Override
-            protected void onAction() {
-                yukine.getComponent(PlayerComponent.class).glide();
-
-            }
-
-            @Override
-            protected void onActionBegin() {
-                yukine.getComponent(PlayerComponent.class).jump();
-            }
-        }, KeyCode.UP);
     }
 
 
