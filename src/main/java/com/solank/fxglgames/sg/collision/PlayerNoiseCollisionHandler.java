@@ -18,12 +18,5 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
         inc("Health", -20.0);
         b.removeFromWorld();
         play("hit.wav");
-
-        if (a.isType(Type.BULLET) && b.isType(Type.NOISE)) {
-            inc("Score", +10);
-            b.removeFromWorld();
-            a.removeFromWorld();
-            play("hit.wav");
-        }
     }
 }
