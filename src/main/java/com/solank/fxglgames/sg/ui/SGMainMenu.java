@@ -63,9 +63,23 @@ public class SGMainMenu extends FXGLMenu {
         version.setX(670);
         version.setY(588);
         version.setRotate(-8);
+        Texture logo = FXGL.getAssetLoader().loadTexture("logo.png");
+        logo.setScaleX(0.05);
+        logo.setScaleY(0.05);
+        logo.setTranslateX(+190);
+        logo.setTranslateY(-370);
+
+        Text gameName = FXGL.getUIFactoryService().newText("SG",Color.GAINSBORO, 100.0);
+        Text gameNameBackground = FXGL.getUIFactoryService().newText("SG",Color.ORANGERED, 110.0);
+
+        StackPane stackPane = new StackPane(gameNameBackground,gameName);
+        stackPane.setLayoutX(100);
+        stackPane.setLayoutY(100);
 
 
-        getContentRoot().getChildren().addAll(bg, box,version);
+
+
+        getContentRoot().getChildren().addAll(bg, box,version,logo,stackPane);
 
     }
 
