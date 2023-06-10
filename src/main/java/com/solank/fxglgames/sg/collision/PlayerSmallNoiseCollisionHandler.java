@@ -1,6 +1,5 @@
 package com.solank.fxglgames.sg.collision;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.solank.fxglgames.sg.Type;
@@ -9,10 +8,10 @@ import static com.almasb.fxgl.dsl.FXGL.getd;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.inc;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
-public class PlayerNoiseCollisionHandler extends CollisionHandler {
-    public PlayerNoiseCollisionHandler() {
+public class PlayerSmallNoiseCollisionHandler extends CollisionHandler {
+    public PlayerSmallNoiseCollisionHandler() {
 
-        super(Type.YUKINE, Type.NOISE);
+        super(Type.YUKINE, Type.SMALLNOISE);
     }
 
     @Override

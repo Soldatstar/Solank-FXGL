@@ -18,6 +18,7 @@ public class TallNoiseComponent extends Component {
     private final Entity yukine;
     private double jumpCoolDown = 2;
     private boolean canJump = true;
+    private int health = 2;
 
 
     public TallNoiseComponent(Entity yukine) {
@@ -37,6 +38,13 @@ public class TallNoiseComponent extends Component {
         }
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 
     @Override
     public void onUpdate(double tpf) {
@@ -47,8 +55,6 @@ public class TallNoiseComponent extends Component {
                 jumpCoolDown = 1;
             }
         }
-
-
         double noiseX = getEntity().getX();
         double noiseY = getEntity().getY();
 
@@ -64,7 +70,6 @@ public class TallNoiseComponent extends Component {
             directionX /= length;
         }
 
-        //mirror animation channel depending on directionX
         if (directionX < 0) {
             texture.setScaleX(-2);
         } else {
@@ -74,7 +79,6 @@ public class TallNoiseComponent extends Component {
         double speed = 8000;
         getEntity().getComponent(PhysicsComponent.class).setVelocityX((directionX * speed * tpf));
 
-        //jump if yukine is close and above
         if (length < 200 && yukineY < noiseY && canJump) {
             getEntity().getComponent(PhysicsComponent.class).setVelocityY(-speed * tpf*3);
             canJump = false;
@@ -85,5 +89,9 @@ public class TallNoiseComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(upDown);
+    }
+
+    public PhysicsComponent getPhysics() {
+        return physics;
     }
 }

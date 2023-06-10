@@ -13,8 +13,10 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
-import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
-import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.BulletSmallNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.BulletTallNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.PlayerSmallNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.PlayerTallNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.WeaponComponent;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
@@ -23,14 +25,8 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -115,8 +111,10 @@ public class SGApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 600);
-        getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
-        getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new PlayerSmallNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletSmallNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletTallNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new PlayerTallNoiseCollisionHandler());
 
     }
 

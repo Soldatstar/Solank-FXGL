@@ -58,7 +58,7 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
 
         return entityBuilder(data)
-            .type(Type.NOISE)
+            .type(Type.SMALLNOISE)
             //.view("noise.png")
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 41)))
@@ -75,7 +75,7 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
 
         return entityBuilder(data)
-            .type(Type.NOISE)
+            .type(Type.TALLNOISE)
             //.view("noise.png")
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 41)))
