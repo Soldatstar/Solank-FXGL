@@ -4,9 +4,13 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.RaycastResult;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.solank.fxglgames.sg.SGApp;
 import javafx.util.Duration;
+
+import java.util.Random;
 
 public class SmallNoiseComponent extends Component {
     private PhysicsComponent physics;
@@ -17,13 +21,10 @@ public class SmallNoiseComponent extends Component {
     private final Entity yukine;
 
     public SmallNoiseComponent(Entity yukine) {
-        //random 1 or 2
-        int random = (int) (Math.random() * 2 + 1);
-        if (random == 1) {
-            this.upDown = new AnimationChannel(FXGL.image("noise-up-down1.png"), Duration.seconds(0.5), 3);
-        } else {
-            this.upDown = new AnimationChannel(FXGL.image("noise-up-down2.png"), Duration.seconds(0.5), 3);
-        }
+        //random int between 1 and 4
+        int randomInt = SGApp.random.nextInt(4) + 1;
+        this.upDown = new AnimationChannel(FXGL.image("noise-up-down"+randomInt+".png"), Duration.seconds(0.5), 3);
+
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
         texture.setScaleY(2);

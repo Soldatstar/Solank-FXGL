@@ -35,6 +35,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.Map;
+import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -52,12 +53,13 @@ import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
-    public static final String VERSION = "0.0.2";
+    public static final String VERSION = "0.0.3";
+    public static final String TITLE = "SG";
+    public static Random random = new Random();
     private Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
-    private Rectangle cooldownBackground;
 
     private static final double COOLDOWN_DURATION = 1.3;
     private static final double SHOT_PAUSE_DURATION = 0.2;
@@ -68,12 +70,9 @@ public class SGApp extends GameApplication {
     private static final String SCORE_ENTITY = "Score";
     private Music bgm;
 
-
-    //override menu during game
-
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setTitle("SG");
+        settings.setTitle(TITLE);
         settings.setVersion(VERSION);
         settings.setWidth(1280);
         settings.setHeight(720);

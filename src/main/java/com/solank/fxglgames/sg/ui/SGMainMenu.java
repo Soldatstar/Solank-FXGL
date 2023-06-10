@@ -69,8 +69,8 @@ public class SGMainMenu extends FXGLMenu {
         logo.setTranslateX(+190);
         logo.setTranslateY(-370);
 
-        Text gameName = FXGL.getUIFactoryService().newText("SG",Color.GAINSBORO, 100.0);
-        Text gameNameBackground = FXGL.getUIFactoryService().newText("SG",Color.ORANGERED, 110.0);
+        Text gameName = FXGL.getUIFactoryService().newText(SGApp.TITLE,Color.PALEVIOLETRED, 100.0);
+        Text gameNameBackground = FXGL.getUIFactoryService().newText(SGApp.TITLE,Color.LIGHTGRAY, 115.0);
 
         StackPane stackPane = new StackPane(gameNameBackground,gameName);
         stackPane.setLayoutX(100);
