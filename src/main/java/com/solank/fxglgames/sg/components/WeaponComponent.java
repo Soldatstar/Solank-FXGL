@@ -3,6 +3,7 @@ package com.solank.fxglgames.sg.components;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.TransformComponent;
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
@@ -34,5 +35,17 @@ public class WeaponComponent extends Component {
 
         // Set the rotation angle of the weapon to point towards the mouse cursor
         weaponView.setRotate(Math.toDegrees(angle));
+    }
+
+    public static WeaponComponent createWeapon() {
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
+        weaponTexture.setScaleX(5);
+        weaponTexture.setScaleY(5);
+        ImageView weaponView = new ImageView(weaponTexture.getImage());
+        weaponView.setTranslateZ(-200);
+        weaponView.setTranslateX(-25); // Adjust the position of the weapon relative to the entity
+
+        // Create the weapon component and add it to the entity
+        return new  WeaponComponent(weaponView);
     }
 }

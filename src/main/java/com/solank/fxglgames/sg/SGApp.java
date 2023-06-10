@@ -42,7 +42,6 @@
     import static com.almasb.fxgl.dsl.FXGL.getdp;
     import static com.almasb.fxgl.dsl.FXGL.getip;
     import static com.almasb.fxgl.dsl.FXGL.inc;
-    import static com.almasb.fxgl.dsl.FXGL.loopBGM;
     import static com.almasb.fxgl.dsl.FXGL.random;
     import static com.almasb.fxgl.dsl.FXGL.run;
     import static com.almasb.fxgl.dsl.FXGL.runOnce;
@@ -55,7 +54,7 @@
         private Rectangle cooldownBackground;
         private Text cooldownText;
         private static final double COOLDOWN_DURATION = 1.3;
-        private static final double SHOT_PAUSE_DURATION = 0.2; // Adjust the value as needed
+        private static final double SHOT_PAUSE_DURATION = 0.2;
         private boolean cooldown;
         private GameWorld gameWorld;
         private static final String YUKINE_ENTITY = "Yukine";
@@ -102,16 +101,7 @@
             yukine =
                 gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
-            Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
-            weaponTexture.setScaleX(5);
-            weaponTexture.setScaleY(5);
-            ImageView weaponView = new ImageView(weaponTexture.getImage());
-            weaponView.setTranslateZ(-200);
-            weaponView.setTranslateX(-25); // Adjust the position of the weapon relative to the entity
-
-            // Create the weapon component and add it to the entity
-            WeaponComponent weaponComponent = new WeaponComponent(weaponView);
-            yukine.addComponent(weaponComponent);
+            yukine.addComponent(WeaponComponent.createWeapon());
             run(this::SpawnNoiseSide, Duration.seconds(1.8));
             run(this::SpawnNoiseTop, Duration.seconds(1.4));
 
@@ -235,16 +225,7 @@
             updateHealth();
             elapsedTime += tpf;
             updateCooldownBar();
-
             getPhysicsWorld().onUpdate(tpf);
-
-
-            getGameWorld().getEntitiesByType(Type.BULLET).forEach(bullet -> {
-                if (bullet.getX() < 0 || bullet.getX() > getAppWidth()
-                    || bullet.getY() < 0 || bullet.getY() > getAppHeight()) {
-                    bullet.removeFromWorld();
-                }
-            });
 
             if (getd(HEALTH_ENTITY) <= 0) {
                 gameOver(false);
@@ -336,7 +317,6 @@
 
             cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
 
-            // Start the cooldown timer
             if (cooldownBar.getCurrentValue() < 2) {
                 cooldown = true;
                 runOnce(() -> {

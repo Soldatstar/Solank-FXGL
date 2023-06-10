@@ -35,6 +35,7 @@ public class SGFactory implements EntityFactory {
             .bbox(new HitBox(BoundingShape.box(21, 31)))
             .with(new CollidableComponent(true))
             .with(new KeepOnScreenComponent())
+            .zIndex(100)
             .buildAndAttach();
     }
 
