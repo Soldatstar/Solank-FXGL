@@ -17,7 +17,10 @@ public class PlayerComponent extends Component {
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-    private static final double JUMP_FORCE = 20000;
+
+    private static final double JUMP_FORCE = 15000;
+    private static final double GLIDE_FORCE = 600;
+
     private boolean canJump = true;
 
     public PlayerComponent() {
@@ -86,8 +89,7 @@ public class PlayerComponent extends Component {
     }
 
     public void glide() {
-        Point2D force = new Point2D(0, -1000);
-        physics.applyForceToCenter(force);
+        physics.applyForceToCenter(new Point2D(0, -GLIDE_FORCE));
     }
 
 

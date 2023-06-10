@@ -18,14 +18,20 @@ import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.WeaponComponent;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.Map;
@@ -51,7 +57,7 @@ public class SGApp extends GameApplication {
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
     private Rectangle cooldownBackground;
-    private Text cooldownText;
+
     private static final double COOLDOWN_DURATION = 1.3;
     private static final double SHOT_PAUSE_DURATION = 0.2;
     private boolean cooldown;
@@ -72,7 +78,6 @@ public class SGApp extends GameApplication {
         settings.setHeight(720);
         settings.setMainMenuEnabled(true);
         settings.setGameMenuEnabled(false);
-
 
         settings.setSceneFactory(new SceneFactory() {
             @Override
@@ -103,7 +108,36 @@ public class SGApp extends GameApplication {
         yukine.addComponent(WeaponComponent.createWeapon());
         run(this::SpawnNoiseSide, Duration.seconds(1.8));
         run(this::SpawnNoiseTop, Duration.seconds(1.4));
+    }
 
+
+
+    @Override
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, 600);
+        getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
+
+    }
+
+
+    @Override
+    protected void initUI() {
+        initScoreLabel();
+        initCooldownBar();
+        initHPBar();
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        updateHealth();
+        elapsedTime += tpf;
+        updateCooldownBar();
+        getPhysicsWorld().onUpdate(tpf);
+
+        if (getd(HEALTH_ENTITY) <= 0) {
+            gameOver(false);
+        }
 
     }
 
@@ -184,84 +218,46 @@ public class SGApp extends GameApplication {
         }, KeyCode.RIGHT);
 
 
-        getInput().addAction(new UserAction("jumpmock1") {
+        getInput().addAction(new UserAction("Jump2") {
             @Override
-            protected void onActionBegin() {
-                getInput().mockKeyPress(KeyCode.SPACE);
+            protected void onAction() {
+                yukine.getComponent(PlayerComponent.class).glide();
+
             }
 
             @Override
-            protected void onActionEnd() {
-                getInput().mockKeyRelease(KeyCode.SPACE);
+            protected void onActionBegin() {
+                yukine.getComponent(PlayerComponent.class).jump();
             }
         }, KeyCode.W);
 
 
-        getInput().addAction(new UserAction("jumpmock2") {
+        getInput().addAction(new UserAction("Jump3") {
             @Override
-            protected void onActionBegin() {
-                getInput().mockKeyPress(KeyCode.SPACE);
+            protected void onAction() {
+                yukine.getComponent(PlayerComponent.class).glide();
+
             }
 
             @Override
-            protected void onActionEnd() {
-                getInput().mockKeyRelease(KeyCode.SPACE);
+            protected void onActionBegin() {
+                yukine.getComponent(PlayerComponent.class).jump();
             }
         }, KeyCode.UP);
     }
 
-    @Override
-    protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 800);
-        getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
-        getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
 
-    }
-
-    @Override
-    protected void onUpdate(double tpf) {
-        updateHealth();
-        elapsedTime += tpf;
-        updateCooldownBar();
-        getPhysicsWorld().onUpdate(tpf);
-
-        if (getd(HEALTH_ENTITY) <= 0) {
-            gameOver(false);
-        }
-
-    }
-
-    private void updateHealth() {
-        if (getd(HEALTH_ENTITY) < 100.0) {
-            inc(HEALTH_ENTITY, +0.05);
-        }
-    }
-
-    @Override
-    protected void initUI() {
-
+    private static void initScoreLabel() {
         Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setTextFill(Color.YELLOWGREEN);
+        scoreLabel.setEffect(new DropShadow(5, Color.BLACK));
         scoreLabel.setFont(Font.font(30.0));
-        scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("Score: %d"));
-        addUINode(scoreLabel, 20, 5);
+        scoreLabel.setAlignment(Pos.CENTER);
+        scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("%d"));
+        addUINode(scoreLabel, getAppWidth()/2,2 );
+    }
 
-        cooldownBar = new ProgressBar();
-        cooldownBar.setMinValue(0);
-        cooldownBar.setMaxValue(100);
-        cooldownBar.prefWidth(200);
-        cooldownBar.setCurrentValue(100);
-
-        cooldownBackground = new Rectangle(200, 20);
-        cooldownBackground.setFill(Color.WHITE);
-
-        cooldownText = new Text();
-        cooldownText.setFill(Color.WHITE);
-        cooldownText.setFont(Font.font(14));
-
-        StackPane cooldownPane = new StackPane(cooldownBackground, cooldownBar, cooldownText);
-        cooldownPane.setLayoutX(20);
-        cooldownPane.setLayoutY(50);
+    private void initHPBar() {
         hpBar = new ProgressBar();
         hpBar.setMinValue(0);
         hpBar.setMaxValue(100);
@@ -271,17 +267,33 @@ public class SGApp extends GameApplication {
         hpBar.setLabelVisible(true);
         hpBar.setLabelPosition(Position.RIGHT);
         hpBar.setFill(Color.GREEN);
-        hpBar.setLayoutX(20);
-        hpBar.setLayoutY(80);
+        hpBar.setLayoutX(getAppWidth() - 390);
+        hpBar.setLayoutY(15);
 
         getGameScene().addUINodes(hpBar);
+    }
 
+    private void initCooldownBar() {
+        cooldownBar = new ProgressBar();
+        cooldownBar.setMinValue(0);
+        cooldownBar.setMaxValue(100);
+        cooldownBar.prefWidth(200);
+        cooldownBar.setCurrentValue(100);
+        StackPane cooldownPane = new StackPane(cooldownBar);
+        cooldownPane.setLayoutX(20);
+        cooldownPane.setLayoutY(5);
         getGameScene().addUINodes(cooldownPane);
     }
 
     private void updateCooldownBar() {
         if (cooldownBar.getCurrentValue() < 100) {
             cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() + 1);
+        }
+    }
+
+    private void updateHealth() {
+        if (getd(HEALTH_ENTITY) < 100.0) {
+            inc(HEALTH_ENTITY, +0.05);
         }
     }
 
@@ -314,7 +326,7 @@ public class SGApp extends GameApplication {
         gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
             .put("mouseY", getInput().getMouseYWorld()));
 
-        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
+        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 30);
 
         if (cooldownBar.getCurrentValue() < 2) {
             cooldown = true;
@@ -326,6 +338,7 @@ public class SGApp extends GameApplication {
 
 
     private void gameOver(boolean reachedEndOfGame) {
+        cooldown = false;
         FXGL.getAudioPlayer().stopMusic(bgm);
         StringBuilder builder = new StringBuilder();
         builder.append("Game Over!\n\n");
