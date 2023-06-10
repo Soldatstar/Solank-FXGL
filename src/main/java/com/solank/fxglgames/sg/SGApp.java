@@ -230,6 +230,7 @@
             if (getd(HEALTH_ENTITY) <= 0) {
                 gameOver(false);
             }
+
         }
 
         private void updateHealth() {
@@ -237,6 +238,11 @@
                 inc(HEALTH_ENTITY, +0.05);
             }
         }
+
+       //foreach loop bullet
+
+
+
 
         @Override
         protected void initUI() {

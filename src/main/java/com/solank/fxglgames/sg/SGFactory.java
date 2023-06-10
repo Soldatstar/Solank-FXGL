@@ -11,6 +11,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.solank.fxglgames.sg.components.BulletComponent;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
 import javafx.geometry.Point2D;
@@ -78,6 +79,7 @@ public class SGFactory implements EntityFactory {
             .at(yukine.getX(), yukine.getY() + 5)
             .viewWithBBox("bullet.png")
             .with(new CollidableComponent(true))
+            .with(new BulletComponent())
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
             .buildAndAttach();
     }
