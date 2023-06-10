@@ -52,6 +52,7 @@ import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
+    public static final String VERSION = "0.0.2";
     private Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
@@ -73,7 +74,7 @@ public class SGApp extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("SG");
-        settings.setVersion("0.0.2");
+        settings.setVersion(VERSION);
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setMainMenuEnabled(true);
@@ -249,8 +250,8 @@ public class SGApp extends GameApplication {
 
     private static void initScoreLabel() {
         Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.YELLOWGREEN);
-        scoreLabel.setEffect(new DropShadow(5, Color.BLACK));
+        scoreLabel.setTextFill(Color.ORANGERED);
+        scoreLabel.setEffect(new DropShadow(15, Color.WHITE));
         scoreLabel.setFont(Font.font(30.0));
         scoreLabel.setAlignment(Pos.CENTER);
         scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("%d"));

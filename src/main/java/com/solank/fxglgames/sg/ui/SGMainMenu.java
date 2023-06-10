@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
+import com.solank.fxglgames.sg.SGApp;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -58,8 +59,13 @@ public class SGMainMenu extends FXGLMenu {
         box.setTranslateX(100);
         box.setTranslateY(400);
 
+        Text version = FXGL.getUIFactoryService().newText(SGApp.VERSION,Color.BLACK, 12.0);
+        version.setX(670);
+        version.setY(588);
+        version.setRotate(-8);
 
-        getContentRoot().getChildren().addAll(bg, box);
+
+        getContentRoot().getChildren().addAll(bg, box,version);
 
     }
 
