@@ -89,6 +89,7 @@ public class TallNoiseComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(upDown);
+        texture.setTranslateY(+14);
     }
 
     public PhysicsComponent getPhysics() {

@@ -50,7 +50,7 @@ import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
-    public static final String VERSION = "0.0.3";
+    public static final String VERSION = "0.0.3pre";
     public static final String TITLE = "SG";
     public static final double HEALTH_REGENRATE = 0.05;
     public static Random random = new Random();
@@ -109,6 +109,13 @@ public class SGApp extends GameApplication {
             gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
 
         yukine.addComponent(WeaponComponent.createWeapon());
+
+        getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
+        getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2)+300);
+        //spawn 20 BGbuildings
+        for (int i = 0; i < 50; i++) {
+            gameWorld.spawn("BGBuilding", new SpawnData(random(0, 20000), getAppHeight()));
+        }
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }
@@ -280,15 +287,15 @@ public class SGApp extends GameApplication {
         int side = random(0, getAppWidth());
         int x = side;
         int y = 10;
-        gameWorld.create("SmallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
+        gameWorld.create("SmallNoise", new SpawnData(x+yukine.getX(), y).put(YUKINE_ENTITY, yukine));
     }
 
     private void SpawnNoiseSide() {
         int side = random(0, 1);
-        int x = getAppWidth() - 20;
-        int y = getAppHeight() - 50;
+        int x = (int) (getAppWidth() - 20+yukine.getX());
+        int y = getAppHeight() -100;
         if (side == 0) {
-            x = 20;
+            x = (int) (20+yukine.getX());
         }
         gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }

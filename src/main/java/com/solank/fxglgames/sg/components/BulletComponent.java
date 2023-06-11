@@ -8,6 +8,8 @@ import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
 
 public class BulletComponent extends Component {
     Entity bullet;
+    double bulletflytime = 0;
+    Double maxflytime = 2.0;
 
     @Override
     public void onAdded() {
@@ -19,11 +21,10 @@ public class BulletComponent extends Component {
     public void onUpdate(double tpf) {
 
         super.onUpdate(tpf);
-
-        if (bullet.getX() < 0 || bullet.getX() > getAppWidth()
-            || bullet.getY() < 0 || bullet.getY() > getAppHeight()) {
-            bullet.removeFromWorld();
-        }
+            bulletflytime += tpf;
+            if (bulletflytime > maxflytime) {
+                bullet.removeFromWorld();
+            }
 }
 
 }

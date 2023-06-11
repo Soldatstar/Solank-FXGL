@@ -18,8 +18,10 @@ public class PlayerComponent extends Component {
     private PhysicsComponent physics;
     private boolean physicsReady;
 
-    private static final double JUMP_FORCE = 15000;
-    private static final double GLIDE_FORCE = 600;
+    private static final double JUMP_FORCE = 21000;
+    private static final double GLIDE_FORCE = 800;
+    private static final double JUMP_COOLDOWN = 0.5;
+private double jumpCooldown = 0;
 
     private boolean canJump = true;
 
@@ -38,7 +40,10 @@ public class PlayerComponent extends Component {
         if (!physics.isMoving() && texture.getAnimationChannel() != upDown) {
             texture.loopAnimationChannel(upDown);
         }
-        if (getEntity().getY() >= 650) {
+        // reduce jump cooldown
+        jumpCooldown -= tpf;
+        //when jump cooldown is 0, you can jump
+        if (jumpCooldown <= 0) {
             canJump = true;
         }
     }
@@ -47,6 +52,8 @@ public class PlayerComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(upDown);
+        texture.setTranslateY(-15);
+        texture.setTranslateZ(100);
 
         physics.setOnPhysicsInitialized(() -> physicsReady = true);
 
@@ -116,6 +123,8 @@ public class PlayerComponent extends Component {
             Point2D force = new Point2D(0, -JUMP_FORCE);
             Point2D pointOfApplication = entity.getCenter();
             physics.applyForce(force, pointOfApplication);
+            //set jump cooldown
+            jumpCooldown = JUMP_COOLDOWN;
             canJump = false;
         }
 

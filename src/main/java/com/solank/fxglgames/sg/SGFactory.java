@@ -16,6 +16,8 @@ import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
 import com.solank.fxglgames.sg.components.TallNoiseComponent;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -48,8 +50,29 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .with(physics)
-            .bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+200, 12)))
+            .viewWithBBox(new Rectangle(getAppWidth()+20000, 15, Color.RED))
+            .at(-100, getAppHeight() - 15)
+            //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
             .buildAndAttach();
+    }
+
+
+    @Spawns("BGBuilding")
+    public Entity spawnBGBuilding(SpawnData data) {
+        double v1 = ((int)(Math.random()*100)+100);
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+
+        //return entityBuilder(data) of a background building with a random height and width between 100 and 200
+        return entityBuilder(data)
+            .with(physics)
+            .viewWithBBox(new Rectangle((int)(Math.random()*100)+100, v1, Color.BLUE))
+            .at(data.getX(), data.getY()-v1)
+            .buildAndAttach();
+
+
+
+
     }
 
     @Spawns("SmallNoise")
@@ -78,7 +101,7 @@ public class SGFactory implements EntityFactory {
             .type(Type.TALLNOISE)
             //.view("noise.png")
             .with(physics)
-            .bbox(new HitBox(BoundingShape.box(41, 41)))
+            .bbox(new HitBox(BoundingShape.box(41, 61)))
             .with(new TallNoiseComponent(data.get("Yukine")))
             .with(new CollidableComponent(true))
             .buildAndAttach();
