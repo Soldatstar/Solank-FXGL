@@ -36,6 +36,7 @@ import java.util.Random;
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGL.getFXApp;
 import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.getInput;
@@ -97,6 +98,9 @@ public class SGApp extends GameApplication {
     protected void initGame() {
         FXGL.getAudioPlayer().loopMusic(bgm);
         gameWorld = getGameWorld();
+        getInput().setRegisterInput(true);
+        getInput().setProcessInput(true);
+
         Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
         gameWorld.addEntityFactory(new SGFactory());
@@ -312,6 +316,8 @@ public class SGApp extends GameApplication {
 
 
     private void gameOver(boolean reachedEndOfGame) {
+        getInput().setRegisterInput(false);
+        getInput().setProcessInput(false);
         cooldown = false;
         FXGL.getAudioPlayer().stopMusic(bgm);
         StringBuilder builder = new StringBuilder();
