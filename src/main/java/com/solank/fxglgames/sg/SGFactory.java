@@ -81,12 +81,15 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
 
         return entityBuilder(data)
-            .type(Type.SMALLNOISE)
+            .type(Type.NOISE)
             //.view("noise.png")
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 41)))
             .with(new SmallNoiseComponent(data.get("Yukine")))
             .with(new CollidableComponent(true))
+            .with("damage", 15.0)
+            .with("health", 10.0)
+            .with("score", 10)
             .buildAndAttach();
     }
 
@@ -98,12 +101,15 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
 
         return entityBuilder(data)
-            .type(Type.TALLNOISE)
+            .type(Type.NOISE)
             //.view("noise.png")
             .with(physics)
             .bbox(new HitBox(BoundingShape.box(41, 61)))
             .with(new TallNoiseComponent(data.get("Yukine")))
             .with(new CollidableComponent(true))
+            .with("damage", 25.0)
+            .with("health", 20.0)
+            .with("score", 20)
             .buildAndAttach();
     }
 
@@ -122,6 +128,7 @@ public class SGFactory implements EntityFactory {
             .with(new CollidableComponent(true))
             .with(new BulletComponent())
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
+            .with("damage", 10.0)
             .buildAndAttach();
     }
 }

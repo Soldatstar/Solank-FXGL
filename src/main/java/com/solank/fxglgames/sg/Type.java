@@ -1,5 +1,5 @@
 package com.solank.fxglgames.sg;
 
 public enum Type {
-    TALLNOISE,SMALLNOISE, YUKINE, BULLET, WALL
+    TALLNOISE, NOISE, YUKINE, BULLET, WALL
 }

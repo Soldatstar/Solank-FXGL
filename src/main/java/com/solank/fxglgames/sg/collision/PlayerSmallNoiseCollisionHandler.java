@@ -11,15 +11,16 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 public class PlayerSmallNoiseCollisionHandler extends CollisionHandler {
     public PlayerSmallNoiseCollisionHandler() {
 
-        super(Type.YUKINE, Type.SMALLNOISE);
+        super(Type.YUKINE, Type.NOISE);
     }
 
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-        if (getd("Health") < 20.0) {
+        if (getd("Health") < b.getDouble("damage")) {
+
             inc("Health", -getd("Health"));
         } else {
-            inc("Health", -20.0);
+            inc("Health", -b.getDouble("damage"));
         }
         b.removeFromWorld();
         play("hit.wav");

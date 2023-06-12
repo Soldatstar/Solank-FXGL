@@ -9,14 +9,22 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
 public class BulletSmallNoiseCollisionHandler extends CollisionHandler {
     public BulletSmallNoiseCollisionHandler() {
-        super(Type.BULLET, Type.SMALLNOISE);
+        super(Type.BULLET, Type.NOISE);
     }
 
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-        inc("Score", +10);
-        b.removeFromWorld();
-        a.removeFromWorld();
         play("hit.wav");
+        double noiseRemainingHealth = b.getDouble("health");
+        double damage = a.getDouble("damage");
+        int score = b.getInt("score");
+        // If the bullet's damage is greater than the noise's remaining health, then the noise is killed.
+        if (damage >= noiseRemainingHealth) {
+            inc("Score", +score);
+            b.removeFromWorld();
+        } else {
+            b.setProperty("health", noiseRemainingHealth - damage);
+        }
+        a.removeFromWorld();
     }
 }
