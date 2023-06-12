@@ -50,7 +50,7 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .with(physics)
-            .viewWithBBox(new Rectangle(getAppWidth()+20000, 15, Color.RED))
+            .viewWithBBox(new Rectangle(getAppWidth()+20000, 150, Color.BLACK))
             .at(-100, getAppHeight() - 15)
             //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
             .buildAndAttach();

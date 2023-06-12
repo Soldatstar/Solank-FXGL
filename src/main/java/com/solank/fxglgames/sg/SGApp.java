@@ -292,6 +292,8 @@ public class SGApp extends GameApplication {
 
     private void SpawnNoiseSide() {
         int side = random(0, 1);
+
+        //int x at the right side of the screen relative to yukine X coordinate
         int x = (int) (getAppWidth() - 20+yukine.getX());
         int y = getAppHeight() -100;
         if (side == 0) {
