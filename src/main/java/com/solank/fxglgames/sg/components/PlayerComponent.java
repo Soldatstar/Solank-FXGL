@@ -27,9 +27,9 @@ private double jumpCooldown = 0;
 
     public PlayerComponent() {
 
-        this.left = new AnimationChannel(FXGL.image("yukine-left.png"), Duration.seconds(0.5), 3);
-        this.right = new AnimationChannel(FXGL.image("yukine-right.png"), Duration.seconds(0.5), 3);
-        this.upDown = new AnimationChannel(FXGL.image("yukine-up-down.png"), Duration.seconds(1), 3);
+        this.left = new AnimationChannel(FXGL.image("yukine/yukine-left.png"), Duration.seconds(0.5), 3);
+        this.right = new AnimationChannel(FXGL.image("yukine/yukine-right.png"), Duration.seconds(0.5), 3);
+        this.upDown = new AnimationChannel(FXGL.image("yukine/yukine-up-down.png"), Duration.seconds(1), 3);
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
         texture.setScaleY(2);

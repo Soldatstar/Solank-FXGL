@@ -24,7 +24,7 @@ public class SGMainMenu extends FXGLMenu {
 
     public SGMainMenu() {
         super(MenuType.MAIN_MENU);
-        Texture bg = FXGL.getAssetLoader().loadTexture("mainmenu.png");
+        Texture bg = FXGL.getAssetLoader().loadTexture("mainmenu/mainmenu.png");
         bg.setFitWidth(getAppWidth());
         bg.setFitHeight(getAppHeight());
 
@@ -63,7 +63,7 @@ public class SGMainMenu extends FXGLMenu {
         version.setX(670);
         version.setY(588);
         version.setRotate(-8);
-        Texture logo = FXGL.getAssetLoader().loadTexture("logo.png");
+        Texture logo = FXGL.getAssetLoader().loadTexture("mainmenu/logo.png");
         logo.setScaleX(0.05);
         logo.setScaleY(0.05);
         logo.setTranslateX(+190);

@@ -120,11 +120,11 @@ public class SGFactory implements EntityFactory {
         Entity yukine = data.get("Yukine");
         double mouseX = data.get("mouseX");
         double mouseY = data.get("mouseY");
-        play("shooting.wav");
+        play("weapons/shooting.wav");
         return entityBuilder()
             .type(Type.BULLET)
             .at(yukine.getX()+12, yukine.getY() + 5)
-            .viewWithBBox("bullet.png")
+            .viewWithBBox("yukine/weapons/bullet.png")
             .with(new CollidableComponent(true))
             .with(new BulletComponent())
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))

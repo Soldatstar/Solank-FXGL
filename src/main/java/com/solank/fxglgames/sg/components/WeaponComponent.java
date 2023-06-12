@@ -19,6 +19,7 @@ public class WeaponComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(weaponView);
         transform = entity.getComponent(TransformComponent.class);
+        weaponView.setTranslateZ(-200);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class WeaponComponent extends Component {
     }
 
     public static WeaponComponent createWeapon() {
-        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("weapon.png");
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
         weaponTexture.setScaleX(5);
         weaponTexture.setScaleY(5);
         ImageView weaponView = new ImageView(weaponTexture.getImage());

@@ -31,7 +31,7 @@ public class TallNoiseComponent extends Component {
         freezeTimer = FXGL.newLocalTimer();
 
         this.upDown =
-            new AnimationChannel(FXGL.image("tallNoise-up-down" + randomInt + ".png"), Duration.seconds(1), 3);
+            new AnimationChannel(FXGL.image("noise/tallNoise-up-down" + randomInt + ".png"), Duration.seconds(1), 3);
 
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);

@@ -23,6 +23,9 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
             inc("Health", -b.getDouble("damage"));
         }
         b.removeFromWorld();
-        play("hit.wav");
+
+        //random int 1 or 2
+        int randomInt = (int) (Math.random() * 2) + 1;
+        play("hit/hit"+ randomInt+".wav");
     }
 }

@@ -51,7 +51,7 @@ public class SGApp extends GameApplication {
     public static final String TITLE = "SG";
     public static final double HEALTH_REGENRATE = 0.05;
     public static Random random = new Random();
-    private Entity yukine;
+    public static Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
@@ -98,7 +98,7 @@ public class SGApp extends GameApplication {
         getInput().setRegisterInput(true);
         getInput().setProcessInput(true);
 
-        Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("city.jpg");
+        Texture backgroundTexture = FXGL.getAssetLoader().loadTexture("background/city.jpg");
         FXGL.getGameScene().setBackgroundRepeat(backgroundTexture.getImage());
         gameWorld.addEntityFactory(new SGFactory());
         gameWorld.create("Ground", new SpawnData());
@@ -110,9 +110,9 @@ public class SGApp extends GameApplication {
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
         getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2)+300);
         //spawn 20 BGbuildings
-        for (int i = 0; i < 50; i++) {
+        /*for (int i = 0; i < 50; i++) {
             gameWorld.spawn("BGBuilding", new SpawnData(random(0, 20000), getAppHeight()));
-        }
+        }*/
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }
@@ -286,12 +286,11 @@ public class SGApp extends GameApplication {
 
     private void SpawnNoiseSide() {
         int side = random(0, 1);
-
-        //int x at the right side of the screen relative to yukine X coordinate
-        int x = (int) (getAppWidth() - 20+yukine.getX());
+        int appwidth = (getAppWidth()+20)/2;
+        int x = (int) yukine.getX()+ appwidth;
         int y = getAppHeight() -100;
         if (side == 0) {
-            x = (int) (20+yukine.getX());
+            x = (int) yukine.getX()- appwidth;
         }
         gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
