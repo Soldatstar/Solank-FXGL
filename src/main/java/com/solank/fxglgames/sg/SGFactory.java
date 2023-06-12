@@ -15,6 +15,7 @@ import com.solank.fxglgames.sg.components.BulletComponent;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
 import com.solank.fxglgames.sg.components.TallNoiseComponent;
+import com.solank.fxglgames.sg.components.WeaponComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -116,10 +117,13 @@ public class SGFactory implements EntityFactory {
         Entity yukine = data.get("Yukine");
         double mouseX = data.get("mouseX");
         double mouseY = data.get("mouseY");
+        WeaponComponent weaponComponent = yukine.getComponent(WeaponComponent.class);
+        Point2D weaponOuterPoint = weaponComponent.getWeaponOuterPoint();
+
         play("weapons/shooting.wav");
         return entityBuilder()
             .type(Type.BULLET)
-            .at(yukine.getX()+12, yukine.getY() + 5)
+            .at(weaponOuterPoint)
             .viewWithBBox("yukine/weapons/bullet.png")
             .with(new CollidableComponent(true))
             .with(new BulletComponent())

@@ -51,6 +51,7 @@ public class SGApp extends GameApplication {
     public static final String TITLE = "SG";
     public static final double HEALTH_REGENRATE = 0.05;
     public static Random random = new Random();
+
     public static Entity yukine;
     private double elapsedTime = 0.0;
     private ProgressBar cooldownBar;

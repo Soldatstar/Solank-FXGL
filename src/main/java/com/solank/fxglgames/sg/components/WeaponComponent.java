@@ -17,9 +17,9 @@ public class WeaponComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getViewComponent().addChild(weaponView);
+        entity.getViewComponent().addChild(weaponView); // Add the weapon view
+
         transform = entity.getComponent(TransformComponent.class);
-        weaponView.setTranslateZ(-200);
     }
 
     @Override
@@ -44,9 +44,20 @@ public class WeaponComponent extends Component {
         weaponTexture.setScaleY(5);
         ImageView weaponView = new ImageView(weaponTexture.getImage());
         weaponView.setTranslateZ(-200);
-        weaponView.setTranslateX(-25); // Adjust the position of the weapon relative to the entity
+        weaponView.setTranslateY(-15);
+        weaponView.setTranslateX(-45); // Adjust the position of the weapon relative to the entity
 
         // Create the weapon component and add it to the entity
         return new  WeaponComponent(weaponView);
+    }
+    public Point2D getWeaponOuterPoint() {
+        double angle = Math.toRadians(weaponView.getRotate());
+        double offsetX = 60; // Adjust the X offset based on the weapon's dimensions
+        double offsetY = 60; // Adjust the Y offset based on the weapon's dimensions
+
+        double outerX = transform.getX() + offsetX * Math.cos(angle);
+        double outerY = transform.getY() + offsetY * Math.sin(angle);
+
+        return new Point2D(outerX+10, outerY-10);
     }
 }
