@@ -28,7 +28,7 @@ public class WeaponComponent extends Component {
         Point2D mousePosition = FXGL.getInput().getMousePositionUI();
 
         // Get the position of the entity
-        Point2D entityPosition = transform.getPosition();
+        Point2D entityPosition = transform.getPosition().subtract(FXGL.getGameScene().getViewport().getOrigin());
 
         // Calculate the angle between the entity and the mouse cursor
         double angle = Math.atan2(mousePosition.getY() - entityPosition.getY(),
