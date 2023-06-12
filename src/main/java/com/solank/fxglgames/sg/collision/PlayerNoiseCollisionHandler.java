@@ -26,6 +26,6 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
 
         //random int 1 or 2
         int randomInt = (int) (Math.random() * 2) + 1;
-        play("hit/hit"+ randomInt+".wav");
+        play("hit/hit" + randomInt + ".wav");
     }
 }

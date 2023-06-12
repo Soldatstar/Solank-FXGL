@@ -109,7 +109,7 @@ public class SGApp extends GameApplication {
         yukine.addComponent(WeaponComponent.createWeapon());
 
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
-        getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2)+300);
+        getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2) + 300);
         //spawn 20 BGbuildings
         int x = 0;
         for (int i = 0; i < 50; i++) {
@@ -119,7 +119,6 @@ public class SGApp extends GameApplication {
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }
-
 
 
     @Override
@@ -236,11 +235,11 @@ public class SGApp extends GameApplication {
         scoreLabel.setFont(Font.font(30.0));
         scoreLabel.setAlignment(Pos.CENTER);
         scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("%d"));
-        addUINode(scoreLabel, getAppWidth()/2,2 );
+        addUINode(scoreLabel, getAppWidth() / 2, 2);
     }
 
     private void initHPBar() {
-        hpBar =new ProgressBar(false);
+        hpBar = new ProgressBar(false);
         hpBar.setMinValue(0);
         hpBar.setMaxValue(YUKINE_MAX_HEALTH);
         hpBar.setCurrentValue(YUKINE_MAX_HEALTH);
@@ -284,16 +283,16 @@ public class SGApp extends GameApplication {
         int side = random(0, getAppWidth());
         int x = side;
         int y = 10;
-        gameWorld.create("SmallNoise", new SpawnData(x+yukine.getX(), y).put(YUKINE_ENTITY, yukine));
+        gameWorld.create("SmallNoise", new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
     }
 
     private void SpawnNoiseSide() {
         int side = random(0, 1);
-        int appwidth = (getAppWidth()+20)/2;
-        int x = (int) yukine.getX()+ appwidth;
-        int y = getAppHeight() -100;
+        int appwidth = (getAppWidth() + 20) / 2;
+        int x = (int) yukine.getX() + appwidth;
+        int y = getAppHeight() - 100;
         if (side == 0) {
-            x = (int) yukine.getX()- appwidth;
+            x = (int) yukine.getX() - appwidth;
         }
         gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }

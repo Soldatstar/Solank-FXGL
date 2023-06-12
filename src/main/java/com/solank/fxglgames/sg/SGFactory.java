@@ -51,7 +51,7 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
             .with(physics)
-            .viewWithBBox(new Rectangle(getAppWidth()+20000, 150, Color.BLACK))
+            .viewWithBBox(new Rectangle(getAppWidth() + 20000, 150, Color.BLACK))
             .at(-100, getAppHeight() - 15)
             //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
             .buildAndAttach();
@@ -60,15 +60,15 @@ public class SGFactory implements EntityFactory {
 
     @Spawns("BGBuilding")
     public Entity spawnBGBuilding(SpawnData data) {
-        double v1 = ((int)(Math.random()*100)+100);
+        double v1 = ((int) (Math.random() * 100) + 100);
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
 
         //return entityBuilder(data) of a background building with a random height and width between 100 and 200
         return entityBuilder(data)
             .with(physics)
-            .viewWithBBox(new Rectangle((int)(Math.random()*100)+100, v1, Color.BLUE))
-            .at(data.getX(), data.getY()-v1)
+            .viewWithBBox(new Rectangle((int) (Math.random() * 100) + 100, v1, Color.BLUE))
+            .at(data.getX(), data.getY() - v1)
             .buildAndAttach();
     }
 
@@ -89,7 +89,6 @@ public class SGFactory implements EntityFactory {
             .with("score", 10)
             .buildAndAttach();
     }
-
 
 
     @Spawns("TallNoise")
@@ -136,7 +135,7 @@ public class SGFactory implements EntityFactory {
     public Entity spawnCloud(SpawnData data) {
         return entityBuilder(data)
             .viewWithBBox(new Rectangle(50, 50, Color.BLUE))
-            .at(data.getX(), data.getY(),-200)
+            .at(data.getX(), data.getY(), -200)
             .buildAndAttach();
     }
 }

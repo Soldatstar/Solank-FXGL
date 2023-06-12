@@ -3,9 +3,6 @@ package com.solank.fxglgames.sg.components;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 
-import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
-import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
-
 public class BulletComponent extends Component {
     Entity bullet;
     double bulletflytime = 0;
@@ -21,10 +18,10 @@ public class BulletComponent extends Component {
     public void onUpdate(double tpf) {
 
         super.onUpdate(tpf);
-            bulletflytime += tpf;
-            if (bulletflytime > maxflytime) {
-                bullet.removeFromWorld();
-            }
-}
+        bulletflytime += tpf;
+        if (bulletflytime > maxflytime) {
+            bullet.removeFromWorld();
+        }
+    }
 
 }

@@ -12,6 +12,7 @@ import static com.solank.fxglgames.sg.SGApp.yukine;
 
 public class BulletNoiseCollisionHandler extends CollisionHandler {
     int pushBackForce = 200;
+
     public BulletNoiseCollisionHandler() {
         super(Type.BULLET, Type.NOISE);
     }
@@ -24,8 +25,6 @@ public class BulletNoiseCollisionHandler extends CollisionHandler {
         int score = b.getInt("score");
 
 
-
-
         if (damage >= noiseRemainingHealth) {
             inc("Score", +score);
             b.removeFromWorld();
@@ -36,7 +35,7 @@ public class BulletNoiseCollisionHandler extends CollisionHandler {
             if (yukine.getX() < b.getX()) {
                 b.getComponent(PhysicsComponent.class).setLinearVelocity(pushBackForce, 0);
             } else {
-                b.getComponent(PhysicsComponent.class).setLinearVelocity((-1)*pushBackForce, 0);
+                b.getComponent(PhysicsComponent.class).setLinearVelocity((-1) * pushBackForce, 0);
             }
         }
         a.removeFromWorld();

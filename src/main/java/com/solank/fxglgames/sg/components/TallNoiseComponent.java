@@ -21,7 +21,7 @@ public class TallNoiseComponent extends Component {
     private boolean canJump = true;
     private boolean frozen = false;
     private int health = 2;
-    private LocalTimer freezeTimer;
+    private final LocalTimer freezeTimer;
     private final Duration freezeDuration = Duration.seconds(0.7);
 
 
