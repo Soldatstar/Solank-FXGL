@@ -110,9 +110,11 @@ public class SGApp extends GameApplication {
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
         getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2)+300);
         //spawn 20 BGbuildings
-        /*for (int i = 0; i < 50; i++) {
-            gameWorld.spawn("BGBuilding", new SpawnData(random(0, 20000), getAppHeight()));
-        }*/
+        int x = 0;
+        for (int i = 0; i < 50; i++) {
+            x = 200 * i;
+            gameWorld.spawn("Cloud", new SpawnData(x, 200));
+        }
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }

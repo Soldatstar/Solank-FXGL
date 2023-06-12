@@ -69,10 +69,6 @@ public class SGFactory implements EntityFactory {
             .viewWithBBox(new Rectangle((int)(Math.random()*100)+100, v1, Color.BLUE))
             .at(data.getX(), data.getY()-v1)
             .buildAndAttach();
-
-
-
-
     }
 
     @Spawns("SmallNoise")
@@ -129,6 +125,14 @@ public class SGFactory implements EntityFactory {
             .with(new BulletComponent())
             .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
             .with("damage", 10.0)
+            .buildAndAttach();
+    }
+
+    @Spawns("Cloud")
+    public Entity spawnCloud(SpawnData data) {
+        return entityBuilder(data)
+            .viewWithBBox(new Rectangle(50, 50, Color.BLUE))
+            .at(data.getX(), data.getY(),-200)
             .buildAndAttach();
     }
 }
