@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.time.LocalTimer;
 import com.solank.fxglgames.sg.SGApp;
 import javafx.util.Duration;
 
@@ -18,14 +19,19 @@ public class TallNoiseComponent extends Component {
     private final Entity yukine;
     private double jumpCoolDown = 2;
     private boolean canJump = true;
+    private boolean frozen = false;
     private int health = 2;
+    private LocalTimer freezeTimer;
+    private final Duration freezeDuration = Duration.seconds(0.7);
 
 
     public TallNoiseComponent(Entity yukine) {
-        //random int between 1 and 4
+        //random int 1 or 2
         int randomInt = SGApp.random.nextInt(2) + 1;
+        freezeTimer = FXGL.newLocalTimer();
 
-        this.upDown = new AnimationChannel(FXGL.image("tallNoise-up-down"+randomInt+".png"), Duration.seconds(1), 3);
+        this.upDown =
+            new AnimationChannel(FXGL.image("tallNoise-up-down" + randomInt + ".png"), Duration.seconds(1), 3);
 
         this.texture = new AnimatedTexture(upDown);
         texture.setScaleX(2);
@@ -48,6 +54,7 @@ public class TallNoiseComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+
         if (!canJump) {
             jumpCoolDown -= tpf;
             if (jumpCoolDown < 0) {
@@ -55,6 +62,18 @@ public class TallNoiseComponent extends Component {
                 jumpCoolDown = 1;
             }
         }
+        if (!frozen) {
+            move(tpf);
+        } else {
+            if (freezeTimer.elapsed(freezeDuration)) {
+                frozen = false;
+                freezeTimer.capture();
+                texture.play();
+            }
+        }
+    }
+
+    private void move(double tpf) {
         double noiseX = getEntity().getX();
         double noiseY = getEntity().getY();
 
@@ -80,10 +99,17 @@ public class TallNoiseComponent extends Component {
         getEntity().getComponent(PhysicsComponent.class).setVelocityX((directionX * speed * tpf));
 
         if (length < 200 && yukineY < noiseY && canJump) {
-            getEntity().getComponent(PhysicsComponent.class).setVelocityY(-speed * tpf*3);
+            getEntity().getComponent(PhysicsComponent.class).setVelocityY(-speed * tpf * 3);
             canJump = false;
         }
     }
+
+    public void freeze() {
+        frozen = true;
+        freezeTimer.capture();
+        texture.stop();
+    }
+
 
     @Override
     public void onAdded() {

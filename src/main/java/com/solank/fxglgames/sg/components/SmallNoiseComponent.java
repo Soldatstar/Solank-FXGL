@@ -21,7 +21,6 @@ public class SmallNoiseComponent extends Component {
     private final Entity yukine;
 
     public SmallNoiseComponent(Entity yukine) {
-        //random int between 1 and 4
         int randomInt = SGApp.random.nextInt(4) + 1;
         this.upDown = new AnimationChannel(FXGL.image("noise-up-down"+randomInt+".png"), Duration.seconds(0.5), 3);
 

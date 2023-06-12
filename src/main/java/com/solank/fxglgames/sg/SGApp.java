@@ -13,10 +13,8 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
-import com.solank.fxglgames.sg.collision.BulletSmallNoiseCollisionHandler;
-import com.solank.fxglgames.sg.collision.BulletTallNoiseCollisionHandler;
-import com.solank.fxglgames.sg.collision.PlayerSmallNoiseCollisionHandler;
-import com.solank.fxglgames.sg.collision.PlayerTallNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.WeaponComponent;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
@@ -36,7 +34,6 @@ import java.util.Random;
 import static com.almasb.fxgl.dsl.FXGL.addUINode;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
-import static com.almasb.fxgl.dsl.FXGL.getFXApp;
 import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.getInput;
@@ -125,11 +122,8 @@ public class SGApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 600);
-        getPhysicsWorld().addCollisionHandler(new PlayerSmallNoiseCollisionHandler());
-        getPhysicsWorld().addCollisionHandler(new BulletSmallNoiseCollisionHandler());
-        getPhysicsWorld().addCollisionHandler(new BulletTallNoiseCollisionHandler());
-        getPhysicsWorld().addCollisionHandler(new PlayerTallNoiseCollisionHandler());
-
+        getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
     }
 
 

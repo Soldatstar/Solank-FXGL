@@ -8,18 +8,19 @@ import static com.almasb.fxgl.dsl.FXGL.getd;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.inc;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
-public class PlayerTallNoiseCollisionHandler extends CollisionHandler {
-    public PlayerTallNoiseCollisionHandler() {
+public class PlayerNoiseCollisionHandler extends CollisionHandler {
+    public PlayerNoiseCollisionHandler() {
 
-        super(Type.YUKINE, Type.TALLNOISE);
+        super(Type.YUKINE, Type.NOISE);
     }
 
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-        if (getd("Health") < 25.0) {
+        if (getd("Health") < b.getDouble("damage")) {
+
             inc("Health", -getd("Health"));
         } else {
-            inc("Health", -25.0);
+            inc("Health", -b.getDouble("damage"));
         }
         b.removeFromWorld();
         play("hit.wav");

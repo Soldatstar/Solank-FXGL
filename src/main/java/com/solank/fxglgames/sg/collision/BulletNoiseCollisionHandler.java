@@ -2,13 +2,16 @@ package com.solank.fxglgames.sg.collision;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.solank.fxglgames.sg.Type;
+import com.solank.fxglgames.sg.components.TallNoiseComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.inc;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
-public class BulletSmallNoiseCollisionHandler extends CollisionHandler {
-    public BulletSmallNoiseCollisionHandler() {
+public class BulletNoiseCollisionHandler extends CollisionHandler {
+    int pushBackForce = 400;
+    public BulletNoiseCollisionHandler() {
         super(Type.BULLET, Type.NOISE);
     }
 
@@ -18,12 +21,22 @@ public class BulletSmallNoiseCollisionHandler extends CollisionHandler {
         double noiseRemainingHealth = b.getDouble("health");
         double damage = a.getDouble("damage");
         int score = b.getInt("score");
-        // If the bullet's damage is greater than the noise's remaining health, then the noise is killed.
+
+
+
+
         if (damage >= noiseRemainingHealth) {
             inc("Score", +score);
             b.removeFromWorld();
         } else {
             b.setProperty("health", noiseRemainingHealth - damage);
+            b.getComponentOptional(TallNoiseComponent.class).get().freeze();
+            //push back noise away from bullet
+            if (a.getX() < b.getX()) {
+                b.getComponent(PhysicsComponent.class).setLinearVelocity(pushBackForce, 0);
+            } else {
+                b.getComponent(PhysicsComponent.class).setLinearVelocity((-1)*pushBackForce, 0);
+            }
         }
         a.removeFromWorld();
     }
