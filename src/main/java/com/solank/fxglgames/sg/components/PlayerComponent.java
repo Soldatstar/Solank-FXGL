@@ -45,7 +45,7 @@ public class PlayerComponent extends Component {
         //when jump cooldown is 0, you can jump
         if (jumpCooldown <= 0) {
             canJump = true;
-        }
+        } 
     }
 
     @Override

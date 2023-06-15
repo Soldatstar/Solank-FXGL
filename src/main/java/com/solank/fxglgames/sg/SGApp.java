@@ -191,7 +191,7 @@ public class SGApp extends GameApplication {
 
         getInput().addAction(new UserAction("Shoot") {
             @Override
-            protected void onActionBegin() {
+            protected void onAction() {
 
                 if (elapsedTime >= SHOT_PAUSE_DURATION) {
                     shoot();
