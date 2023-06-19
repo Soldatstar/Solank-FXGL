@@ -38,6 +38,6 @@ public class BulletNoiseCollisionHandler extends CollisionHandler {
                 b.getComponent(PhysicsComponent.class).setLinearVelocity((-1) * pushBackForce, 0);
             }
         }
-        a.removeFromWorld();
+        //a.removeFromWorld();
     }
 }
