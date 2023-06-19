@@ -47,7 +47,7 @@ import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
 
 public class SGApp extends GameApplication {
-    public static final String VERSION = "0.0.3pre";
+    public static final String VERSION = "0.0.3";
     public static final String TITLE = "SG";
     public static final double HEALTH_REGENRATE = 0.05;
     private static final double COOLDOWN_DURATION = 1.0;
