@@ -25,5 +25,6 @@ public class NoiseNoiseCollisionHandler extends CollisionHandler {
 
     @Override
     protected void onHitBoxTrigger(Entity a, Entity b, HitBox boxA, HitBox boxB) {
+
     }
 }

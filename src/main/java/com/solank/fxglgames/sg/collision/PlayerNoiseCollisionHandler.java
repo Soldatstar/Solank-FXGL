@@ -1,10 +1,12 @@
 package com.solank.fxglgames.sg.collision;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.solank.fxglgames.sg.Type;
 
 import static com.almasb.fxgl.dsl.FXGL.getd;
+import static com.almasb.fxgl.dsl.FXGL.random;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.inc;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.play;
 
@@ -24,8 +26,9 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
         }
         b.removeFromWorld();
 
-        //random int 1 or 2
-        int randomInt = (int) (Math.random() * 2) + 1;
+        //int randomInt = (int) (Math.random() * 2) + 1;
+        int randomInt = FXGL.random(1,2);
+
         play("hit/hit" + randomInt + ".wav");
     }
 }

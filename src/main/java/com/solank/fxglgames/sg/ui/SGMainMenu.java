@@ -19,9 +19,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class SGMainMenu extends FXGLMenu {
+    private static final Color SELECTED_COLOR = Color.WHITE;
+    private static final Color UNSELECTED_COLOR = Color.GRAY;
     private final ObjectProperty<sgButton> selectedButton;
-
-
     public SGMainMenu() {
         super(MenuType.MAIN_MENU);
         Texture bg = FXGL.getAssetLoader().loadTexture("mainmenu/mainmenu.png");
@@ -81,10 +81,21 @@ public class SGMainMenu extends FXGLMenu {
 
     }
 
+    private static class Lineseperator extends Parent {
+        private final Rectangle line = new Rectangle(300, 2, Color.WHITE);
 
-    private static final Color SELECTED_COLOR = Color.WHITE;
-    private static final Color UNSELECTED_COLOR = Color.GRAY;
+        public Lineseperator() {
+            var gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE
+                , new javafx.scene.paint.Stop(0, Color.WHITE)
+                , new javafx.scene.paint.Stop(0.2, Color.LIGHTGRAY)
+                , new javafx.scene.paint.Stop(1, Color.TRANSPARENT)
+            );
 
+            line.setFill(gradient);
+            getChildren().add(line);
+
+        }
+    }
 
     private class sgButton extends StackPane {
 
@@ -131,21 +142,5 @@ public class SGMainMenu extends FXGLMenu {
 
         }
 
-    }
-
-    private static class Lineseperator extends Parent {
-        private final Rectangle line = new Rectangle(300, 2, Color.WHITE);
-
-        public Lineseperator() {
-            var gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE
-                , new javafx.scene.paint.Stop(0, Color.WHITE)
-                , new javafx.scene.paint.Stop(0.2, Color.LIGHTGRAY)
-                , new javafx.scene.paint.Stop(1, Color.TRANSPARENT)
-            );
-
-            line.setFill(gradient);
-            getChildren().add(line);
-
-        }
     }
 }

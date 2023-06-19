@@ -50,23 +50,34 @@ public class SGApp extends GameApplication {
     public static final String VERSION = "0.0.3pre";
     public static final String TITLE = "SG";
     public static final double HEALTH_REGENRATE = 0.05;
-    public static Random random = new Random();
-
-    public static Entity yukine;
-    private double elapsedTime = 0.0;
-    private ProgressBar cooldownBar;
-    private ProgressBar hpBar;
-
     private static final double COOLDOWN_DURATION = 1.0;
     private static final double SHOT_PAUSE_DURATION = 0.15;
-    private boolean cooldown;
-    private GameWorld gameWorld;
     private static final String YUKINE_ENTITY = "Yukine";
     private static final String HEALTH_ENTITY = "Health";
     private static final String SCORE_ENTITY = "Score";
     private static final Double YUKINE_MAX_HEALTH = 150.0;
-
+    public static Random random = new Random();
+    public static Entity yukine;
+    private double elapsedTime = 0.0;
+    private ProgressBar cooldownBar;
+    private ProgressBar hpBar;
+    private boolean cooldown;
+    private GameWorld gameWorld;
     private Music bgm;
+
+    private static void initScoreLabel() {
+        Label scoreLabel = new Label();
+        scoreLabel.setTextFill(Color.ORANGERED);
+        scoreLabel.setEffect(new DropShadow(15, Color.WHITE));
+        scoreLabel.setFont(Font.font(30.0));
+        scoreLabel.setAlignment(Pos.CENTER);
+        scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("%d"));
+        addUINode(scoreLabel, getAppWidth() / 2, 2);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -116,10 +127,10 @@ public class SGApp extends GameApplication {
             x = 200 * i;
             gameWorld.spawn("Cloud", new SpawnData(x, 200));
         }
+        gameWorld.spawn("Wall", new SpawnData(0, 0));
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }
-
 
     @Override
     protected void initPhysics() {
@@ -127,7 +138,6 @@ public class SGApp extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
     }
-
 
     @Override
     protected void initUI() {
@@ -197,7 +207,14 @@ public class SGApp extends GameApplication {
                     shoot();
                 }
             }
-        }, MouseButton.SECONDARY);
+
+            @Override
+            protected void onAction() {
+                if (elapsedTime >= SHOT_PAUSE_DURATION) {
+                    shoot();
+                }
+            }
+        }, MouseButton.PRIMARY);
 
 
         getInput().addAction(new UserAction("Left") {
@@ -225,17 +242,6 @@ public class SGApp extends GameApplication {
             }
         }, KeyCode.RIGHT);
 
-    }
-
-
-    private static void initScoreLabel() {
-        Label scoreLabel = new Label();
-        scoreLabel.setTextFill(Color.ORANGERED);
-        scoreLabel.setEffect(new DropShadow(15, Color.WHITE));
-        scoreLabel.setFont(Font.font(30.0));
-        scoreLabel.setAlignment(Pos.CENTER);
-        scoreLabel.textProperty().bind(getip(SCORE_ENTITY).asString("%d"));
-        addUINode(scoreLabel, getAppWidth() / 2, 2);
     }
 
     private void initHPBar() {
@@ -278,7 +284,6 @@ public class SGApp extends GameApplication {
         }
     }
 
-
     private void SpawnNoiseTop() {
         int side = random(0, getAppWidth());
         int x = side;
@@ -296,7 +301,6 @@ public class SGApp extends GameApplication {
         }
         gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
-
 
     private void shoot() {
         if (cooldown) {
@@ -318,7 +322,6 @@ public class SGApp extends GameApplication {
         }
     }
 
-
     private void gameOver(boolean reachedEndOfGame) {
         getInput().setRegisterInput(false);
         getInput().setProcessInput(false);
@@ -332,10 +335,5 @@ public class SGApp extends GameApplication {
         builder.append("Final score: ")
             .append(FXGL.geti(SCORE_ENTITY));
         FXGL.getDialogService().showMessageBox(builder.toString(), () -> FXGL.getGameController().gotoMainMenu());
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

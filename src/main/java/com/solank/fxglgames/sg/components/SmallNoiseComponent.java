@@ -10,12 +10,10 @@ import com.solank.fxglgames.sg.SGApp;
 import javafx.util.Duration;
 
 public class SmallNoiseComponent extends Component {
-    private PhysicsComponent physics;
     private final AnimatedTexture texture;
-
     private final AnimationChannel upDown;
-
     private final Entity yukine;
+    private PhysicsComponent physics;
 
     public SmallNoiseComponent(Entity yukine) {
         int randomInt = SGApp.random.nextInt(4) + 1;

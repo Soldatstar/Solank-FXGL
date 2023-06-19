@@ -10,17 +10,15 @@ import javafx.util.Duration;
 
 public class PlayerComponent extends Component {
     private static final int PLAYER_SPEED = 300;
+    private static final double JUMP_FORCE = 21000;
+    private static final double GLIDE_FORCE = 800;
+    private static final double JUMP_COOLDOWN = 0.5;
     private final AnimatedTexture texture;
-
     private final AnimationChannel left;
     private final AnimationChannel right;
     private final AnimationChannel upDown;
     private PhysicsComponent physics;
     private boolean physicsReady;
-
-    private static final double JUMP_FORCE = 21000;
-    private static final double GLIDE_FORCE = 800;
-    private static final double JUMP_COOLDOWN = 0.5;
     private double jumpCooldown = 0;
 
     private boolean canJump = true;

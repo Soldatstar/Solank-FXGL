@@ -15,6 +15,17 @@ public class WeaponComponent extends Component {
         this.weaponView = weaponView;
     }
 
+    public static WeaponComponent createWeapon() {
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
+        weaponTexture.setScaleX(5);
+        weaponTexture.setScaleY(5);
+        ImageView weaponView = new ImageView(weaponTexture.getImage());
+        weaponView.setTranslateZ(-200);
+        weaponView.setTranslateY(-15);
+        weaponView.setTranslateX(-45);
+        return new WeaponComponent(weaponView);
+    }
+
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(weaponView);
@@ -35,17 +46,6 @@ public class WeaponComponent extends Component {
 
         // Set the rotation angle of the weapon to point towards the mouse cursor
         weaponView.setRotate(Math.toDegrees(angle));
-    }
-
-    public static WeaponComponent createWeapon() {
-        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
-        weaponTexture.setScaleX(5);
-        weaponTexture.setScaleY(5);
-        ImageView weaponView = new ImageView(weaponTexture.getImage());
-        weaponView.setTranslateZ(-200);
-        weaponView.setTranslateY(-15);
-        weaponView.setTranslateX(-45);
-        return new WeaponComponent(weaponView);
     }
 
     public Point2D getWeaponOuterPoint() {

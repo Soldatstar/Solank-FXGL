@@ -11,18 +11,16 @@ import com.solank.fxglgames.sg.SGApp;
 import javafx.util.Duration;
 
 public class TallNoiseComponent extends Component {
-    private PhysicsComponent physics;
     private final AnimatedTexture texture;
-
     private final AnimationChannel upDown;
-
     private final Entity yukine;
+    private final LocalTimer freezeTimer;
+    private final Duration freezeDuration = Duration.seconds(0.7);
+    private PhysicsComponent physics;
     private double jumpCoolDown = 2;
     private boolean canJump = true;
     private boolean frozen = false;
     private int health = 2;
-    private final LocalTimer freezeTimer;
-    private final Duration freezeDuration = Duration.seconds(0.7);
 
 
     public TallNoiseComponent(Entity yukine) {
@@ -44,12 +42,12 @@ public class TallNoiseComponent extends Component {
         }
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     @Override

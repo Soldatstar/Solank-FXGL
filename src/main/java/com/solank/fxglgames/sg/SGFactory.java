@@ -138,4 +138,19 @@ public class SGFactory implements EntityFactory {
             .at(data.getX(), data.getY(), -200)
             .buildAndAttach();
     }
+
+    @Spawns("Wall")
+    public Entity spawnWall(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+
+        return entityBuilder(data)
+            .with(physics)
+            .viewWithBBox(new Rectangle(10, getAppHeight(), Color.INDIANRED))
+            .at(0, 0)
+            //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
+            .buildAndAttach();
+    }
+
+
 }
