@@ -124,10 +124,12 @@ public class SGApp extends GameApplication {
         //spawn 20 BGbuildings
         int x = 0;
         for (int i = 0; i < 50; i++) {
-            x = 200 * i;
-            gameWorld.spawn("Cloud", new SpawnData(x, 200));
+            x = 500 * i;
+            int rnd = random.nextInt(100);
+            gameWorld.spawn("Cloud", new SpawnData(x, 100+rnd));
         }
         gameWorld.spawn("Wall", new SpawnData(0, 0));
+        gameWorld.spawn("Wall", new SpawnData(20000, 0));
         run(this::SpawnNoiseSide, Duration.seconds(2.4));
         run(this::SpawnNoiseTop, Duration.seconds(2));
     }
@@ -155,6 +157,10 @@ public class SGApp extends GameApplication {
 
         if (getd(HEALTH_ENTITY) <= 0) {
             gameOver(false);
+        }
+
+        if (yukine.getX()>19800){
+            gameOver(true);
         }
 
     }
@@ -208,12 +214,6 @@ public class SGApp extends GameApplication {
                 }
             }
 
-            @Override
-            protected void onAction() {
-                if (elapsedTime >= SHOT_PAUSE_DURATION) {
-                    shoot();
-                }
-            }
         }, MouseButton.PRIMARY);
 
 
@@ -331,6 +331,7 @@ public class SGApp extends GameApplication {
         builder.append("Game Over!\n\n");
         if (reachedEndOfGame) {
             builder.append("You have reached the end of the game!\n\n");
+            builder.append("Thank you for trying this Demo!\n\n");
         }
         builder.append("Final score: ")
             .append(FXGL.geti(SCORE_ENTITY));

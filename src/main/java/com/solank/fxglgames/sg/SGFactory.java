@@ -20,9 +20,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import static com.almasb.fxgl.dsl.FXGL.addVarText;
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGL.getd;
 import static com.almasb.fxgl.dsl.FXGL.play;
 
 public class SGFactory implements EntityFactory {
@@ -133,8 +135,9 @@ public class SGFactory implements EntityFactory {
 
     @Spawns("Cloud")
     public Entity spawnCloud(SpawnData data) {
+        int random = (int) (Math.random() * 2) + 1;
         return entityBuilder(data)
-            .viewWithBBox(new Rectangle(50, 50, Color.BLUE))
+            .viewWithBBox("background/cloud"+ random+".png")
             .at(data.getX(), data.getY(), -200)
             .buildAndAttach();
     }
@@ -147,10 +150,11 @@ public class SGFactory implements EntityFactory {
         return entityBuilder(data)
             .with(physics)
             .viewWithBBox(new Rectangle(10, getAppHeight(), Color.INDIANRED))
-            .at(0, 0)
+            .at(data.getX(), data.getY())
             //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
             .buildAndAttach();
     }
+
 
 
 }
