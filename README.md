@@ -169,6 +169,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Viktor Weilenmann - [@YukineSymp](https://twitter.com/YukineSymp) - viktor.w50@gmail.com
 
+Sandy Rivers  - sandroregli@hotmail.com
+
+
 Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Soldatstar/Solank-FXGL)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
