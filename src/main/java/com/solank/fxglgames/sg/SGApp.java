@@ -58,7 +58,7 @@ public class SGApp extends GameApplication {
     private static final Double YUKINE_MAX_HEALTH = 150.0;
     public static Random random = new Random();
     public static Entity yukine;
-    private double elapsedTime = 0.0;
+    private double cdBetweenShots = 0.0;
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
     private boolean cooldown;
@@ -151,7 +151,7 @@ public class SGApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         updateHealth();
-        elapsedTime += tpf;
+        cdBetweenShots += tpf;
         updateCooldownBar();
         getPhysicsWorld().onUpdate(tpf);
 
@@ -209,7 +209,7 @@ public class SGApp extends GameApplication {
             @Override
             protected void onAction() {
 
-                if (elapsedTime >= SHOT_PAUSE_DURATION) {
+                if (cdBetweenShots >= SHOT_PAUSE_DURATION) {
                     shoot();
                 }
             }
@@ -307,7 +307,7 @@ public class SGApp extends GameApplication {
             return;
         }
 
-        elapsedTime = 0.0;
+        cdBetweenShots = 0.0;
 
         gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
             .put("mouseY", getInput().getMouseYWorld()));
