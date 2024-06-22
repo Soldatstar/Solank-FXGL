@@ -2,6 +2,7 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.TransformComponent;
+import com.solank.fxglgames.sg.model.bullet.BulletType;
 import javafx.geometry.Point2D;
 
 public class WeaponComponent extends Component {
@@ -44,5 +45,13 @@ public class WeaponComponent extends Component {
 
     public Double getDamage() {
         return weapon.getDamage();
+    }
+
+    public BulletType getBulletType() {
+    return weapon.getBulletType();
+    }
+
+    public int getHits() {
+        return weapon.getHits();
     }
 }

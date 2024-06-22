@@ -15,7 +15,7 @@ public class TallNoiseComponent extends Component {
     private final AnimationChannel upDown;
     private final Entity yukine;
     private final LocalTimer freezeTimer;
-    private final Duration freezeDuration = Duration.seconds(0.7);
+    private final Duration freezeDuration = Duration.seconds(0.6);
     private PhysicsComponent physics;
     private double jumpCoolDown = 2;
     private boolean canJump = true;

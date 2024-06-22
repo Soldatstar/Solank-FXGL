@@ -3,14 +3,11 @@ package com.solank.fxglgames.sg.components.weapons;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.Texture;
+import com.solank.fxglgames.sg.model.bullet.BulletType;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public class BigGun extends AbstractWeapon {
-
-    private final double COOLDOWN_DURATION = 1.5;
-    private final double SHOT_PAUSE_DURATION = 0.55;
-    private final double DAMAGE = 20;
 
     public BigGun(Entity entity) {
         super(entity);
@@ -37,16 +34,26 @@ public class BigGun extends AbstractWeapon {
 
     @Override
     public double getCooldownDuration() {
-        return COOLDOWN_DURATION;
+        return 1.5;
     }
 
     @Override
     public double getShotPauseDuration() {
-        return SHOT_PAUSE_DURATION;
+        return 0.55;
     }
 
     @Override
     public double getDamage() {
-        return DAMAGE;
+        return 20;
+    }
+
+    @Override
+    public BulletType getBulletType() {
+        return BulletType.ARMOR_PIERCING_BULLET;
+    }
+
+    @Override
+    public int getHits() {
+        return 2;
     }
 }

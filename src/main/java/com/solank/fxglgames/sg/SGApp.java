@@ -72,9 +72,8 @@ public class SGApp extends GameApplication {
         SmallGun smallGun = new SmallGun(yukine);
         activeWeapon = new WeaponComponent(smallGun);
         yukine.addComponent(activeWeapon);
-        BigGun bigGun = new BigGun(yukine);
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
-        getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2) + 300);
+        getGameScene().getViewport().bindToEntity(yukine, (double) getAppWidth() / 2, ((double) getAppHeight() / 2) + 300);
 
 
         int x;

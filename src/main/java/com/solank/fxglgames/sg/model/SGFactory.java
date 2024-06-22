@@ -110,6 +110,7 @@ public class SGFactory implements EntityFactory {
     public Entity spawnBullet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.KINEMATIC);
+
         Entity yukine = data.get("Yukine");
         double mouseX = data.get("mouseX");
         double mouseY = data.get("mouseY");
@@ -125,6 +126,8 @@ public class SGFactory implements EntityFactory {
                 .with(new BulletComponent())
                 .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
                 .with("damage", weaponComponent.getDamage())
+                .with("bulletType", weaponComponent.getBulletType())
+                .with("hits",weaponComponent.getHits())
                 .buildAndAttach();
     }
 
