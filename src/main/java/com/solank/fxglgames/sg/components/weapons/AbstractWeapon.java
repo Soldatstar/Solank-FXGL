@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg.components;
+package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -7,10 +7,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public abstract class AbstractWeapon implements WeaponStrategy {
-    private Entity entity;
     protected TransformComponent transform;
     protected ImageView weaponView;
-
+    private final Entity entity;
 
 
     public AbstractWeapon(Entity entity) {

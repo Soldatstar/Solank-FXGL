@@ -2,16 +2,14 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.TransformComponent;
-import com.solank.fxglgames.sg.components.AbstractWeapon;
-import com.solank.fxglgames.sg.components.WeaponComponent;
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
-import com.almasb.fxgl.texture.Texture;
 
 public class SmallGun extends AbstractWeapon {
     private final double COOLDOWN_DURATION = 1;
     private final double SHOT_PAUSE_DURATION = 0.15;
+    private final double DAMAGE = 10;
 
     public SmallGun(Entity entity) {
         super(entity);
@@ -45,5 +43,10 @@ public class SmallGun extends AbstractWeapon {
         double outerY = transform.getY() + offsetY * Math.sin(angle);
 
         return new Point2D(outerX + 10, outerY - 10);
+    }
+
+    @Override
+    public double getDamage() {
+        return DAMAGE;
     }
 }

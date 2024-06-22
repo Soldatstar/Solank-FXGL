@@ -4,10 +4,10 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.ui.ProgressBar;
-import com.solank.fxglgames.sg.components.WeaponComponent;
-import com.solank.fxglgames.sg.components.WeaponStrategy;
 import com.solank.fxglgames.sg.components.weapons.BigGun;
 import com.solank.fxglgames.sg.components.weapons.SmallGun;
+import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
+import com.solank.fxglgames.sg.components.weapons.WeaponStrategy;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public class WeaponManager {
     private final ProgressBar cooldownBar;
     private boolean cooldown;
     private double elapsedTime;
-    private WeaponComponent activeWeapon;
-    private ArrayList<WeaponStrategy> weapons = new ArrayList<>();
+    private final WeaponComponent activeWeapon;
+    private final ArrayList<WeaponStrategy> weapons = new ArrayList<>();
 
     public WeaponManager(GameWorld gameWorld, Entity yukine, ProgressBar cooldownBar) {
         this.gameWorld = gameWorld;

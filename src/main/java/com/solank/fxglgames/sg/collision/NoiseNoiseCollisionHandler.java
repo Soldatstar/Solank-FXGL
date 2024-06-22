@@ -3,7 +3,7 @@ package com.solank.fxglgames.sg.collision;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
-import com.solank.fxglgames.sg.Type;
+import com.solank.fxglgames.sg.model.Type;
 
 public class NoiseNoiseCollisionHandler extends CollisionHandler {
     public NoiseNoiseCollisionHandler(Object a, Object b) {

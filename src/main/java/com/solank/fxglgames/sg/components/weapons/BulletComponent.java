@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg.components;
+package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;

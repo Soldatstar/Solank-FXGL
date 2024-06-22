@@ -9,14 +9,13 @@ import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
-import com.solank.fxglgames.sg.components.WeaponComponent;
-import com.solank.fxglgames.sg.components.WeaponStrategy;
 import com.solank.fxglgames.sg.components.weapons.BigGun;
 import com.solank.fxglgames.sg.components.weapons.SmallGun;
+import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import com.solank.fxglgames.sg.manager.WeaponManager;
+import com.solank.fxglgames.sg.model.SGFactory;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -76,7 +75,6 @@ public class SGApp extends GameApplication {
         BigGun bigGun = new BigGun(yukine);
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
         getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2) + 300);
-
 
 
         int x;
