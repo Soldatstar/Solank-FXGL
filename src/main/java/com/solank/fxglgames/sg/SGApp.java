@@ -10,11 +10,13 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.components.WeaponComponent;
-import com.solank.fxglgames.sg.components.Yukine;
+import com.solank.fxglgames.sg.components.WeaponStrategy;
+import com.solank.fxglgames.sg.components.weapons.BigGun;
 import com.solank.fxglgames.sg.components.weapons.SmallGun;
-import com.solank.fxglgames.sg.manager.ShootingManager;
+import com.solank.fxglgames.sg.manager.WeaponManager;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -31,13 +33,13 @@ public class SGApp extends GameApplication {
     static final Double YUKINE_MAX_HEALTH = 150.0;
     public static Random random = new Random();
     public static Entity yukine;
-    public static Yukine YukineComponent;
     private final com.solank.fxglgames.sg.init init = new init(this);
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
     private GameWorld gameWorld;
     private Music bgm;
-    private ShootingManager shootingManager;
+    private WeaponManager shootingManager;
+    private WeaponComponent activeWeapon;
 
     public static void main(String[] args) {
         launch(args);
@@ -68,16 +70,16 @@ public class SGApp extends GameApplication {
         gameWorld.addEntityFactory(new SGFactory());
         gameWorld.create("Ground", new SpawnData());
         yukine = gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
-        SmallGun smallGun = new SmallGun(0.5, 0.1);
-         YukineComponent = new Yukine();
-        YukineComponent.setYukine(yukine);
-        YukineComponent.setWeapon(smallGun);
-
+        SmallGun smallGun = new SmallGun(yukine);
+        activeWeapon = new WeaponComponent(smallGun);
+        yukine.addComponent(activeWeapon);
+        BigGun bigGun = new BigGun(yukine);
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
         getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2) + 300);
 
 
-        int x = 0;
+
+        int x;
         for (int i = 0; i < 50; i++) {
             x = 500 * i;
             int rnd = random.nextInt(100);
@@ -99,7 +101,7 @@ public class SGApp extends GameApplication {
         init.initScoreLabel();
         init.initCooldownBar();
         init.initHPBar();
-        shootingManager = new ShootingManager(gameWorld, YukineComponent, cooldownBar);
+        shootingManager = new WeaponManager(gameWorld, yukine, cooldownBar);
 
     }
 
@@ -161,7 +163,7 @@ public class SGApp extends GameApplication {
         getAudioPlayer().stopMusic(bgm);
     }
 
-    public ShootingManager getShootingManager() {
+    public WeaponManager getShootingManager() {
         return shootingManager;
     }
 

@@ -2,18 +2,17 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.TransformComponent;
+import com.almasb.fxgl.texture.Texture;
 import com.solank.fxglgames.sg.components.AbstractWeapon;
-import com.solank.fxglgames.sg.components.WeaponComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
-import com.almasb.fxgl.texture.Texture;
 
-public class SmallGun extends AbstractWeapon {
-    private final double COOLDOWN_DURATION = 1;
-    private final double SHOT_PAUSE_DURATION = 0.15;
+public class BigGun extends AbstractWeapon {
 
-    public SmallGun(Entity entity) {
+    private final double COOLDOWN_DURATION = 1.5;
+    private final double SHOT_PAUSE_DURATION = 0.55;
+
+    public BigGun(Entity entity) {
         super(entity);
         Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
         weaponTexture.setScaleX(5);
@@ -22,17 +21,6 @@ public class SmallGun extends AbstractWeapon {
         weaponView.setTranslateZ(-200);
         weaponView.setTranslateY(-15);
         weaponView.setTranslateX(-45);
-    }
-
-
-    @Override
-    public double getCooldownDuration() {
-        return COOLDOWN_DURATION;
-    }
-
-    @Override
-    public double getShotPauseDuration() {
-        return SHOT_PAUSE_DURATION;
     }
 
     @Override
@@ -45,5 +33,15 @@ public class SmallGun extends AbstractWeapon {
         double outerY = transform.getY() + offsetY * Math.sin(angle);
 
         return new Point2D(outerX + 10, outerY - 10);
+    }
+
+    @Override
+    public double getCooldownDuration() {
+        return COOLDOWN_DURATION;
+    }
+
+    @Override
+    public double getShotPauseDuration() {
+        return SHOT_PAUSE_DURATION;
     }
 }

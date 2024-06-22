@@ -95,6 +95,14 @@ public class init {
             }
         }, KeyCode.RIGHT);
 
+
+        FXGL.getInput().addAction(new UserAction("Change Weapon") {
+            @Override
+            protected void onActionBegin() {
+                SGApp.getShootingManager().switchWeapon();
+            }
+        }, KeyCode.Q);
+
         //getInput().addAction(new UserAction("Jump") {
         //    @Override
         //    protected void onActionBegin() {
