@@ -13,7 +13,7 @@ public class SmallGun extends AbstractWeapon {
 
     public SmallGun(Entity entity) {
         super(entity);
-        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/SmallGun.png");
         weaponTexture.setScaleX(5);
         weaponTexture.setScaleY(5);
         this.weaponView = new ImageView(weaponTexture.getImage());

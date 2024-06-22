@@ -14,7 +14,7 @@ public class BigGun extends AbstractWeapon {
 
     public BigGun(Entity entity) {
         super(entity);
-        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/weapon.png");
+        Texture weaponTexture = FXGL.getAssetLoader().loadTexture("yukine/weapons/BigGun.png");
         weaponTexture.setScaleX(5);
         weaponTexture.setScaleY(5);
         this.weaponView = new ImageView(weaponTexture.getImage());
