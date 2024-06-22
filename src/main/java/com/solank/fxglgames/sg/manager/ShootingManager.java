@@ -4,6 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.ui.ProgressBar;
+import com.solank.fxglgames.sg.components.Yukine;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.getInput;
@@ -15,12 +16,12 @@ public class ShootingManager {
     private static final double COOLDOWN_DURATION = 1;
     private static final double SHOT_PAUSE_DURATION = 0.15;
     private final GameWorld gameWorld;
-    private final Entity yukine;
+    private final Yukine yukine;
     private final ProgressBar cooldownBar;
     private boolean cooldown;
     private double elapsedTime;
 
-    public ShootingManager(GameWorld gameWorld, Entity yukine, ProgressBar cooldownBar) {
+    public ShootingManager(GameWorld gameWorld, Yukine yukine, ProgressBar cooldownBar) {
         this.gameWorld = gameWorld;
         this.yukine = yukine;
         this.cooldownBar = cooldownBar;
@@ -38,6 +39,8 @@ public class ShootingManager {
         }
 
         elapsedTime = 0.0;
+        System.out.println(YUKINE_ENTITY);
+        System.out.println(yukine);
 
         gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
                 .put("mouseY", getInput().getMouseYWorld()));

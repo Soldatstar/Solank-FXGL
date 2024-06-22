@@ -11,11 +11,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.solank.fxglgames.sg.components.BulletComponent;
-import com.solank.fxglgames.sg.components.PlayerComponent;
-import com.solank.fxglgames.sg.components.SmallNoiseComponent;
-import com.solank.fxglgames.sg.components.TallNoiseComponent;
-import com.solank.fxglgames.sg.components.WeaponComponent;
+import com.solank.fxglgames.sg.components.*;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -35,7 +31,7 @@ public class SGFactory implements EntityFactory {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
 
-        return entityBuilder(data)
+        return  entityBuilder(data)
             .type(Type.YUKINE)
             .with(physics)
             .with(new PlayerComponent())

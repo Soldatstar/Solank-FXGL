@@ -10,6 +10,8 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.components.WeaponComponent;
+import com.solank.fxglgames.sg.components.Yukine;
+import com.solank.fxglgames.sg.components.weapons.SmallGun;
 import com.solank.fxglgames.sg.manager.ShootingManager;
 import javafx.util.Duration;
 
@@ -29,6 +31,7 @@ public class SGApp extends GameApplication {
     static final Double YUKINE_MAX_HEALTH = 150.0;
     public static Random random = new Random();
     public static Entity yukine;
+    public static Yukine YukineComponent;
     private final com.solank.fxglgames.sg.init init = new init(this);
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
@@ -65,8 +68,10 @@ public class SGApp extends GameApplication {
         gameWorld.addEntityFactory(new SGFactory());
         gameWorld.create("Ground", new SpawnData());
         yukine = gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - (double) 64));
-
-        yukine.addComponent(WeaponComponent.createWeapon());
+        SmallGun smallGun = new SmallGun(0.5, 0.1);
+         YukineComponent = new Yukine();
+        YukineComponent.setYukine(yukine);
+        YukineComponent.setWeapon(smallGun);
 
         getGameScene().getViewport().setBounds(0, 0, Integer.MAX_VALUE, getAppHeight() + 100);
         getGameScene().getViewport().bindToEntity(yukine, getAppWidth() / 2, (getAppHeight() / 2) + 300);
@@ -94,7 +99,7 @@ public class SGApp extends GameApplication {
         init.initScoreLabel();
         init.initCooldownBar();
         init.initHPBar();
-        shootingManager = new ShootingManager(gameWorld, yukine, cooldownBar);
+        shootingManager = new ShootingManager(gameWorld, YukineComponent, cooldownBar);
 
     }
 
