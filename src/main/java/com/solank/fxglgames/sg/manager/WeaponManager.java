@@ -46,8 +46,6 @@ public class WeaponManager {
         }
 
         elapsedTime = 0.0;
-        System.out.println(YUKINE_ENTITY);
-        System.out.println(yukine);
 
         gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
                 .put("mouseY", getInput().getMouseYWorld()));

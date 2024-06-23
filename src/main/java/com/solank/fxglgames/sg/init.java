@@ -30,7 +30,7 @@ public class init {
         FXGL.getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).right();
+                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).moveRight();
             }
 
             @Override
@@ -42,7 +42,7 @@ public class init {
         FXGL.getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).left();
+                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).moveLeft();
             }
 
             @Override
