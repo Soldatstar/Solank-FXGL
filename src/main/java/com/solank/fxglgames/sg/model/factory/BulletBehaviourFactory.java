@@ -1,6 +1,6 @@
 package com.solank.fxglgames.sg.model.factory;
 
-import com.solank.fxglgames.sg.model.bullet.*;
+import com.solank.fxglgames.sg.components.weapons.bullet.*;
 
 public class BulletBehaviourFactory {
     public static BulletBehaviour getBehaviour(BulletType type) {

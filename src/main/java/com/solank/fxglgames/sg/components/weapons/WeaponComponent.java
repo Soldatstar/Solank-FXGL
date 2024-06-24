@@ -2,7 +2,7 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.TransformComponent;
-import com.solank.fxglgames.sg.model.bullet.BulletType;
+import com.solank.fxglgames.sg.components.weapons.bullet.BulletType;
 import javafx.geometry.Point2D;
 
 public class WeaponComponent extends Component {
@@ -53,5 +53,11 @@ public class WeaponComponent extends Component {
 
     public int getHits() {
         return weapon.getHits();
+    }
+
+    public void shoot() { weapon.shoot();}
+
+    public double getCoolDownDecrement() {
+        return weapon.getCoolDownDecrement();
     }
 }

@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg.model.bullet;
+package com.solank.fxglgames.sg.components.weapons.bullet;
 
 import com.almasb.fxgl.entity.Entity;
 

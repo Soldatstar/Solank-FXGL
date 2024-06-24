@@ -53,7 +53,9 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.STATIC);
 
         return entityBuilder(data)
+                .type(Type.WALL)
                 .with(physics)
+                .with(new CollidableComponent(true))
                 .viewWithBBox(new Rectangle(getAppWidth() + 20000, 150, Color.BLACK))
                 .at(-100, getAppHeight() - 15)
                 .buildAndAttach();
@@ -114,22 +116,20 @@ public class SGFactory implements EntityFactory {
         physics.setBodyType(BodyType.KINEMATIC);
 
         Entity yukine = data.get("Yukine");
-        double mouseX = data.get("mouseX");
-        double mouseY = data.get("mouseY");
         WeaponComponent weaponComponent = yukine.getComponent(WeaponComponent.class);
-        Point2D weaponOuterPoint = weaponComponent.getWeaponOuterPoint();
+        Point2D direction = new Point2D(data.get("directionX"), data.get("directionY"));
 
         play("weapons/shooting.wav");
         return entityBuilder()
                 .type(Type.BULLET)
-                .at(weaponOuterPoint)
+                .at(weaponComponent.getWeaponOuterPoint())
                 .viewWithBBox("yukine/weapons/bullet.png")
                 .with(new CollidableComponent(true))
                 .with(new BulletComponent())
-                .with(new ProjectileComponent(new Point2D(mouseX - yukine.getX(), mouseY - yukine.getY()), 1000))
-                .with("damage", weaponComponent.getDamage())
-                .with("bulletType", weaponComponent.getBulletType())
-                .with("hits",weaponComponent.getHits())
+                .with(new ProjectileComponent(direction, data.get("bulletSpeed")))
+                .with("damage", data.get("damage"))
+                .with("bulletType", data.get("bulletType"))
+                .with("hits",data.get("hits"))
                 .buildAndAttach();
     }
 

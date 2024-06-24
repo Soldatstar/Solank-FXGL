@@ -2,14 +2,20 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.TransformComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
+import static com.almasb.fxgl.dsl.FXGL.getInput;
+import static com.solank.fxglgames.sg.SGApp.YUKINE_ENTITY;
+
 public abstract class AbstractWeapon implements WeaponStrategy {
     protected TransformComponent transform;
     protected ImageView weaponView;
-    private final Entity entity;
+    protected final Entity entity;
+    private boolean cooldown = false;
+    private double elapsedTime = 0.0;
 
 
     public AbstractWeapon(Entity entity) {
@@ -34,9 +40,33 @@ public abstract class AbstractWeapon implements WeaponStrategy {
     }
 
     @Override
+    public double getBulletSpeed() {
+        return 1000;
+    }
+
+    @Override
     public ImageView getView() {
         return weaponView;
     }
 
+    @Override
+    public void shoot() {
+        Point2D mousePosition = new Point2D(getInput().getMouseXWorld(), getInput().getMouseYWorld());
+        Point2D weaponOuterPoint = getWeaponOuterPoint();
+        Point2D directionToMouse = mousePosition.subtract(weaponOuterPoint).normalize();
+        spawnBullet(directionToMouse);
+    }
+
+
+    protected void spawnBullet( Point2D direction) {
+        entity.getWorld().create("Bullet", new SpawnData().put(YUKINE_ENTITY, entity)
+                .put("directionX", direction.getX())
+                .put("directionY", direction.getY())
+                .put("bulletSpeed", getBulletSpeed())
+                .put("damage", getDamage())
+                .put("bulletType", getBulletType())
+                .put("hits", getHits()));
+
+    }
 
 }

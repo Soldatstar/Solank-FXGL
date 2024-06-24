@@ -45,11 +45,11 @@ public class WeaponManager {
         }
 
         elapsedTime = 0.0;
+        activeWeapon.shoot();
 
-        gameWorld.create("Bullet", new SpawnData().put(YUKINE_ENTITY, yukine).put("mouseX", getInput().getMouseXWorld())
-                .put("mouseY", getInput().getMouseYWorld()));
 
-        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - 20);
+
+        cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - activeWeapon.getCoolDownDecrement());
 
         if (cooldownBar.getCurrentValue() < 2) {
             cooldown = true;

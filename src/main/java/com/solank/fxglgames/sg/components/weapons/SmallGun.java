@@ -3,7 +3,7 @@ package com.solank.fxglgames.sg.components.weapons;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.Texture;
-import com.solank.fxglgames.sg.model.bullet.BulletType;
+import com.solank.fxglgames.sg.components.weapons.bullet.BulletType;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
@@ -57,4 +57,10 @@ public class SmallGun extends AbstractWeapon {
     public int getHits() {
         return 0;
     }
+
+    @Override
+    public double getCoolDownDecrement() {
+        return 20;
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg.model.bullet;
+package com.solank.fxglgames.sg.components.weapons.bullet;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
@@ -14,6 +14,8 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
 
    @Override
    public void onHit(Entity bullet, Entity target) {
+      long startTime = System.nanoTime();
+
       double impactPosX = bullet.getX();
       double impactPosY = bullet.getY();
 
@@ -34,5 +36,8 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
          super.handleDamage(noise, 5, health, noise.getInt("score"));
       }
       bullet.removeFromWorld();
+      long endTime = System.nanoTime();
+      //print time in ns
+        System.out.println("ExplosionBullet.onHit() took " + (endTime - startTime) + " ns");
    }
 }

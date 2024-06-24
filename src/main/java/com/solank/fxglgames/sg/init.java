@@ -8,6 +8,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.BulletStaticCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.model.SGFactory;
@@ -175,6 +176,7 @@ public class init {
         FXGL.getPhysicsWorld().setGravity(0, 600);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletStaticCollisionHandler());
     }
 
     public void initFactory() {

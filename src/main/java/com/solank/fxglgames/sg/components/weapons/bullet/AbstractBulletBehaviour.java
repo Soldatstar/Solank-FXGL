@@ -1,4 +1,4 @@
-package com.solank.fxglgames.sg.model.bullet;
+package com.solank.fxglgames.sg.components.weapons.bullet;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -14,13 +14,16 @@ public class AbstractBulletBehaviour implements BulletBehaviour {
 
     @Override
     public void onHit(Entity bullet, Entity noise) {
+        long startTime = System.nanoTime();
         play("hit/enemyhit.wav");
 
         double noiseRemainingHealth = noise.getDouble("health");
         double damage = bullet.getDouble("damage");
         int score = noise.getInt("score");
         handleDamage(noise, damage, noiseRemainingHealth, score);
-
+        long endTime = System.nanoTime();
+        //print time in ns
+        System.out.println("AbstractBulletBehaviour.onHit() took " + (endTime - startTime) + " ns");
 
     }
 

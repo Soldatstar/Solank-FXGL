@@ -2,10 +2,14 @@ package com.solank.fxglgames.sg.components.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.Texture;
-import com.solank.fxglgames.sg.model.bullet.BulletType;
+import com.solank.fxglgames.sg.components.weapons.bullet.BulletType;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.solank.fxglgames.sg.SGApp.YUKINE_ENTITY;
 
 public class LowGun extends AbstractWeapon {
 
@@ -56,5 +60,36 @@ public class LowGun extends AbstractWeapon {
       public int getHits() {
          return 0;
 
+      }
+
+   @Override
+   public double getBulletSpeed() {
+      return 500;
    }
+
+   @Override
+      public void shoot() {
+          Point2D mousePosition = new Point2D(getInput().getMouseXWorld(), getInput().getMouseYWorld());
+          Point2D weaponOuterPoint = getWeaponOuterPoint();
+          Point2D directionToMouse = mousePosition.subtract(weaponOuterPoint).normalize();
+
+          Point2D leftDirection = new Point2D(
+                  directionToMouse.getX() * Math.cos(Math.toRadians(-10)) - directionToMouse.getY() * Math.sin(Math.toRadians(-10)),
+                  directionToMouse.getX() * Math.sin(Math.toRadians(-10)) + directionToMouse.getY() * Math.cos(Math.toRadians(-10))
+          );
+          Point2D rightDirection = new Point2D(
+                  directionToMouse.getX() * Math.cos(Math.toRadians(10)) - directionToMouse.getY() * Math.sin(Math.toRadians(10)),
+                  directionToMouse.getX() * Math.sin(Math.toRadians(10)) + directionToMouse.getY() * Math.cos(Math.toRadians(10))
+          );
+
+          spawnBullet(leftDirection);
+          spawnBullet(rightDirection);
+      }
+
+   @Override
+   public double getCoolDownDecrement() {
+      return 30;
+   }
+
+
 }
