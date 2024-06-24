@@ -25,7 +25,6 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
         }
         b.removeFromWorld();
 
-        //int randomInt = (int) (Math.random() * 2) + 1;
         int randomInt = FXGL.random(1, 2);
 
         play("hit/hit" + randomInt + ".wav");

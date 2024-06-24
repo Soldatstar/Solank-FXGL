@@ -9,13 +9,14 @@ import javafx.scene.image.ImageView;
 
 import static com.almasb.fxgl.dsl.FXGL.getInput;
 import static com.solank.fxglgames.sg.SGApp.YUKINE_ENTITY;
+import static com.solank.fxglgames.sg.model.SGFactory.BULLET_ENTITY;
 
 public abstract class AbstractWeapon implements WeaponStrategy {
+    protected final Entity entity;
     protected TransformComponent transform;
     protected ImageView weaponView;
-    protected final Entity entity;
-    private boolean cooldown = false;
-    private double elapsedTime = 0.0;
+    private final boolean cooldown = false;
+    private final double elapsedTime = 0.0;
 
 
     public AbstractWeapon(Entity entity) {
@@ -63,9 +64,8 @@ public abstract class AbstractWeapon implements WeaponStrategy {
     }
 
 
-
-    protected void spawnBullet( Point2D direction) {
-        entity.getWorld().create("Bullet", new SpawnData().put(YUKINE_ENTITY, entity)
+    protected void spawnBullet(Point2D direction) {
+        entity.getWorld().create(BULLET_ENTITY, new SpawnData().put(YUKINE_ENTITY, entity)
                 .put("directionX", direction.getX())
                 .put("directionY", direction.getY())
                 .put("bulletSpeed", getBulletSpeed())

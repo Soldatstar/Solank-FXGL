@@ -15,7 +15,7 @@ import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.components.SelfDestructComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
 import com.solank.fxglgames.sg.components.TallNoiseComponent;
-import com.solank.fxglgames.sg.components.weapons.BulletComponent;
+import com.solank.fxglgames.sg.components.BulletComponent;
 import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -23,15 +23,27 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.solank.fxglgames.sg.SGApp.*;
 
 public class SGFactory implements EntityFactory {
 
+    public static final String EXPLOSION_ENTITY = "Explosion" ;
     private static double explosionWidth;
-
 
     private static double explosionHeight;
 
-    @Spawns("Yukine")
+    public static final String BULLET_ENTITY = "Bullet";
+
+
+    public static void setExplosionWidth(double explosionWidth) {
+        SGFactory.explosionWidth = explosionWidth;
+    }
+
+    public static void setExplosionHeight(double explosionHeight) {
+        SGFactory.explosionHeight = explosionHeight;
+    }
+
+    @Spawns(YUKINE_ENTITY)
     public Entity spawnYukine(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
@@ -47,7 +59,7 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-    @Spawns("Ground")
+    @Spawns(GROUND_ENTITY)
     public Entity spawnGround(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
@@ -60,7 +72,6 @@ public class SGFactory implements EntityFactory {
                 .at(-100, getAppHeight() - 15)
                 .buildAndAttach();
     }
-
 
     @Spawns("BGBuilding")
     public Entity spawnBGBuilding(SpawnData data) {
@@ -75,7 +86,7 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-    @Spawns("SmallNoise")
+    @Spawns(SMALL_NOISE_ENTITY)
     public Entity spawnSmallNoise(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
@@ -92,8 +103,7 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-
-    @Spawns("TallNoise")
+    @Spawns(TALL_NOISE_ENTITY)
     public Entity spawnTallNoise(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
@@ -110,7 +120,7 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-    @Spawns("Bullet")
+    @Spawns(BULLET_ENTITY)
     public Entity spawnBullet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.KINEMATIC);
@@ -129,12 +139,8 @@ public class SGFactory implements EntityFactory {
                 .with(new ProjectileComponent(direction, data.get("bulletSpeed")))
                 .with("damage", data.get("damage"))
                 .with("bulletType", data.get("bulletType"))
-                .with("hits",data.get("hits"))
+                .with("hits", data.get("hits"))
                 .buildAndAttach();
-    }
-
-    public static void setExplosionWidth(double explosionWidth) {
-        SGFactory.explosionWidth = explosionWidth;
     }
 
     @Spawns("Cloud")
@@ -159,11 +165,7 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-    public static void setExplosionHeight(double explosionHeight) {
-        SGFactory.explosionHeight = explosionHeight;
-    }
-
-    @Spawns("Explosion")
+    @Spawns(EXPLOSION_ENTITY)
     public Entity spawnExplosion(SpawnData data) {
         double radius = data.get("Radius");
 

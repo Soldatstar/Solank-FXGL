@@ -27,6 +27,9 @@ public class SGApp extends GameApplication {
     public static final String TITLE = "SG";
     public static final double HEALTH_REGEN_RATE = 0.05;
     public static final String YUKINE_ENTITY = "Yukine";
+    public static final String GROUND_ENTITY = "Ground";
+    public static final String SMALL_NOISE_ENTITY = "SmallNoise";
+    public static final String TALL_NOISE_ENTITY = "TallNoise";
     public static final String HEALTH_ENTITY = "Health";
     public static final String SCORE_ENTITY = "Score";
     public static final double YUKINE_MAX_HEALTH = 150.0;
@@ -131,7 +134,7 @@ public class SGApp extends GameApplication {
     private void spawnNoiseTop() {
         int x = random(0, getAppWidth());
         int y = 10;
-        gameWorld.create("SmallNoise", new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
+        gameWorld.create(SMALL_NOISE_ENTITY, new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
     }
 
     private void spawnNoiseSide() {
@@ -142,7 +145,7 @@ public class SGApp extends GameApplication {
         if (side == 0) {
             x = (int) yukine.getX() - appWidth;
         }
-        gameWorld.create("TallNoise", new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
+        gameWorld.create(TALL_NOISE_ENTITY, new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
     private void gameOver(boolean reachedEndOfGame) {
@@ -184,7 +187,7 @@ public class SGApp extends GameApplication {
     }
 
     private void spawnInitialEntities() {
-        gameWorld.create("Ground", new SpawnData());
+        gameWorld.create(GROUND_ENTITY, new SpawnData());
     }
 
     private void spawnClouds() {

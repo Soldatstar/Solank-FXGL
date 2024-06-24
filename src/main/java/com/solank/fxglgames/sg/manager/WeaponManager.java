@@ -2,25 +2,22 @@ package com.solank.fxglgames.sg.manager;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.components.weapons.*;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-import static com.almasb.fxgl.dsl.FXGL.getInput;
 import static com.almasb.fxgl.dsl.FXGL.runOnce;
-import static com.solank.fxglgames.sg.SGApp.YUKINE_ENTITY;
 
 public class WeaponManager {
     private final GameWorld gameWorld;
     private final Entity yukine;
     private final ProgressBar cooldownBar;
-    private boolean cooldown;
-    private double elapsedTime;
     private final WeaponComponent activeWeapon;
     private final ArrayList<WeaponStrategy> weapons = new ArrayList<>();
+    private boolean cooldown;
+    private double elapsedTime;
     private int weaponIndex = 0;
 
     public WeaponManager(GameWorld gameWorld, Entity yukine, ProgressBar cooldownBar) {
@@ -46,7 +43,6 @@ public class WeaponManager {
 
         elapsedTime = 0.0;
         activeWeapon.shoot();
-
 
 
         cooldownBar.setCurrentValue(cooldownBar.getCurrentValue() - activeWeapon.getCoolDownDecrement());

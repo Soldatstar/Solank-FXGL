@@ -36,7 +36,6 @@ public class SmallNoiseComponent extends Component {
     public void onUpdate(double tpf) {
 
 
-
         double noiseX = getEntity().getX();
         double noiseY = getEntity().getY();
 

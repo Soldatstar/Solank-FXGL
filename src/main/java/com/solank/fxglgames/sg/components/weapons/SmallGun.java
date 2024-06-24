@@ -59,5 +59,4 @@ public class SmallGun extends AbstractWeapon {
     }
 
 
-
 }

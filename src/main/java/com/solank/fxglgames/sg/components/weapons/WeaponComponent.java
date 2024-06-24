@@ -48,14 +48,16 @@ public class WeaponComponent extends Component {
     }
 
     public BulletType getBulletType() {
-    return weapon.getBulletType();
+        return weapon.getBulletType();
     }
 
     public int getHits() {
         return weapon.getHits();
     }
 
-    public void shoot() { weapon.shoot();}
+    public void shoot() {
+        weapon.shoot();
+    }
 
     public double getCoolDownDecrement() {
         return weapon.getCoolDownDecrement();
