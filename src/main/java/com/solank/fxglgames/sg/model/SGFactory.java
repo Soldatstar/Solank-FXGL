@@ -135,15 +135,16 @@ public class SGFactory implements EntityFactory {
     public Entity spawnExplosion(SpawnData data) {
         double mouseX = data.get("pointX");
         double mouseY = data.get("pointY");
-        double radius = data.get("Radius");
+        double damageRadius = data.get("Radius");
 
         Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
         play("hit/explosion.wav");
 
         return entityBuilder()
                 .at(mouseX - (explosion.getWidth() / 2), mouseY - (explosion.getHeight() / 2))
-                .scale(radius/ (explosion.getWidth() / 2), radius / (explosion.getHeight() / 2))
-                .with(new SelfDestructComponent(Duration.seconds(1.0)))
+                .view("yukine/weapons/Explosion.png")
+                .scale(damageRadius/ (explosion.getWidth() / 2), damageRadius / (explosion.getHeight() / 2))
+                .with(new SelfDestructComponent(Duration.seconds(0.5)))
                 .buildAndAttach();
     }
 

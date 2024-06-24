@@ -9,7 +9,7 @@ import javafx.geometry.Rectangle2D;
 import java.util.List;
 
 public class ExplosionBullet extends AbstractBulletBehaviour {
-   private static final int EXPLOSION_RADIUS = 70;
+   private static final int EXPLOSION_RADIUS = 100;
    private static final double HALF_EXPLOSION_RADIUS = EXPLOSION_RADIUS / 2.0;
 
    @Override
