@@ -4,10 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.ui.ProgressBar;
-import com.solank.fxglgames.sg.components.weapons.BigGun;
-import com.solank.fxglgames.sg.components.weapons.SmallGun;
-import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
-import com.solank.fxglgames.sg.components.weapons.WeaponStrategy;
+import com.solank.fxglgames.sg.components.weapons.*;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ public class WeaponManager {
     private double elapsedTime;
     private final WeaponComponent activeWeapon;
     private final ArrayList<WeaponStrategy> weapons = new ArrayList<>();
+    private int weaponIndex = 0;
 
     public WeaponManager(GameWorld gameWorld, Entity yukine, ProgressBar cooldownBar) {
         this.gameWorld = gameWorld;
@@ -34,6 +32,7 @@ public class WeaponManager {
         this.activeWeapon = yukine.getComponent(WeaponComponent.class);
         weapons.add(new SmallGun(yukine));
         weapons.add(new BigGun(yukine));
+        weapons.add(new LowGun(yukine));
     }
 
     public void update(double tpf) {
@@ -61,11 +60,8 @@ public class WeaponManager {
     public void switchWeapon() {
         yukine.getViewComponent().removeChild(activeWeapon.getWeapon().getView());
 
-        if (activeWeapon.getWeapon() instanceof SmallGun) {
-            activeWeapon.setWeapon(weapons.get(1));
-        } else {
-            activeWeapon.setWeapon(weapons.get(0));
-        }
+        activeWeapon.setWeapon(weapons.get(++weaponIndex % weapons.size()));
+
         yukine.getViewComponent().addChild(activeWeapon.getWeapon().getView());
     }
 }
