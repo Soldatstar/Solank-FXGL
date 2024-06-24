@@ -138,11 +138,11 @@ public class SGFactory implements EntityFactory {
 
         double mouseX = data.get("pointX");
         double mouseY = data.get("pointY");
-        play("weapons/shooting.wav");
+        play("hit/explosion.wav");
         return entityBuilder()
                 .at(mouseX, mouseY)
-                .viewWithBBox("yukine/weapons/explosion.png")
-                .with(new SelfDestructComponent(Duration.seconds(0.5)))
+                .viewWithBBox("yukine/weapons/Explosion.png")
+                .with(new SelfDestructComponent(Duration.seconds(1.0)))
                 .buildAndAttach();
     }
 
