@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg.model;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -18,6 +19,7 @@ import com.solank.fxglgames.sg.components.TallNoiseComponent;
 import com.solank.fxglgames.sg.components.weapons.BulletComponent;
 import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import javafx.geometry.Point2D;
+import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -131,13 +133,17 @@ public class SGFactory implements EntityFactory {
 
     @Spawns("Explosion")
     public Entity spawnExplosion(SpawnData data) {
+        double mouseX = data.get("pointX");
+        double mouseY = data.get("pointY");
+        double radius = data.get("Radius");
 
+        Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
         play("hit/explosion.wav");
+
         return entityBuilder()
-                .at(data.get("pointX"), data.get("pointY"))
-                .viewWithBBox("yukine/weapons/Explosion.png")
-                .scale(0.5, 0.5)
-                .with(new SelfDestructComponent(Duration.seconds(0.5)))
+                .at(mouseX - (explosion.getWidth() / 2), mouseY - (explosion.getHeight() / 2))
+                .scale(radius/ (explosion.getWidth() / 2), radius / (explosion.getHeight() / 2))
+                .with(new SelfDestructComponent(Duration.seconds(1.0)))
                 .buildAndAttach();
     }
 

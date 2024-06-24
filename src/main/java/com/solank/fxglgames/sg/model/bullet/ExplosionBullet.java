@@ -9,7 +9,7 @@ import javafx.geometry.Rectangle2D;
 import java.util.List;
 
 public class ExplosionBullet extends AbstractBulletBehaviour {
-   private static final int EXPLOSION_RADIUS = 100;
+   private static final int EXPLOSION_RADIUS = 70;
    private static final double HALF_EXPLOSION_RADIUS = EXPLOSION_RADIUS / 2.0;
 
    @Override
@@ -18,7 +18,7 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
       double impactPosY = bullet.getY();
 
       GameWorld world = bullet.getWorld();
-      world.create("Explosion", new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY));
+      world.create("Explosion", new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY).put("Radius", HALF_EXPLOSION_RADIUS));
 
       List<Entity> allNoiseInRadius = world.getEntitiesInRange(new Rectangle2D(
                       impactPosX - HALF_EXPLOSION_RADIUS,
