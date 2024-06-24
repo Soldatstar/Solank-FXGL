@@ -86,10 +86,6 @@ public class LowGun extends AbstractWeapon {
           spawnBullet(rightDirection);
       }
 
-   @Override
-   public double getCoolDownDecrement() {
-      return 30;
-   }
 
 
 }

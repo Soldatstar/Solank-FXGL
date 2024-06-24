@@ -39,7 +39,7 @@ public class BigGun extends AbstractWeapon {
 
     @Override
     public double getShotPauseDuration() {
-        return 0.55;
+        return 0.45;
     }
 
     @Override
@@ -57,8 +57,5 @@ public class BigGun extends AbstractWeapon {
         return 2;
     }
 
-    @Override
-    public double getCoolDownDecrement() {
-        return 40;
-    }
+
 }

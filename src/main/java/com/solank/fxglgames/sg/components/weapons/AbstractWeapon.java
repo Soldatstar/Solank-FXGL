@@ -57,6 +57,12 @@ public abstract class AbstractWeapon implements WeaponStrategy {
         spawnBullet(directionToMouse);
     }
 
+    @Override
+    public double getCoolDownDecrement() {
+        return getShotPauseDuration() * 125;
+    }
+
+
 
     protected void spawnBullet( Point2D direction) {
         entity.getWorld().create("Bullet", new SpawnData().put(YUKINE_ENTITY, entity)

@@ -58,9 +58,6 @@ public class SmallGun extends AbstractWeapon {
         return 0;
     }
 
-    @Override
-    public double getCoolDownDecrement() {
-        return 20;
-    }
+
 
 }
