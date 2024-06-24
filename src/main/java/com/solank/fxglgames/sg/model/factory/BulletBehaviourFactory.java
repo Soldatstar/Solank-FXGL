@@ -6,9 +6,9 @@ public class BulletBehaviourFactory {
     public static BulletBehaviour getBehaviour(BulletType type) {
         switch (type) {
             case NORMAL_BULLET:
-                return new RegularBulletBehaviour();
+                return new RegularBullet();
             case ARMOR_PIERCING_BULLET:
-                return new ArmourPiercingBulletBehaviour();
+                return new ArmourPiercing();
             case EXPLOSION_BULLET:
                 return new ExplosionBullet();
             default:

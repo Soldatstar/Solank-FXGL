@@ -22,12 +22,12 @@ public class LowGun extends AbstractWeapon {
 
       @Override
       public double getCooldownDuration() {
-         return 1;
+         return 1.25;
       }
 
       @Override
       public double getShotPauseDuration() {
-         return 0.15;
+         return 0.35;
       }
 
       @Override

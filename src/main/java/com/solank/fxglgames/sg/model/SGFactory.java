@@ -12,6 +12,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.solank.fxglgames.sg.components.PlayerComponent;
+import com.solank.fxglgames.sg.components.SelfDestructComponent;
 import com.solank.fxglgames.sg.components.SmallNoiseComponent;
 import com.solank.fxglgames.sg.components.TallNoiseComponent;
 import com.solank.fxglgames.sg.components.weapons.BulletComponent;
@@ -19,6 +20,7 @@ import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -128,6 +130,19 @@ public class SGFactory implements EntityFactory {
                 .with("damage", weaponComponent.getDamage())
                 .with("bulletType", weaponComponent.getBulletType())
                 .with("hits",weaponComponent.getHits())
+                .buildAndAttach();
+    }
+
+    @Spawns("Explosion")
+    public Entity spawnExplosion(SpawnData data) {
+
+        double mouseX = data.get("pointX");
+        double mouseY = data.get("pointY");
+        play("weapons/shooting.wav");
+        return entityBuilder()
+                .at(mouseX, mouseY)
+                .viewWithBBox("yukine/weapons/explosion.png")
+                .with(new SelfDestructComponent(Duration.seconds(0.5)))
                 .buildAndAttach();
     }
 
