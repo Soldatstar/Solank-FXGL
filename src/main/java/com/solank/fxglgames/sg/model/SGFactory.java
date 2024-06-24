@@ -1,6 +1,5 @@
 package com.solank.fxglgames.sg.model;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -19,7 +18,6 @@ import com.solank.fxglgames.sg.components.TallNoiseComponent;
 import com.solank.fxglgames.sg.components.weapons.BulletComponent;
 import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import javafx.geometry.Point2D;
-import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -28,6 +26,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class SGFactory implements EntityFactory {
 
+    private static double explosionWidth;
+
+
+    private static double explosionHeight;
 
     @Spawns("Yukine")
     public Entity spawnYukine(SpawnData data) {
@@ -131,21 +133,8 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
-    @Spawns("Explosion")
-    public Entity spawnExplosion(SpawnData data) {
-        double mouseX = data.get("pointX");
-        double mouseY = data.get("pointY");
-        double damageRadius = data.get("Radius");
-
-        Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
-        play("hit/explosion.wav");
-
-        return entityBuilder()
-                .at(mouseX - (explosion.getWidth() / 2), mouseY - (explosion.getHeight() / 2))
-                .view("yukine/weapons/Explosion.png")
-                .scale(damageRadius/ (explosion.getWidth() / 2), damageRadius / (explosion.getHeight() / 2))
-                .with(new SelfDestructComponent(Duration.seconds(0.5)))
-                .buildAndAttach();
+    public static void setExplosionWidth(double explosionWidth) {
+        SGFactory.explosionWidth = explosionWidth;
     }
 
     @Spawns("Cloud")
@@ -170,5 +159,22 @@ public class SGFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
+    public static void setExplosionHeight(double explosionHeight) {
+        SGFactory.explosionHeight = explosionHeight;
+    }
+
+    @Spawns("Explosion")
+    public Entity spawnExplosion(SpawnData data) {
+        double radius = data.get("Radius");
+
+        play("hit/explosion.wav");
+
+        return entityBuilder()
+                .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
+                .scale(radius / explosionWidth, radius / explosionHeight)
+                .view("yukine/weapons/Explosion.png")
+                .with(new SelfDestructComponent(Duration.seconds(.1)))
+                .buildAndAttach();
+    }
 
 }

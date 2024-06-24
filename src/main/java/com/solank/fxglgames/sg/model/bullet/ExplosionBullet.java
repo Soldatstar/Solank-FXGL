@@ -29,7 +29,6 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
               .filter(e -> e.isType(Type.NOISE))
               .toList();
 
-      System.out.println("All Noise: " + allNoiseInRadius.size());
       for (Entity noise : allNoiseInRadius) {
          double health = noise.getDouble("health");
          super.handleDamage(noise, 5, health, noise.getInt("score"));

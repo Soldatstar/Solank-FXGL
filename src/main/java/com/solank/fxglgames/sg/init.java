@@ -10,10 +10,12 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
+import com.solank.fxglgames.sg.model.SGFactory;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
@@ -173,5 +175,11 @@ public class init {
         FXGL.getPhysicsWorld().setGravity(0, 600);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
+    }
+
+    public void initFactory() {
+        Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
+        SGFactory.setExplosionWidth(explosion.getWidth() / 2);
+        SGFactory.setExplosionHeight(explosion.getHeight() / 2);
     }
 }
