@@ -52,7 +52,6 @@ public class SGFactory implements EntityFactory {
                 .with(physics)
                 .viewWithBBox(new Rectangle(getAppWidth() + 20000, 150, Color.BLACK))
                 .at(-100, getAppHeight() - 15)
-                //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
                 .buildAndAttach();
     }
 
@@ -63,7 +62,6 @@ public class SGFactory implements EntityFactory {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
 
-        //return entityBuilder(data) of a background building with a random height and width between 100 and 200
         return entityBuilder(data)
                 .with(physics)
                 .viewWithBBox(new Rectangle((int) (Math.random() * 100) + 100, v1, Color.BLUE))
@@ -78,7 +76,6 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
                 .type(Type.NOISE)
-                //.view("noise.png")
                 .with(physics)
                 .bbox(new HitBox(BoundingShape.box(41, 41)))
                 .with(new SmallNoiseComponent(data.get("Yukine")))
@@ -97,7 +94,6 @@ public class SGFactory implements EntityFactory {
 
         return entityBuilder(data)
                 .type(Type.NOISE)
-                //.view("noise.png")
                 .with(physics)
                 .bbox(new HitBox(BoundingShape.box(41, 61)))
                 .with(new TallNoiseComponent(data.get("Yukine")))
@@ -136,13 +132,12 @@ public class SGFactory implements EntityFactory {
     @Spawns("Explosion")
     public Entity spawnExplosion(SpawnData data) {
 
-        double mouseX = data.get("pointX");
-        double mouseY = data.get("pointY");
         play("hit/explosion.wav");
         return entityBuilder()
-                .at(mouseX, mouseY)
+                .at(data.get("pointX"), data.get("pointY"))
                 .viewWithBBox("yukine/weapons/Explosion.png")
-                .with(new SelfDestructComponent(Duration.seconds(1.0)))
+                .scale(0.5, 0.5)
+                .with(new SelfDestructComponent(Duration.seconds(0.5)))
                 .buildAndAttach();
     }
 
@@ -159,7 +154,7 @@ public class SGFactory implements EntityFactory {
     public Entity spawnWall(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
-
+        //TODO: Add a wall entity with a width of 10 and a height of the app height
         return entityBuilder(data)
                 .with(physics)
                 .viewWithBBox(new Rectangle(10, getAppHeight(), Color.INDIANRED))
