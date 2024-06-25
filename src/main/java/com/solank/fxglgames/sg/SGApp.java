@@ -144,17 +144,6 @@ public class SGApp extends GameApplication {
         gameWorld.create(TALL_NOISE_ENTITY, new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
-    private void gameOver(boolean reachedEndOfGame) {
-        getInput().setRegisterInput(false);
-        getInput().setProcessInput(false);
-        getAudioPlayer().stopMusic(bgm);
-        //go to main menu
-        if (reachedEndOfGame) {
-            getGameController().gotoMainMenu();
-        } else {
-            getGameController().startNewGame();
-        }
-    }
 
     private void checkGameOverConditions() {
         if (YUKINE_HEALTH.isZero()) {
@@ -217,5 +206,20 @@ public class SGApp extends GameApplication {
 
     public void setCooldownBar(ProgressBar cooldownBar) {
         this.cooldownBar = cooldownBar;
+    }
+
+    private void gameOver(boolean reachedEndOfGame) {
+        getInput().setRegisterInput(false);
+        getInput().setProcessInput(false);
+        FXGL.getAudioPlayer().stopMusic(bgm);
+        StringBuilder builder = new StringBuilder();
+        builder.append("Game Over!\n\n");
+        if (reachedEndOfGame) {
+            builder.append("You have reached the end of the game!\n\n");
+            builder.append("Thank you for trying this Demo!\n\n");
+        }
+        builder.append("Final score: ")
+                .append(FXGL.geti(SCORE_ENTITY));
+        FXGL.getDialogService().showMessageBox(builder.toString(), () -> FXGL.getGameController().gotoMainMenu());
     }
 }
