@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg.model;
 
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -166,7 +167,7 @@ public class SGFactory implements EntityFactory {
                 .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
                 .scale(radius / explosionWidth, radius / explosionHeight)
                 .view("yukine/weapons/Explosion.png")
-                .with(new SelfDestructComponent(Duration.seconds(.1)))
+                .with(new ExpireCleanComponent(Duration.seconds(.1)))
                 .buildAndAttach();
     }
 

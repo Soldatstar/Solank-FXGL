@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
@@ -24,9 +25,7 @@ import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGApp extends GameApplication {
 
-
     public static final double HEALTH_REGEN_RATE = 0.05;
-
     public static final double YUKINE_MAX_HEALTH = 150.0;
     public static final int CLOUD_SPAWN_INTERVAL = 500;
     public static final int WALL_START_POSITION = 0;
@@ -37,7 +36,7 @@ public class SGApp extends GameApplication {
     public static final Random random = new Random();
     public static Entity yukine;
 
-    private final com.solank.fxglgames.sg.init init = new init(this);
+    private final Init init = new Init(this);
     private ProgressBar cooldownBar;
     private ProgressBar hpBar;
     private GameWorld gameWorld;

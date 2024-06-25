@@ -24,11 +24,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class init {
+
+public class Init {
     private final com.solank.fxglgames.sg.SGApp SGApp;
 
-    public init(com.solank.fxglgames.sg.SGApp SGApp) {
+    public Init(com.solank.fxglgames.sg.SGApp SGApp) {
         this.SGApp = SGApp;
+
     }
 
     protected void initInput() {
