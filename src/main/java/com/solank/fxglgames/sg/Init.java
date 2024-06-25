@@ -8,29 +8,38 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.collision.BulletNoiseCollisionHandler;
+import com.solank.fxglgames.sg.collision.BulletStaticCollisionHandler;
 import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
+import com.solank.fxglgames.sg.model.SGFactory;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
+
+import static com.solank.fxglgames.sg.SGApp.YUKINE_HEALTH;
+import static com.solank.fxglgames.sg.manager.StaticStrings.*;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class init {
+
+public class Init {
     private final com.solank.fxglgames.sg.SGApp SGApp;
 
-    public init(com.solank.fxglgames.sg.SGApp SGApp) {
+    public Init(com.solank.fxglgames.sg.SGApp SGApp) {
         this.SGApp = SGApp;
+
     }
 
     protected void initInput() {
         FXGL.getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).right();
+                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).moveRight();
             }
 
             @Override
@@ -42,7 +51,7 @@ public class init {
         FXGL.getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).left();
+                com.solank.fxglgames.sg.SGApp.yukine.getComponent(PlayerComponent.class).moveLeft();
             }
 
             @Override
@@ -95,6 +104,14 @@ public class init {
             }
         }, KeyCode.RIGHT);
 
+
+        FXGL.getInput().addAction(new UserAction("Change Weapon") {
+            @Override
+            protected void onActionBegin() {
+                SGApp.getShootingManager().switchWeapon();
+            }
+        }, KeyCode.Q);
+
         //getInput().addAction(new UserAction("Jump") {
         //    @Override
         //    protected void onActionBegin() {
@@ -111,9 +128,9 @@ public class init {
     void initHPBar() {
         SGApp.setHpBar(new ProgressBar(false));
         SGApp.getHpBar().setMinValue(0);
-        SGApp.getHpBar().setMaxValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
-        SGApp.getHpBar().setCurrentValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
-        SGApp.getHpBar().currentValueProperty().bind(FXGL.getdp(com.solank.fxglgames.sg.SGApp.HEALTH_ENTITY));
+        SGApp.getHpBar().setMaxValue(YUKINE_HEALTH.getMaxValue());
+        SGApp.getHpBar().setCurrentValue(YUKINE_HEALTH.getMaxValue());
+        SGApp.getHpBar().currentValueProperty().bind(YUKINE_HEALTH.valueProperty());
         SGApp.getHpBar().setWidth(300);
         SGApp.getHpBar().setLabelVisible(true);
         SGApp.getHpBar().setLabelPosition(Position.RIGHT);
@@ -140,13 +157,13 @@ public class init {
         scoreLabel.setEffect(new DropShadow(15, Color.WHITE));
         scoreLabel.setFont(Font.font(30.0));
         scoreLabel.setAlignment(Pos.CENTER);
-        scoreLabel.textProperty().bind(FXGL.getip(com.solank.fxglgames.sg.SGApp.SCORE_ENTITY).asString("%d"));
+        scoreLabel.textProperty().bind(FXGL.getip(SCORE_ENTITY).asString("%d"));
         FXGL.addUINode(scoreLabel, (double) FXGL.getAppWidth() / 2, 2);
     }
 
     protected void initSettings(GameSettings settings) {
-        settings.setTitle(com.solank.fxglgames.sg.SGApp.TITLE);
-        settings.setVersion(com.solank.fxglgames.sg.SGApp.VERSION);
+        settings.setTitle(TITLE);
+        settings.setVersion(VERSION);
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setMainMenuEnabled(true);
@@ -165,5 +182,12 @@ public class init {
         FXGL.getPhysicsWorld().setGravity(0, 600);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNoiseCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletStaticCollisionHandler());
+    }
+
+    public void initFactory() {
+        Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
+        SGFactory.setExplosionWidth(explosion.getWidth() / 2);
+        SGFactory.setExplosionHeight(explosion.getHeight() / 2);
     }
 }

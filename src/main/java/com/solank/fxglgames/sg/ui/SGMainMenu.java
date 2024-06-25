@@ -18,10 +18,14 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import static com.solank.fxglgames.sg.manager.StaticStrings.TITLE;
+import static com.solank.fxglgames.sg.manager.StaticStrings.VERSION;
+
 public class SGMainMenu extends FXGLMenu {
     private static final Color SELECTED_COLOR = Color.WHITE;
     private static final Color UNSELECTED_COLOR = Color.GRAY;
     private final ObjectProperty<sgButton> selectedButton;
+
     public SGMainMenu() {
         super(MenuType.MAIN_MENU);
         Texture bg = FXGL.getAssetLoader().loadTexture("mainmenu/mainmenu.png");
@@ -41,25 +45,25 @@ public class SGMainMenu extends FXGLMenu {
 
         var textDescription = FXGL.getUIFactoryService().newText("", Color.LIGHTGRAY, 14.0);
         textDescription.textProperty().bind(
-            Bindings.createStringBinding(() -> selectedButton.get().description, selectedButton));
+                Bindings.createStringBinding(() -> selectedButton.get().description, selectedButton));
 
         var box = new VBox(15,
-            btnPlayGame,
-            btnOptions,
-            new sgButton("placeholder1", "", () -> {
-            }),
-            new sgButton("placeholder2", "", () -> {
-            }),
-            btnQuit,
-            new Text(),
-            new Lineseperator(),
-            textDescription);
+                btnPlayGame,
+                btnOptions,
+                new sgButton("placeholder1", "", () -> {
+                }),
+                new sgButton("placeholder2", "", () -> {
+                }),
+                btnQuit,
+                new Text(),
+                new Lineseperator(),
+                textDescription);
 
 
         box.setTranslateX(100);
         box.setTranslateY(400);
 
-        Text version = FXGL.getUIFactoryService().newText(SGApp.VERSION, Color.BLACK, 12.0);
+        Text version = FXGL.getUIFactoryService().newText(VERSION, Color.BLACK, 12.0);
         version.setX(670);
         version.setY(588);
         version.setRotate(-8);
@@ -69,7 +73,7 @@ public class SGMainMenu extends FXGLMenu {
         logo.setTranslateX(+190);
         logo.setTranslateY(-370);
 
-        Text gameName = FXGL.getUIFactoryService().newText(SGApp.TITLE, Color.WHITE, 100.0);
+        Text gameName = FXGL.getUIFactoryService().newText(TITLE, Color.WHITE, 100.0);
         // Text gameNameBackground = FXGL.getUIFactoryService().newText(SGApp.TITLE,Color.LIGHTGRAY, 115.0);
 
         StackPane stackPane = new StackPane(gameName);
@@ -86,9 +90,9 @@ public class SGMainMenu extends FXGLMenu {
 
         public Lineseperator() {
             var gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE
-                , new javafx.scene.paint.Stop(0, Color.WHITE)
-                , new javafx.scene.paint.Stop(0.2, Color.LIGHTGRAY)
-                , new javafx.scene.paint.Stop(1, Color.TRANSPARENT)
+                    , new javafx.scene.paint.Stop(0, Color.WHITE)
+                    , new javafx.scene.paint.Stop(0.2, Color.LIGHTGRAY)
+                    , new javafx.scene.paint.Stop(1, Color.TRANSPARENT)
             );
 
             line.setFill(gradient);
@@ -126,7 +130,7 @@ public class SGMainMenu extends FXGLMenu {
             text = FXGL.getUIFactoryService().newText(name, Color.WHITE, 20.0);
             text.fillProperty().bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
             text.strokeProperty()
-                .bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
+                    .bind(Bindings.when(focusedProperty()).then(SELECTED_COLOR).otherwise(UNSELECTED_COLOR));
 
             text.setStrokeWidth(0.5);
 
