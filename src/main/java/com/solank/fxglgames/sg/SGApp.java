@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
@@ -25,8 +26,8 @@ import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGApp extends GameApplication {
 
-    public static final double HEALTH_REGEN_RATE = 0.05;
-    public static final double YUKINE_MAX_HEALTH = 150.0;
+    public static final int HEALTH_REGEN_RATE = 1;
+    public static HealthIntComponent YUKINE_HEALTH;
     public static final int CLOUD_SPAWN_INTERVAL = 500;
     public static final int WALL_START_POSITION = 0;
     public static final int WALL_END_POSITION = 20000;
@@ -54,7 +55,6 @@ public class SGApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put(HEALTH_ENTITY, YUKINE_MAX_HEALTH);
         vars.put(SCORE_ENTITY, 0);
         bgm = FXGL.getAssetLoader().loadMusic("bgm.mp3");
     }
@@ -73,6 +73,8 @@ public class SGApp extends GameApplication {
         spawnInitialEntities();
 
         yukine = spawnYukine();
+        YUKINE_HEALTH = yukine.getComponent(HealthIntComponent.class);
+
         setupYukineWeapon();
 
         setupViewport();
@@ -120,8 +122,8 @@ public class SGApp extends GameApplication {
     }
 
     private void updateHealth() {
-        if (getd(HEALTH_ENTITY) < YUKINE_MAX_HEALTH) {
-            inc(HEALTH_ENTITY, +HEALTH_REGEN_RATE);
+        if (YUKINE_HEALTH.getValue() < YUKINE_HEALTH.getMaxValue()) {
+            YUKINE_HEALTH.restore(HEALTH_REGEN_RATE);
         }
     }
 
@@ -155,7 +157,7 @@ public class SGApp extends GameApplication {
     }
 
     private void checkGameOverConditions() {
-        if (getd(HEALTH_ENTITY) <= 0) {
+        if (YUKINE_HEALTH.isZero()) {
             gameOver(false);
         }
 

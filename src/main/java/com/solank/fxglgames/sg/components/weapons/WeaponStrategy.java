@@ -17,7 +17,7 @@ public interface WeaponStrategy {
 
     ImageView getView();
 
-    double getDamage();
+    int getDamage();
 
     BulletType getBulletType();
 

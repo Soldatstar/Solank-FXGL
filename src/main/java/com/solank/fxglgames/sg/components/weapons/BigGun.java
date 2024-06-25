@@ -43,7 +43,7 @@ public class BigGun extends AbstractWeapon {
     }
 
     @Override
-    public double getDamage() {
+    public int getDamage() {
         return 20;
     }
 

@@ -13,6 +13,8 @@ import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.model.SGFactory;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
+
+import static com.solank.fxglgames.sg.SGApp.YUKINE_HEALTH;
 import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 import javafx.geometry.Pos;
@@ -126,9 +128,9 @@ public class Init {
     void initHPBar() {
         SGApp.setHpBar(new ProgressBar(false));
         SGApp.getHpBar().setMinValue(0);
-        SGApp.getHpBar().setMaxValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
-        SGApp.getHpBar().setCurrentValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
-        SGApp.getHpBar().currentValueProperty().bind(FXGL.getdp(HEALTH_ENTITY));
+        SGApp.getHpBar().setMaxValue(YUKINE_HEALTH.getMaxValue());
+        SGApp.getHpBar().setCurrentValue(YUKINE_HEALTH.getMaxValue());
+        SGApp.getHpBar().currentValueProperty().bind(YUKINE_HEALTH.valueProperty());
         SGApp.getHpBar().setWidth(300);
         SGApp.getHpBar().setLabelVisible(true);
         SGApp.getHpBar().setLabelPosition(Position.RIGHT);

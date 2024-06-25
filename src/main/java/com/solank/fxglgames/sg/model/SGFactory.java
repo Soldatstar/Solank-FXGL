@@ -1,6 +1,7 @@
 package com.solank.fxglgames.sg.model;
 
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -52,6 +53,7 @@ public class SGFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(21, 31)))
                 .with(new CollidableComponent(true))
                 .with(new KeepOnScreenComponent())
+                .with(new HealthIntComponent(150))
                 .zIndex(100)
                 .buildAndAttach();
     }
@@ -94,8 +96,8 @@ public class SGFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(41, 41)))
                 .with(new SmallNoiseComponent(data.get("Yukine")))
                 .with(new CollidableComponent(true))
-                .with("damage", 15.0)
-                .with("health", 10.0)
+                .with(new HealthIntComponent(10))
+                .with("damage", 15)
                 .with("score", 10)
                 .buildAndAttach();
     }
@@ -111,8 +113,8 @@ public class SGFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(41, 61)))
                 .with(new TallNoiseComponent(data.get("Yukine")))
                 .with(new CollidableComponent(true))
-                .with("damage", 25.0)
-                .with("health", 20.0)
+                .with(new HealthIntComponent(20))
+                .with("damage", 25)
                 .with("score", 20)
                 .buildAndAttach();
     }

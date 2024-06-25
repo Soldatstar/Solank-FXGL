@@ -1,6 +1,7 @@
 package com.solank.fxglgames.sg.collision;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.solank.fxglgames.sg.model.Type;
@@ -17,12 +18,13 @@ public class PlayerNoiseCollisionHandler extends CollisionHandler {
 
     @Override
     protected void onCollisionBegin(Entity a, Entity b) {
-        if (getd("Health") < b.getDouble("damage")) {
-
-            inc("Health", -getd("Health"));
-        } else {
-            inc("Health", -b.getDouble("damage"));
-        }
+        a.getComponent(HealthIntComponent.class).damage(b.getInt("damage"));
+//        if (getd("Health") < b.getDouble("damage")) {
+//
+//            inc("Health", -getd("Health"));
+//        } else {
+//            inc("Health", -b.getDouble("damage"));
+//        }
         b.removeFromWorld();
 
         int randomInt = FXGL.random(1, 2);

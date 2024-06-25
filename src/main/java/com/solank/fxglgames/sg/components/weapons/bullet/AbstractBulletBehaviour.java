@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg.components.weapons.bullet;
 
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.solank.fxglgames.sg.components.TallNoiseComponent;
@@ -17,8 +18,8 @@ public class AbstractBulletBehaviour implements BulletBehaviour {
         long startTime = System.nanoTime();
         play("hit/enemyhit.wav");
 
-        double noiseRemainingHealth = noise.getDouble("health");
-        double damage = bullet.getDouble("damage");
+        int noiseRemainingHealth = noise.getComponent(HealthIntComponent.class).getValue();
+        int damage = bullet.getInt("damage");
         int score = noise.getInt("score");
         handleDamage(noise, damage, noiseRemainingHealth, score);
         long endTime = System.nanoTime();
@@ -27,7 +28,7 @@ public class AbstractBulletBehaviour implements BulletBehaviour {
 
     }
 
-    protected void handleDamage(Entity noise, double damage, double noiseRemainingHealth, int score) {
+    protected void handleDamage(Entity noise, int damage, double noiseRemainingHealth, int score) {
         if (damage >= noiseRemainingHealth) {
             inc("Score", +score);
             noise.removeFromWorld();
@@ -36,11 +37,10 @@ public class AbstractBulletBehaviour implements BulletBehaviour {
         }
     }
 
-    private void handlePartialDamage(Entity noise, double damage) {
-        double newHealth = noise.getDouble("health") - damage;
-        noise.setProperty("health", newHealth);
+    private void handlePartialDamage(Entity noise, int damage) {
+        noise.getComponent(HealthIntComponent.class).damage(damage);
 
-        noise.getComponentOptional(TallNoiseComponent.class).ifPresent(TallNoiseComponent::freeze);
+        //noise.getComponentOptional(TallNoiseComponent.class).ifPresent(TallNoiseComponent::freeze);
 
         PhysicsComponent physics = noise.getComponent(PhysicsComponent.class);
         double pushDirection = (yukine.getX() < noise.getX()) ? PUSH_BACK_FORCE : -PUSH_BACK_FORCE;

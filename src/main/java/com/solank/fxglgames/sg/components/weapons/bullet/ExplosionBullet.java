@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg.components.weapons.bullet;
 
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.SpawnData;
@@ -34,7 +35,7 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
                 .toList();
 
         for (Entity noise : allNoiseInRadius) {
-            double health = noise.getDouble("health");
+            int health = noise.getComponent(HealthIntComponent.class).getValue();
             super.handleDamage(noise, 5, health, noise.getInt("score"));
         }
         bullet.removeFromWorld();

@@ -43,7 +43,7 @@ public class WeaponComponent extends Component {
         this.weapon = weapon;
     }
 
-    public Double getDamage() {
+    public int getDamage() {
         return weapon.getDamage();
     }
 

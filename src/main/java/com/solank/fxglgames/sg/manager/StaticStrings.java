@@ -9,6 +9,5 @@ public class StaticStrings {
    public static final String TALL_NOISE_ENTITY = "TallNoise";
    public static final String EXPLOSION_ENTITY = "Explosion" ;
    public static final String BULLET_ENTITY = "Bullet";
-   public static final String HEALTH_ENTITY = "Health";
    public static final String SCORE_ENTITY = "Score";
 }
