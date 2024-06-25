@@ -23,16 +23,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.solank.fxglgames.sg.SGApp.*;
+import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGFactory implements EntityFactory {
 
-    public static final String EXPLOSION_ENTITY = "Explosion" ;
     private static double explosionWidth;
-
     private static double explosionHeight;
-
-    public static final String BULLET_ENTITY = "Bullet";
 
 
     public static void setExplosionWidth(double explosionWidth) {

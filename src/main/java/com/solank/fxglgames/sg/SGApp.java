@@ -20,18 +20,13 @@ import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
+import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGApp extends GameApplication {
 
-    public static final String VERSION = "0.0.3";
-    public static final String TITLE = "SG";
+
     public static final double HEALTH_REGEN_RATE = 0.05;
-    public static final String YUKINE_ENTITY = "Yukine";
-    public static final String GROUND_ENTITY = "Ground";
-    public static final String SMALL_NOISE_ENTITY = "SmallNoise";
-    public static final String TALL_NOISE_ENTITY = "TallNoise";
-    public static final String HEALTH_ENTITY = "Health";
-    public static final String SCORE_ENTITY = "Score";
+
     public static final double YUKINE_MAX_HEALTH = 150.0;
     public static final int CLOUD_SPAWN_INTERVAL = 500;
     public static final int WALL_START_POSITION = 0;

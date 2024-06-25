@@ -8,7 +8,7 @@ import javafx.geometry.Rectangle2D;
 
 import java.util.List;
 
-import static com.solank.fxglgames.sg.model.SGFactory.EXPLOSION_ENTITY;
+import static com.solank.fxglgames.sg.manager.StaticStrings.EXPLOSION_ENTITY;
 
 public class ExplosionBullet extends AbstractBulletBehaviour {
     private static final int EXPLOSION_RADIUS = 100;

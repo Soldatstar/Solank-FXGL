@@ -18,6 +18,9 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import static com.solank.fxglgames.sg.manager.StaticStrings.TITLE;
+import static com.solank.fxglgames.sg.manager.StaticStrings.VERSION;
+
 public class SGMainMenu extends FXGLMenu {
     private static final Color SELECTED_COLOR = Color.WHITE;
     private static final Color UNSELECTED_COLOR = Color.GRAY;
@@ -60,7 +63,7 @@ public class SGMainMenu extends FXGLMenu {
         box.setTranslateX(100);
         box.setTranslateY(400);
 
-        Text version = FXGL.getUIFactoryService().newText(SGApp.VERSION, Color.BLACK, 12.0);
+        Text version = FXGL.getUIFactoryService().newText(VERSION, Color.BLACK, 12.0);
         version.setX(670);
         version.setY(588);
         version.setRotate(-8);
@@ -70,7 +73,7 @@ public class SGMainMenu extends FXGLMenu {
         logo.setTranslateX(+190);
         logo.setTranslateY(-370);
 
-        Text gameName = FXGL.getUIFactoryService().newText(SGApp.TITLE, Color.WHITE, 100.0);
+        Text gameName = FXGL.getUIFactoryService().newText(TITLE, Color.WHITE, 100.0);
         // Text gameNameBackground = FXGL.getUIFactoryService().newText(SGApp.TITLE,Color.LIGHTGRAY, 115.0);
 
         StackPane stackPane = new StackPane(gameName);

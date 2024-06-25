@@ -8,8 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 import static com.almasb.fxgl.dsl.FXGL.getInput;
-import static com.solank.fxglgames.sg.SGApp.YUKINE_ENTITY;
-import static com.solank.fxglgames.sg.model.SGFactory.BULLET_ENTITY;
+import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public abstract class AbstractWeapon implements WeaponStrategy {
     protected final Entity entity;

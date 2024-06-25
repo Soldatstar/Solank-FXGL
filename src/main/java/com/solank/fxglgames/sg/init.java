@@ -13,6 +13,8 @@ import com.solank.fxglgames.sg.collision.PlayerNoiseCollisionHandler;
 import com.solank.fxglgames.sg.components.PlayerComponent;
 import com.solank.fxglgames.sg.model.SGFactory;
 import com.solank.fxglgames.sg.ui.SGMainMenu;
+import static com.solank.fxglgames.sg.manager.StaticStrings.*;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -124,7 +126,7 @@ public class init {
         SGApp.getHpBar().setMinValue(0);
         SGApp.getHpBar().setMaxValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
         SGApp.getHpBar().setCurrentValue(com.solank.fxglgames.sg.SGApp.YUKINE_MAX_HEALTH);
-        SGApp.getHpBar().currentValueProperty().bind(FXGL.getdp(com.solank.fxglgames.sg.SGApp.HEALTH_ENTITY));
+        SGApp.getHpBar().currentValueProperty().bind(FXGL.getdp(HEALTH_ENTITY));
         SGApp.getHpBar().setWidth(300);
         SGApp.getHpBar().setLabelVisible(true);
         SGApp.getHpBar().setLabelPosition(Position.RIGHT);
@@ -151,13 +153,13 @@ public class init {
         scoreLabel.setEffect(new DropShadow(15, Color.WHITE));
         scoreLabel.setFont(Font.font(30.0));
         scoreLabel.setAlignment(Pos.CENTER);
-        scoreLabel.textProperty().bind(FXGL.getip(com.solank.fxglgames.sg.SGApp.SCORE_ENTITY).asString("%d"));
+        scoreLabel.textProperty().bind(FXGL.getip(SCORE_ENTITY).asString("%d"));
         FXGL.addUINode(scoreLabel, (double) FXGL.getAppWidth() / 2, 2);
     }
 
     protected void initSettings(GameSettings settings) {
-        settings.setTitle(com.solank.fxglgames.sg.SGApp.TITLE);
-        settings.setVersion(com.solank.fxglgames.sg.SGApp.VERSION);
+        settings.setTitle(TITLE);
+        settings.setVersion(VERSION);
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setMainMenuEnabled(true);
