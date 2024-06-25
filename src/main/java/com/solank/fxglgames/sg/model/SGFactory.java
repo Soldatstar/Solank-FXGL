@@ -124,19 +124,14 @@ public class SGFactory implements EntityFactory {
     public Entity spawnBullet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.KINEMATIC);
-
-        Entity yukine = data.get("Yukine");
-        WeaponComponent weaponComponent = yukine.getComponent(WeaponComponent.class);
-        Point2D direction = new Point2D(data.get("directionX"), data.get("directionY"));
-
         play("weapons/shooting.wav");
         return entityBuilder()
                 .type(Type.BULLET)
-                .at(weaponComponent.getWeaponOuterPoint())
+                .at((Point2D) data.get("weaponOuterPoint"))
                 .viewWithBBox("yukine/weapons/bullet.png")
                 .with(new CollidableComponent(true))
                 .with(new BulletComponent())
-                .with(new ProjectileComponent(direction, data.get("bulletSpeed")))
+                .with(new ProjectileComponent(data.get("direction"), data.get("bulletSpeed")))
                 .with("damage", data.get("damage"))
                 .with("bulletType", data.get("bulletType"))
                 .with("hits", data.get("hits"))

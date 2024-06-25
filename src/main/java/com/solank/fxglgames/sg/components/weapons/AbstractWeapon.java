@@ -66,8 +66,8 @@ public abstract class AbstractWeapon implements WeaponStrategy {
 
     protected void spawnBullet(Point2D direction) {
         entity.getWorld().create(BULLET_ENTITY, new SpawnData().put(YUKINE_ENTITY, entity)
-                .put("directionX", direction.getX())
-                .put("directionY", direction.getY())
+                .put("weaponOuterPoint", getWeaponOuterPoint())
+                .put("direction", direction)
                 .put("bulletSpeed", getBulletSpeed())
                 .put("damage", getDamage())
                 .put("bulletType", getBulletType())
