@@ -78,6 +78,7 @@ public class SGFactory implements EntityFactory {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
 
+        //TODO: Generate Buildings semi-random
         return entityBuilder(data)
                 .with(physics)
                 .viewWithBBox(new Rectangle((int) (Math.random() * 100) + 100, v1, Color.BLUE))
