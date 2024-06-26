@@ -66,6 +66,7 @@ public class SGFactory implements EntityFactory {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
 
+        //TODO: Buildings should be semi-random
         //return entityBuilder(data) of a background building with a random height and width between 100 and 200
         return entityBuilder(data)
             .with(physics)
