@@ -39,14 +39,12 @@
   <p align="center">
     SG is a simple side-scrolling action game developed with the FXGL library. The aim of the game is to control the character Yukine and survive waves of noise for as long as possible.
     <br />
-    <a href="https://github.com/Soldatstar/Solank-FXGL"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Soldatstar/Solank-FXGL/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Soldatstar/Solank-FXGL">View Demo</a>
+    <a href="https://github.com/Soldatstar/Solank-FXGL/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Report Bug</a>
     ·
-    <a href="https://github.com/Soldatstar/Solank-FXGL/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Soldatstar/Solank-FXGL/issues">Request Feature</a>
+    <a href="https://github.com/Soldatstar/Solank-FXGL/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=">Request Feature</a>
   </p>
 </div>
 
@@ -83,7 +81,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -107,7 +105,7 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 * FXGL
-* Liberica JDK 17
+* Java JDK 21+
 
 
 
@@ -204,7 +202,7 @@ Project Link: [https://github.com/Soldatstar/Solank-FXGL](https://github.com/Sol
 [license-url]: https://github.com/Soldatstar/Solank-FXGL/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/viktorweilenmann
-[product-screenshot]: images/SH1.png
+[product-screenshot]: images/DEMO.gif
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
