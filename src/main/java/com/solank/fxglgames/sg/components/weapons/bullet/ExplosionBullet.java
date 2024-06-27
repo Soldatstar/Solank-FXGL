@@ -23,7 +23,7 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
         double impactPosY = bullet.getY();
 
         GameWorld world = bullet.getWorld();
-        world.create(EXPLOSION_ENTITY, new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY).put("Radius", HALF_EXPLOSION_RADIUS));
+        world.spawn(EXPLOSION_ENTITY, new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY).put("Radius", HALF_EXPLOSION_RADIUS));
 
         List<Entity> allNoiseInRadius = world.getEntitiesInRange(new Rectangle2D(
                         impactPosX - HALF_EXPLOSION_RADIUS,

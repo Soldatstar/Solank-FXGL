@@ -6,7 +6,7 @@
 
     <groupId>Solank-FXGL</groupId>
     <artifactId>SG</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
 
 
@@ -17,7 +17,7 @@
         <launcher.class>com.solank.fxglgames.sg.SGApp</launcher.class>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <source.version>17</source.version>
+        <source.version>21</source.version>
 
         <!-- plugins -->
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -25,7 +25,7 @@
         <jfx.maven.version>0.0.5</jfx.maven.version>
         <javafx.plugin.version>0.0.8</javafx.plugin.version>
         <gluonfx.plugin.version>1.0.15</gluonfx.plugin.version>
-        <app.description>RaspPiFX app</app.description>
+        <app.description>FX app</app.description>
 
         <fxgl.version>21.1</fxgl.version>
         <kotlin.version>1.6.0</kotlin.version>
@@ -55,7 +55,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -129,6 +129,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -137,15 +138,35 @@
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
-                                <transformer implementation=
-                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${launcher.class}</mainClass>
                                 </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-aarch64-android.json</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-arm64-ios.json</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-x86_64-ios.json</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/LICENSE</exclude>
+                                        <exclude>META-INF/NOTICE</exclude>
+                                        <exclude>META-INF/versions/9/module-info</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>

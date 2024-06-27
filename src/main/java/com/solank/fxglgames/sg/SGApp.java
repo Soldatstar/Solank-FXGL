@@ -130,7 +130,7 @@ public class SGApp extends GameApplication {
     private void spawnNoiseTop() {
         int x = random(0, getAppWidth());
         int y = 10;
-        gameWorld.create(SMALL_NOISE_ENTITY, new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
+        gameWorld.spawn(SMALL_NOISE_ENTITY, new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
     }
 
     private void spawnNoiseSide() {
@@ -141,7 +141,7 @@ public class SGApp extends GameApplication {
         if (side == 0) {
             x = (int) yukine.getX() - appWidth;
         }
-        gameWorld.create(TALL_NOISE_ENTITY, new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
+        gameWorld.spawn(TALL_NOISE_ENTITY, new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
     }
 
 
@@ -157,7 +157,7 @@ public class SGApp extends GameApplication {
     }
 
     private Entity spawnYukine() {
-        return gameWorld.create(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - 64));
+        return gameWorld.spawn(YUKINE_ENTITY, new SpawnData((double) getAppWidth() / 2, getAppHeight() - 64));
     }
 
     private void setupYukineWeapon() {
@@ -172,7 +172,7 @@ public class SGApp extends GameApplication {
     }
 
     private void spawnInitialEntities() {
-        gameWorld.create(GROUND_ENTITY, new SpawnData());
+        gameWorld.spawn(GROUND_ENTITY, new SpawnData());
     }
 
     private void spawnClouds() {

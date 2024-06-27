@@ -54,7 +54,7 @@ public class SGFactory implements EntityFactory {
                 .with(new KeepOnScreenComponent())
                 .with(new HealthIntComponent(150))
                 .zIndex(100)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns(GROUND_ENTITY)
@@ -68,7 +68,7 @@ public class SGFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .viewWithBBox(new Rectangle(getAppWidth() + 20000, 150, Color.BLACK))
                 .at(-100, getAppHeight() - 15)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns("BGBuilding")
@@ -82,7 +82,7 @@ public class SGFactory implements EntityFactory {
                 .with(physics)
                 .viewWithBBox(new Rectangle((int) (Math.random() * 100) + 100, v1, Color.BLUE))
                 .at(data.getX(), data.getY() - v1)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns(SMALL_NOISE_ENTITY)
@@ -99,7 +99,7 @@ public class SGFactory implements EntityFactory {
                 .with(new HealthIntComponent(10))
                 .with("damage", 15)
                 .with("score", 10)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns(TALL_NOISE_ENTITY)
@@ -116,7 +116,7 @@ public class SGFactory implements EntityFactory {
                 .with(new HealthIntComponent(20))
                 .with("damage", 25)
                 .with("score", 20)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns(BULLET_ENTITY)
@@ -134,7 +134,7 @@ public class SGFactory implements EntityFactory {
                 .with("damage", data.get("damage"))
                 .with("bulletType", data.get("bulletType"))
                 .with("hits", data.get("hits"))
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns("Cloud")
@@ -143,7 +143,7 @@ public class SGFactory implements EntityFactory {
         return entityBuilder(data)
                 .viewWithBBox("background/cloud" + random + ".png")
                 .at(data.getX(), data.getY(), -200)
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns("Wall")
@@ -156,7 +156,7 @@ public class SGFactory implements EntityFactory {
                 .viewWithBBox(new Rectangle(10, getAppHeight(), Color.INDIANRED))
                 .at(data.getX(), data.getY())
                 //.bbox(new HitBox(new Point2D(-100, getAppHeight() - 15), BoundingShape.box(getAppWidth()+20000, 12)))
-                .buildAndAttach();
+                .build();
     }
 
     @Spawns(EXPLOSION_ENTITY)
@@ -169,8 +169,8 @@ public class SGFactory implements EntityFactory {
                 .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
                 .scale(radius / explosionWidth, radius / explosionHeight)
                 .with(new ExplosionComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(.5)))
-                .buildAndAttach();
+                .with(new ExpireCleanComponent(Duration.seconds(4.5)))
+                .build();
     }
 
 }
