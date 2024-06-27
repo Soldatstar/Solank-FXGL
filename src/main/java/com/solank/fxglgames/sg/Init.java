@@ -186,8 +186,9 @@ public class Init {
     }
 
     public void initFactory() {
-        Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosion.png");
-        SGFactory.setExplosionWidth(explosion.getWidth() / 2);
-        SGFactory.setExplosionHeight(explosion.getHeight() / 2);
+        //TODO: delete later
+        //Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosionrow.png");
+        //SGFactory.setExplosionWidth(explosion.getWidth() / 2);
+        //SGFactory.setExplosionHeight(explosion.getHeight() / 2);
     }
 }

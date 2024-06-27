@@ -1,5 +1,6 @@
 package com.solank.fxglgames.sg.model;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -13,13 +14,11 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.solank.fxglgames.sg.components.PlayerComponent;
-import com.solank.fxglgames.sg.components.SelfDestructComponent;
-import com.solank.fxglgames.sg.components.SmallNoiseComponent;
-import com.solank.fxglgames.sg.components.TallNoiseComponent;
-import com.solank.fxglgames.sg.components.BulletComponent;
+import com.almasb.fxgl.texture.AnimationChannel;
+import com.solank.fxglgames.sg.components.*;
 import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -169,8 +168,8 @@ public class SGFactory implements EntityFactory {
         return entityBuilder()
                 .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
                 .scale(radius / explosionWidth, radius / explosionHeight)
-                .view("yukine/weapons/Explosion.png")
-                .with(new ExpireCleanComponent(Duration.seconds(.1)))
+                .with(new ExplosionComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(.5)))
                 .buildAndAttach();
     }
 
