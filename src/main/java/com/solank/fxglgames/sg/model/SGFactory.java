@@ -31,7 +31,7 @@ public class SGFactory implements EntityFactory {
     private static double explosionWidth;
     private static double explosionHeight;
 
-    private ExplosionComponent animation = new ExplosionComponent();
+    private final ExplosionComponent animation = new ExplosionComponent();
 
 
     public static void setExplosionWidth(double explosionWidth) {
@@ -168,9 +168,10 @@ public class SGFactory implements EntityFactory {
         play("hit/explosion.wav");
 
         return entityBuilder()
-                .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
+                .at(data.get("pointX"), data.get("pointY"))
+                //.at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
                 .scale(radius / explosionWidth, radius / explosionHeight)
-                .with(animation)
+                .with(new ExplosionComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(4.5)))
                 .build();
     }

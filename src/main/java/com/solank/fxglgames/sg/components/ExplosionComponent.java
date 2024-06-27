@@ -2,42 +2,62 @@ package com.solank.fxglgames.sg.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 public class ExplosionComponent extends Component {
 
-   private static AnimationChannel explosion;
+   // Animation channels
+   private final AnimatedTexture texture;
+   private final AnimationChannel upDown;
 
-   private static AnimatedTexture texture;
+   // Physics and state variables
+   private PhysicsComponent physics = new PhysicsComponent();
+   private boolean physicsReady = false;
 
    public ExplosionComponent() {
-      explosion =
-              new AnimationChannel(FXGL.image("yukine/weapons/Explosionrow.png"), Duration.seconds(0.5), 6);
-      texture = new AnimatedTexture(explosion);
-      System.out.println("explosion was build");
-
-      texture.setScaleX(2);
-      texture.setScaleY(2);
-      texture.setTranslateY(+10);
+      this.upDown = createAnimationChannel("yukine/weapons/Explosionrow.png", Duration.seconds(0.6), 6);
+      this.texture = new AnimatedTexture(upDown);
+      configureTexture();
+      physics.setOnPhysicsInitialized(() -> {});
    }
 
    @Override
    public void onAdded() {
       configureEntityView();
-      configureTexture();
+      initializePhysics();
    }
 
-   private void configureEntityView() {
-      entity.getViewComponent().addChild(texture);
-      texture.loopNoOverride(explosion);
-      texture.loopAnimationChannel(explosion);
-      texture.setTranslateY(+14);
+   public void stopMovingX() {
+      if (isPhysicsReady()) {
+         physics.setVelocityX(0);
+      }
+   }
+
+   private AnimationChannel createAnimationChannel(String imagePath, Duration duration, int frames) {
+      return new AnimationChannel(FXGL.image(imagePath), duration, frames);
    }
 
    private void configureTexture() {
       texture.setScaleX(1);
       texture.setScaleY(1);
+   }
+
+   private void configureEntityView() {
+      entity.getViewComponent().addChild(texture);
+      texture.loopAnimationChannel(upDown);
+      texture.setTranslateY(-15);
+      texture.setTranslateZ(50);
+   }
+
+   private void initializePhysics() {
+      physics.setOnPhysicsInitialized(() -> physicsReady = true);
+   }
+
+   private boolean isPhysicsReady() {
+      return physicsReady;
    }
 }
