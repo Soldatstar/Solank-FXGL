@@ -1,29 +1,59 @@
-name: Java CI with Maven
+name: GraalVM Native Build
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 permissions:
   contents: write
-
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4.1.7
+
       - name: Set up JDK
-        uses: actions/setup-java@v4.2.1
+        uses: graalvm/setup-graalvm@v1.2.2
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
+          java-version: '22'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -e -Pdesktop gluonfx:build gluonfx:package
+
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: build-artifact
+          path: target/*
 
       - name: Maven Dependency Tree Dependency Submission
         uses: advanced-security/maven-dependency-submission-action@v4.0.3
+  build2:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4.1.7
+      - uses: gluonhq/setup-graalvm@master
+        # set GITHUB_TOKEN to avoid exceeding GitHub's API rate limit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #with:
+          # GraalVM version. Default: latest
+          #graalvm: '22.1.0.1-Final'
+          # Java version. Since GraalVM 22, either java11 or java17, before GraalVM 22, empty. Default: java17
+          #jdk: 'java17'
+          # Architecture flag. Available options are 'x86_64' (default) and 'aarch64'. The latter is available only for M1 self-hosted runners since GraalVM 22.1.
+          #arch: 'x86_64'
+      - run: java -version
+
+      - name: Build with Maven
+        run: mvn -e -Pdesktop gluonfx:build gluonfx:package
+
+
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: build-artifact
+          path: target/*

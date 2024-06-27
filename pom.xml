@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>Solank-FXGL</groupId>
+    <groupId>com.solank</groupId>
     <artifactId>SG</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
 
 
@@ -20,14 +20,11 @@
         <source.version>17</source.version>
 
         <!-- plugins -->
-        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
         <maven.shade.version>3.0.0</maven.shade.version>
-        <jfx.maven.version>0.0.5</jfx.maven.version>
-        <javafx.plugin.version>0.0.8</javafx.plugin.version>
-        <gluonfx.plugin.version>1.0.15</gluonfx.plugin.version>
-        <app.description>RaspPiFX app</app.description>
-
-        <fxgl.version>21.1</fxgl.version>
+        <jfx.maven.version>17</jfx.maven.version>
+        <javafx.version>21.0.1</javafx.version>
+        <fxgl.version>17.3</fxgl.version>
         <kotlin.version>1.6.0</kotlin.version>
     </properties>
 
@@ -36,6 +33,22 @@
             <groupId>com.github.almasb</groupId>
             <artifactId>fxgl</artifactId>
             <version>${fxgl.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
 
     </dependencies>
@@ -51,6 +64,26 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -59,6 +92,8 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>${launcher.class}</mainClass>
                         </manifest>
                     </archive>
@@ -99,33 +134,28 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>${gluonfx.plugin.version}</version>
+                <version>1.0.22</version>
                 <configuration>
-                    <target>host</target>
                     <mainClass>${launcher.class}</mainClass>
-                    <releaseConfiguration>
-                        <vendor>Pi4J</vendor>
-                        <description>${app.description}</description>
-                        <skipSigning>true</skipSigning>
-                    </releaseConfiguration>
                 </configuration>
             </plugin>
+
+
+
 
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>${jfx.maven.version}</version>
+                <version>0.0.5</version>
                 <configuration>
                     <mainClass>Sg.main/com.solank.fxglgames.sg.SGApp</mainClass>
-                    <launcher>SG=com.solank.fxglgames.sg.SGApp</launcher>
                 </configuration>
             </plugin>
 
-
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -146,6 +176,49 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>SG-APP</imageName> <!-- Name of the generated executable -->
+                            <outputDirectory>${project.build.directory}/native</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources/META-INF/native-image</directory>
+                                    <includes>
+                                        <include>reflect-config.json</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
