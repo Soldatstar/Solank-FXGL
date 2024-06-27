@@ -31,6 +31,8 @@ public class SGFactory implements EntityFactory {
     private static double explosionWidth;
     private static double explosionHeight;
 
+    private ExplosionComponent animation = new ExplosionComponent();
+
 
     public static void setExplosionWidth(double explosionWidth) {
         SGFactory.explosionWidth = explosionWidth;
@@ -168,7 +170,7 @@ public class SGFactory implements EntityFactory {
         return entityBuilder()
                 .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
                 .scale(radius / explosionWidth, radius / explosionHeight)
-                .with(new ExplosionComponent())
+                .with(animation)
                 .with(new ExpireCleanComponent(Duration.seconds(4.5)))
                 .build();
     }
