@@ -168,11 +168,10 @@ public class SGFactory implements EntityFactory {
         play("hit/explosion.wav");
 
         return entityBuilder()
-                .at(data.get("pointX"), data.get("pointY"))
-                //.at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
-                .scale(radius / explosionWidth, radius / explosionHeight)
+                .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
+                //.scale(radius / explosionWidth, radius / explosionHeight)
                 .with(new ExplosionComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(4.5)))
+                .with(new ExpireCleanComponent(Duration.seconds(0.6)))
                 .build();
     }
 
