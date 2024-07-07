@@ -128,6 +128,7 @@ _<!--For more examples, please refer to the [Documentation](https://example.com)
     - [ ] Enemy types
 - [ ] Side-scrolling
     - [ ] building generation
+- [ ] Adding unique Textures  
 
 See the [open issues](https://github.com/Soldatstar/Solank-FXGL/issues) for a full list of proposed features (and known issues).
 
