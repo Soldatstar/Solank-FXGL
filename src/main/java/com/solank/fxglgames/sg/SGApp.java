@@ -4,7 +4,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
@@ -13,6 +12,7 @@ import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.solank.fxglgames.sg.components.weapons.SmallGun;
 import com.solank.fxglgames.sg.components.weapons.WeaponComponent;
+import com.solank.fxglgames.sg.manager.ArenaManager;
 import com.solank.fxglgames.sg.manager.WeaponManager;
 import com.solank.fxglgames.sg.model.SGFactory;
 import javafx.util.Duration;
@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
 import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGApp extends GameApplication {
@@ -31,8 +30,7 @@ public class SGApp extends GameApplication {
     public static final int CLOUD_SPAWN_INTERVAL = 500;
     public static final int WALL_START_POSITION = 0;
     public static final int WALL_END_POSITION = 20000;
-    public static final int NOISE_SPAWN_INTERVAL_SIDE = 2;
-    public static final int NOISE_SPAWN_INTERVAL_TOP = 2;
+
 
     public static final Random random = new Random();
     public static Entity yukine;
@@ -42,7 +40,8 @@ public class SGApp extends GameApplication {
     private ProgressBar hpBar;
     private GameWorld gameWorld;
     private Music bgm;
-    private WeaponManager shootingManager;
+    private WeaponManager weaponManager;
+    private ArenaManager arenaManager;
 
     public static void main(String[] args) {
         launch(args);
@@ -81,9 +80,9 @@ public class SGApp extends GameApplication {
 
         spawnClouds();
         spawnWalls();
+        arenaManager = new ArenaManager(gameWorld,yukine);
 
-        run(this::spawnNoiseSide, Duration.seconds(NOISE_SPAWN_INTERVAL_SIDE));
-        run(this::spawnNoiseTop, Duration.seconds(NOISE_SPAWN_INTERVAL_TOP));
+        arenaManager.spawnNoise();
     }
 
     @Override
@@ -96,7 +95,7 @@ public class SGApp extends GameApplication {
         init.initScoreLabel();
         init.initCooldownBar();
         init.initHPBar();
-        shootingManager = new WeaponManager(gameWorld, yukine, cooldownBar);
+        weaponManager = new WeaponManager(gameWorld, yukine, cooldownBar);
         init.initFactory();
     }
 
@@ -104,7 +103,7 @@ public class SGApp extends GameApplication {
     protected void onUpdate(double tpf) {
         updateHealth();
         updateCooldownBar();
-        shootingManager.update(tpf);
+        weaponManager.update(tpf);
         getPhysicsWorld().onUpdate(tpf);
 
         checkGameOverConditions();
@@ -127,22 +126,7 @@ public class SGApp extends GameApplication {
         }
     }
 
-    private void spawnNoiseTop() {
-        int x = random(0, getAppWidth());
-        int y = 10;
-        gameWorld.create(SMALL_NOISE_ENTITY, new SpawnData(x + yukine.getX(), y).put(YUKINE_ENTITY, yukine));
-    }
 
-    private void spawnNoiseSide() {
-        int side = random(0, 1);
-        int appWidth = (getAppWidth() + 20) / 2;
-        int x = (int) yukine.getX() + appWidth;
-        int y = getAppHeight() - 100;
-        if (side == 0) {
-            x = (int) yukine.getX() - appWidth;
-        }
-        gameWorld.create(TALL_NOISE_ENTITY, new SpawnData(x, y).put(YUKINE_ENTITY, yukine));
-    }
 
 
     private void checkGameOverConditions() {
@@ -188,8 +172,8 @@ public class SGApp extends GameApplication {
         gameWorld.spawn("Wall", new SpawnData(WALL_END_POSITION, 0));
     }
 
-    public WeaponManager getShootingManager() {
-        return shootingManager;
+    public WeaponManager getWeaponManager() {
+        return weaponManager;
     }
 
     public ProgressBar getHpBar() {

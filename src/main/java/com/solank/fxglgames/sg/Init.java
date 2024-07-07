@@ -75,7 +75,7 @@ public class Init {
         FXGL.getInput().addAction(new UserAction("Shoot") {
             @Override
             protected void onAction() {
-                SGApp.getShootingManager().shoot();
+                SGApp.getWeaponManager().shoot();
 
             }
         }, MouseButton.PRIMARY);
@@ -108,7 +108,7 @@ public class Init {
         FXGL.getInput().addAction(new UserAction("Change Weapon") {
             @Override
             protected void onActionBegin() {
-                SGApp.getShootingManager().switchWeapon();
+                SGApp.getWeaponManager().switchWeapon();
             }
         }, KeyCode.Q);
 
