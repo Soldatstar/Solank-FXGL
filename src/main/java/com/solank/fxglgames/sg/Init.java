@@ -184,11 +184,4 @@ public class Init {
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletNoiseCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletStaticCollisionHandler());
     }
-
-    public void initFactory() {
-        //TODO: delete later
-        //Image explosion = FXGL.getAssetLoader().loadImage("yukine/weapons/Explosionrow.png");
-        //SGFactory.setExplosionWidth(explosion.getWidth() / 2);
-        //SGFactory.setExplosionHeight(explosion.getHeight() / 2);
-    }
 }

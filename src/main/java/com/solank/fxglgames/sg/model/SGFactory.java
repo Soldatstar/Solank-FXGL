@@ -28,20 +28,6 @@ import static com.solank.fxglgames.sg.manager.StaticStrings.*;
 
 public class SGFactory implements EntityFactory {
 
-    private static double explosionWidth;
-    private static double explosionHeight;
-
-    private final ExplosionComponent animation = new ExplosionComponent();
-
-
-    public static void setExplosionWidth(double explosionWidth) {
-        SGFactory.explosionWidth = explosionWidth;
-    }
-
-    public static void setExplosionHeight(double explosionHeight) {
-        SGFactory.explosionHeight = explosionHeight;
-    }
-
     @Spawns(YUKINE_ENTITY)
     public Entity spawnYukine(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
@@ -168,9 +154,8 @@ public class SGFactory implements EntityFactory {
         play("hit/explosion.wav");
 
         return entityBuilder()
-                .at(((double) data.get("pointX")) - explosionWidth, ((double) data.get("pointY") - explosionHeight))
-                //.scale(radius / explosionWidth, radius / explosionHeight)
-                .with(new ExplosionComponent())
+                .at(((double) data.get("pointX")) - (radius / 4), ((double) data.get("pointY") - 20))
+                .with(new ExplosionComponent(radius))
                 .with(new ExpireCleanComponent(Duration.seconds(0.6)))
                 .build();
     }

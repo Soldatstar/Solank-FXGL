@@ -12,8 +12,8 @@ import java.util.List;
 import static com.solank.fxglgames.sg.manager.StaticStrings.EXPLOSION_ENTITY;
 
 public class ExplosionBullet extends AbstractBulletBehaviour {
-    private static final int EXPLOSION_RADIUS = 100;
-    private static final double HALF_EXPLOSION_RADIUS = EXPLOSION_RADIUS / 2.0;
+    private static final double EXPLOSION_DIAMETER = 200;
+    private static final double HALF_EXPLOSION_RADIUS = EXPLOSION_DIAMETER / 2.0;
 
     @Override
     public void onHit(Entity bullet, Entity target) {
@@ -23,13 +23,13 @@ public class ExplosionBullet extends AbstractBulletBehaviour {
         double impactPosY = bullet.getY();
 
         GameWorld world = bullet.getWorld();
-        world.spawn(EXPLOSION_ENTITY, new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY).put("Radius", HALF_EXPLOSION_RADIUS));
+        world.spawn(EXPLOSION_ENTITY, new SpawnData().put("pointX", impactPosX).put("pointY", impactPosY).put("Radius", EXPLOSION_DIAMETER));
 
         List<Entity> allNoiseInRadius = world.getEntitiesInRange(new Rectangle2D(
                         impactPosX - HALF_EXPLOSION_RADIUS,
                         impactPosY - HALF_EXPLOSION_RADIUS,
-                        EXPLOSION_RADIUS,
-                        EXPLOSION_RADIUS))
+                        EXPLOSION_DIAMETER,
+                        EXPLOSION_DIAMETER))
                 .stream()
                 .filter(e -> e.isType(Type.NOISE))
                 .toList();

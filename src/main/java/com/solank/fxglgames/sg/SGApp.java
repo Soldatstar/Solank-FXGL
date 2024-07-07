@@ -97,7 +97,6 @@ public class SGApp extends GameApplication {
         init.initCooldownBar();
         init.initHPBar();
         shootingManager = new WeaponManager(gameWorld, yukine, cooldownBar);
-        init.initFactory();
     }
 
     @Override
